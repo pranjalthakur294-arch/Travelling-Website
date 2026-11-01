@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community — Lonely Planet Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7c3aed;
+      --purple-light: #6B3FF5;
+      --purple-pale: #EDE8FF;
+      --purple-bg: #F5F3FF;
+      --lavender: #C4B5FD;
+      --text-dark: #1A1028;
+      --text-mid: #4A4060;
+      --text-soft: #9B93B0;
+      --white: #FFFFFF;
+      --border: #E8E2F5;
+      --tag-bg: #F0ECFF;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 24px rgba(75,31,213,0.08);
+      --shadow-hover: 0 8px 36px rgba(75,31,213,0.18);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #FAFAFA;
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-mid);
+      font-size: 15px; font-weight: 500; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--purple); }
+    .nav-links a.active { color: var(--purple); font-weight: 600; }
+    .nav-logo {
+      font-family: 'Didot ', serif;
+      font-size: 38px; color: var(--text-dark);
+      text-align: center; line-height: 1.2; cursor: pointer;
+    }
+    .nav-logo span { display: block; font-size: 11px; font-family: 'DM Sans',sans-serif; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text-soft); }
+    .nav-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-outline {
+      border: 1.5px solid var(--purple); color: var(--purple);
+      background: transparent; padding: 9px 22px; border-radius: 50px;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s;
+    }
+    .btn-outline:hover { background: var(--purple-pale); }
+    .btn-primary {
+      background: var(--purple); color: var(--white);
+      border: none; padding: 10px 22px; border-radius: 50px;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s;
+    }
+    .btn-primary:hover { background: var(--purple-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(75,31,213,.3); }
+
+    /* ── HERO ── */
+    .hero {
+      background: 
+        linear-gradient(to bottom, rgba(10,6,20,0.55) 0%, rgba(10,6,20,0.4) 50%, rgba(10,6,20,0.75) 100%),
+        url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1800&q=85&auto=format&fit=crop') center center / cover no-repeat;
+      padding: 90px 40px 70px;
+      text-align: center;
+      position: relative; overflow: hidden;
+      min-height: 520px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.25) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.25);
+      font-size: 12px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 22px; position: relative;
+      backdrop-filter: blur(8px);
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(42px,6vw,72px);
+      color: #ffffff;
+      line-height: 1.05; margin-bottom: 18px;
+      position: relative;
+      text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+      letter-spacing: -0.01em;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: #ffffff;
+      -webkit-text-fill-color: #ffffff;
+    }
+    .hero p { color: rgba(255,255,255,0.78); font-size: 17px; max-width: 520px; margin: 0 auto 34px; line-height: 1.65; position: relative; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .hero-stats {
+      display: flex; gap: 48px; justify-content: center;
+      margin-top: 48px; position: relative;
+      padding-top: 36px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      width: 100%;
+      max-width: 600px;
+    }
+    .hero-stat-item { text-align: center; }
+    .hero-stat-num { font-family: 'DM Serif Display', serif; font-size: 34px; color: #ffffff; }
+    .hero-stat-lbl { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500; margin-top: 2px; }
+    .btn-hero {
+      background: var(--purple); color: var(--white);
+      border: none; padding: 14px 30px; border-radius: 50px;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: all .25s; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.45);
+    }
+    .btn-hero:hover { background: var(--purple-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(75,31,213,.5); }
+    .btn-hero-ghost {
+      background: rgba(255,255,255,0.08); color: #ffffff;
+      border: 1.5px solid rgba(255,255,255,0.45);
+      padding: 13px 28px; border-radius: 50px;
+      font-size: 15px; font-weight: 600; cursor: pointer; transition: all .25s;
+      backdrop-filter: blur(8px);
+    }
+    .btn-hero-ghost:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.7); }
+
+    /* ── LAYOUT ── */
+    .page-body {
+      max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
+      display: grid; grid-template-columns: 1fr 300px; gap: 32px;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      grid-column: 1 / -1;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .filter-label { font-size: 13px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: .06em; margin-right: 4px; }
+    .filter-chip {
+      padding: 8px 18px; border-radius: 50px; font-size: 14px; font-weight: 500;
+      border: 1.5px solid var(--border); background: var(--white);
+      color: var(--text-mid); cursor: pointer; transition: all .2s;
+    }
+    .filter-chip:hover { border-color: var(--purple); color: var(--purple); }
+    .filter-chip.active { background: var(--purple); color: var(--white); border-color: var(--purple); }
+    .filter-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .search-wrap {
+      display: flex; align-items: center;
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 50px; padding: 0 16px; gap: 8px; transition: border-color .2s;
+    }
+    .search-wrap:focus-within { border-color: var(--purple); }
+    .search-wrap svg { color: var(--text-soft); flex-shrink: 0; }
+    .search-wrap input {
+      border: none; outline: none; font-family: 'DM Sans',sans-serif;
+      font-size: 14px; color: var(--text-dark); background: transparent;
+      padding: 9px 0; width: 200px;
+    }
+    /* View toggle */
+    .view-toggle { display: flex; background: var(--white); border: 1.5px solid var(--border); border-radius: 50px; overflow: hidden; }
+    .view-btn {
+      padding: 8px 14px; border: none; background: transparent; cursor: pointer;
+      color: var(--text-soft); transition: all .2s; display: flex; align-items: center;
+    }
+    .view-btn.active { background: var(--purple); color: white; }
+    .view-btn svg { width: 16px; height: 16px; }
+
+    /* Sort */
+    .sort-select {
+      padding: 8px 14px 8px 12px; border: 1.5px solid var(--border);
+      border-radius: 50px; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500; color: var(--text-mid);
+      background: var(--white); cursor: pointer; outline: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B93B0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      padding-right: 32px;
+    }
+
+    /* ── FEED VIEW ── */
+    .feed { display: flex; flex-direction: column; gap: 24px; }
+
+    /* ── GRID VIEW ── */
+    .grid-feed {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+    }
+    .grid-feed .post-card .post-img-wrap { height: 200px; }
+    .grid-feed .post-card .post-desc { -webkit-line-clamp: 2; }
+
+    .post-card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      overflow: hidden; transition: box-shadow .25s, transform .25s;
+      animation: fadeUp .4s ease both;
+    }
+    .post-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(16px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .post-card:nth-child(1){animation-delay:.05s}
+    .post-card:nth-child(2){animation-delay:.1s}
+    .post-card:nth-child(3){animation-delay:.15s}
+    .post-card:nth-child(4){animation-delay:.2s}
+    .post-card:nth-child(5){animation-delay:.25s}
+    .post-card:nth-child(6){animation-delay:.3s}
+
+    /* ── IMAGE CAROUSEL ── */
+    .post-img-wrap {
+      width: 100%; height: 280px; overflow: hidden;
+      position: relative; background: var(--purple-bg); cursor: pointer;
+    }
+    .carousel { width: 100%; height: 100%; position: relative; }
+    .carousel-slides { display: flex; height: 100%; transition: transform .35s ease; }
+    .carousel-slides img {
+      width: 100%; height: 100%; object-fit: cover; flex-shrink: 0;
+      transition: transform .4s ease;
+    }
+    .post-card:hover .carousel-slides img { transform: scale(1.04); }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,.45); color: white; border: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; opacity: 0; transition: opacity .2s; z-index: 2;
+      font-size: 16px;
+    }
+    .carousel:hover .carousel-btn { opacity: 1; }
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
+    .carousel-dots {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 5px; z-index: 2;
+    }
+    .carousel-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.5); transition: background .2s, width .2s;
+      cursor: pointer;
+    }
+    .carousel-dot.active { background: white; width: 16px; border-radius: 4px; }
+    .post-img-count {
+      position: absolute; bottom: 12px; right: 12px;
+      background: rgba(0,0,0,.55); color: white;
+      font-size: 12px; font-weight: 600; padding: 4px 10px;
+      border-radius: 50px; backdrop-filter: blur(4px); z-index: 2;
+    }
+
+    .post-body { padding: 22px 24px; }
+    .post-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--purple-pale); overflow: hidden; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: var(--purple);
+      cursor: pointer; transition: transform .2s;
+    }
+    .avatar:hover { transform: scale(1.08); }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .post-author { font-size: 14px; font-weight: 600; color: var(--text-dark); cursor: pointer; }
+    .post-author:hover { color: var(--purple); text-decoration: underline; }
+    .post-time { font-size: 12px; color: var(--text-soft); }
+    .post-badge {
+      margin-left: auto; font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .06em;
+      padding: 4px 12px; border-radius: 50px;
+    }
+    .badge-itinerary { background: #EDE8FF; color: var(--purple); }
+    .badge-finding   { background: #E6F9F0; color: #1A7F50; }
+    .badge-tip       { background: #FFF4E0; color: #B06A00; }
+    .badge-photo     { background: #FFE8F2; color: #AA1070; }
+
+    .post-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 21px; line-height: 1.25;
+      color: var(--text-dark); margin-bottom: 10px; cursor: pointer;
+    }
+    .post-title:hover { color: var(--purple); }
+    .post-desc {
+      font-size: 14px; color: var(--text-mid); line-height: 1.65;
+      margin-bottom: 16px;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .post-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .tag {
+      font-size: 12px; font-weight: 500; padding: 4px 12px;
+      background: var(--tag-bg); color: var(--purple);
+      border-radius: 50px; cursor: pointer; transition: background .2s;
+    }
+    .tag:hover { background: var(--lavender); color: var(--white); }
+
+    .post-footer {
+      display: flex; align-items: center; gap: 20px;
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .post-action {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; color: var(--text-soft);
+      cursor: pointer; background: none; border: none;
+      transition: color .2s; padding: 0;
+    }
+    .post-action:hover { color: var(--purple); }
+    .post-action.liked { color: #E5004C; }
+    .post-action.saved-on { color: var(--purple); }
+    .post-action svg { width: 17px; height: 17px; }
+    .post-action.liked svg { fill: #E5004C; stroke: #E5004C; }
+    .post-action.saved-on svg { fill: var(--purple); }
+    .read-more {
+      margin-left: auto; font-size: 13px; font-weight: 600; color: var(--purple);
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      cursor: pointer; background: none; border: none; transition: gap .2s;
+    }
+    .read-more:hover { gap: 8px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 24px; }
+    .sidebar-card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 22px; box-shadow: var(--shadow);
+    }
+    .sidebar-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px; margin-bottom: 16px; color: var(--text-dark);
+    }
+    .trending-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer;
+      transition: padding-left .2s;
+    }
+    .trending-item:hover { padding-left: 4px; }
+    .trending-item:last-child { border-bottom: none; }
+    .trending-num {
+      font-size: 20px; font-weight: 700; color: var(--purple-pale);
+      font-family: 'DM Serif Display', serif; line-height: 1; min-width: 24px;
+    }
+    .trending-text { font-size: 14px; font-weight: 500; color: var(--text-dark); line-height: 1.4; }
+    .trending-meta { font-size: 12px; color: var(--text-soft); margin-top: 3px; }
+
+    .dest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .dest-pill {
+      background: var(--purple-bg); border-radius: var(--radius-sm);
+      padding: 12px; text-align: center; cursor: pointer;
+      transition: all .2s; border: 1.5px solid transparent;
+    }
+    .dest-pill:hover { border-color: var(--purple); background: var(--purple-pale); }
+    .dest-pill .flag { font-size: 22px; display: block; margin-bottom: 4px; }
+    .dest-pill .dname { font-size: 12px; font-weight: 600; color: var(--text-dark); }
+
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 14px; }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--purple); }
+    .stat-lbl { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
+
+    /* Top travellers in sidebar */
+    .traveller-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+    }
+    .traveller-row:last-child { border-bottom: none; }
+    .traveller-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--purple-pale); display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--purple); flex-shrink: 0;
+    }
+    .traveller-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+    .traveller-posts { font-size: 12px; color: var(--text-soft); }
+    .traveller-follow {
+      margin-left: auto; font-size: 12px; font-weight: 600; color: var(--purple);
+      cursor: pointer; border: 1px solid var(--purple); border-radius: 50px;
+      padding: 3px 10px; background: transparent; transition: all .2s;
+    }
+    .traveller-follow:hover { background: var(--purple); color: white; }
+    .traveller-follow.following { background: var(--purple); color: white; }
+
+    /* ── LOAD MORE ── */
+    .load-more-wrap { text-align: center; margin-top: 12px; }
+    .btn-load {
+      background: var(--white); border: 1.5px solid var(--purple);
+      color: var(--purple); padding: 12px 32px; border-radius: 50px;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: all .25s;
+    }
+    .btn-load:hover { background: var(--purple); color: white; }
+
+    /* ── NEW POST MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(26,16,40,.55);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--white); border-radius: 20px;
+      padding: 36px; width: 90%; max-width: 600px;
+      max-height: 90vh; overflow-y: auto;
+      transform: translateY(20px) scale(.97); transition: transform .3s;
+    }
+    .modal-overlay.open .modal { transform: none; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .modal-header h2 { font-family: 'DM Serif Display', serif; font-size: 26px; }
+    .modal-close {
+      width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border);
+      background: transparent; cursor: pointer; font-size: 20px; color: var(--text-soft);
+      display: flex; align-items: center; justify-content: center; transition: all .2s;
+    }
+    .modal-close:hover { background: var(--purple-pale); color: var(--purple); }
+
+    .form-group { margin-bottom: 18px; }
+    .form-label { font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 7px; display: block; }
+    .form-control {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-dark);
+      outline: none; transition: border-color .2s; resize: vertical;
+    }
+    .form-control:focus { border-color: var(--purple); }
+    .type-select { display: flex; gap: 10px; flex-wrap: wrap; }
+    .type-btn {
+      padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 600;
+      border: 1.5px solid var(--border); background: var(--white);
+      color: var(--text-mid); cursor: pointer; transition: all .2s;
+    }
+    .type-btn.sel-itinerary { background: #EDE8FF; color: var(--purple); border-color: var(--purple); }
+    .type-btn.sel-finding   { background: #E6F9F0; color: #1A7F50; border-color: #1A7F50; }
+    .type-btn.sel-tip       { background: #FFF4E0; color: #B06A00; border-color: #B06A00; }
+    .type-btn.sel-photo     { background: #FFE8F2; color: #AA1070; border-color: #AA1070; }
+
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: var(--radius-sm);
+      padding: 28px; text-align: center; cursor: pointer;
+      transition: all .2s; color: var(--text-soft); font-size: 14px;
+    }
+    .upload-zone:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-bg); }
+    .upload-zone.drag-over { border-color: var(--purple); background: var(--purple-pale); transform: scale(1.01); }
+    .upload-zone svg { margin-bottom: 8px; }
+    .upload-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .upload-preview-item { position: relative; }
+    .upload-preview img {
+      width: 72px; height: 72px; object-fit: cover;
+      border-radius: 8px; border: 1.5px solid var(--border);
+    }
+    .remove-img {
+      position: absolute; top: -6px; right: -6px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #E5004C; color: white; border: none; cursor: pointer;
+      font-size: 11px; display: flex; align-items: center; justify-content: center;
+    }
+    .char-count { font-size: 12px; color: var(--text-soft); text-align: right; margin-top: 4px; }
+
+    .modal-footer { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+    /* ── COMMENTS DRAWER ── */
+    .comments-overlay {
+      position: fixed; inset: 0; background: rgba(26,16,40,.4);
+      backdrop-filter: blur(4px); z-index: 150;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .comments-overlay.open { opacity: 1; pointer-events: all; }
+    .comments-drawer {
+      position: fixed; right: 0; top: 0; bottom: 0;
+      width: min(440px, 100vw); background: var(--white);
+      box-shadow: -8px 0 40px rgba(75,31,213,.12);
+      z-index: 151; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+    }
+    .comments-overlay.open .comments-drawer { transform: none; }
+    .drawer-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .drawer-header h3 { font-family: 'DM Serif Display', serif; font-size: 20px; }
+    .drawer-post-preview {
+      padding: 16px 24px; background: var(--purple-bg);
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .drawer-post-preview h4 { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+    .drawer-post-preview p { font-size: 12px; color: var(--text-soft); }
+    .comments-list {
+      flex: 1; overflow-y: auto; padding: 20px 24px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .comment-item { display: flex; gap: 12px; }
+    .comment-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--purple-pale); display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--purple); flex-shrink: 0;
+    }
+    .comment-body { flex: 1; }
+    .comment-author { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 3px; }
+    .comment-text { font-size: 14px; color: var(--text-mid); line-height: 1.5; }
+    .comment-meta { font-size: 12px; color: var(--text-soft); margin-top: 6px; display: flex; align-items: center; gap: 12px; }
+    .comment-like-btn {
+      background: none; border: none; cursor: pointer; color: var(--text-soft);
+      font-size: 12px; display: flex; align-items: center; gap: 4px; transition: color .2s;
+    }
+    .comment-like-btn:hover { color: #E5004C; }
+    .comment-like-btn.liked { color: #E5004C; }
+    .comment-reply-btn { background: none; border: none; cursor: pointer; color: var(--text-soft); font-size: 12px; transition: color .2s; }
+    .comment-reply-btn:hover { color: var(--purple); }
+
+    .reply-thread { margin-top: 12px; padding-left: 20px; border-left: 2px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+
+    .comment-input-area {
+      padding: 16px 24px; border-top: 1px solid var(--border); flex-shrink: 0;
+      background: var(--white);
+    }
+    .comment-input-row { display: flex; gap: 10px; align-items: flex-end; }
+    .comment-input {
+      flex: 1; border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 10px 14px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--text-dark); outline: none;
+      resize: none; min-height: 42px; max-height: 120px;
+      transition: border-color .2s; line-height: 1.4;
+    }
+    .comment-input:focus { border-color: var(--purple); }
+    .comment-send {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--purple); color: white; border: none;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all .2s; flex-shrink: 0;
+    }
+    .comment-send:hover { background: var(--purple-light); transform: scale(1.05); }
+    .comment-send svg { width: 16px; height: 16px; }
+
+    /* ── POST DETAIL MODAL ── */
+    .detail-overlay {
+      position: fixed; inset: 0; background: rgba(26,16,40,.6);
+      backdrop-filter: blur(8px); z-index: 160;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .detail-overlay.open { opacity: 1; pointer-events: all; }
+    .detail-modal {
+      background: var(--white); border-radius: 20px;
+      width: 90%; max-width: 720px; max-height: 88vh;
+      overflow-y: auto; transform: scale(.96); transition: transform .3s;
+    }
+    .detail-overlay.open .detail-modal { transform: none; }
+    .detail-hero { width: 100%; height: 340px; object-fit: cover; border-radius: 20px 20px 0 0; }
+    .detail-body { padding: 32px; }
+    .detail-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .detail-body h2 { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 16px; line-height: 1.2; }
+    .detail-body p { font-size: 15px; color: var(--text-mid); line-height: 1.75; margin-bottom: 20px; }
+    .detail-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,.5); color: white; border: none;
+      cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+    }
+    .detail-close-wrap { position: relative; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(0,0,0,.88);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 300; opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 28px;
+      color: white; font-size: 30px; cursor: pointer; background: none; border: none;
+    }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.15); color: white; border: none;
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 20px; transition: background .2s;
+      backdrop-filter: blur(4px);
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,.3); }
+    .lightbox-nav.prev-lb { left: 24px; }
+    .lightbox-nav.next-lb { right: 24px; }
+    .lightbox-counter {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      color: white; font-size: 13px; background: rgba(0,0,0,.4);
+      padding: 4px 12px; border-radius: 50px; backdrop-filter: blur(4px);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--text-dark); color: white; padding: 14px 24px;
+      border-radius: 50px; font-size: 14px; font-weight: 500;
+      opacity: 0; pointer-events: none; transition: all .3s; z-index: 400;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast-icon { font-size: 18px; }
+
+    /* ── PROFILE HOVER CARD ── */
+    .profile-card {
+      position: fixed; z-index: 180;
+      background: var(--white); border-radius: 16px;
+      border: 1px solid var(--border); box-shadow: 0 16px 48px rgba(75,31,213,.18);
+      padding: 20px; width: 260px;
+      opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+      transform: translateY(6px);
+    }
+    .profile-card.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .profile-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .profile-card-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--purple-pale); display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700; color: var(--purple);
+    }
+    .profile-card-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+    .profile-card-handle { font-size: 12px; color: var(--text-soft); }
+    .profile-card-bio { font-size: 13px; color: var(--text-mid); line-height: 1.5; margin-bottom: 14px; }
+    .profile-card-stats { display: flex; gap: 16px; margin-bottom: 16px; }
+    .profile-card-stat span { display: block; font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--purple); }
+    .profile-card-stat small { font-size: 11px; color: var(--text-soft); }
+    .profile-card-follow {
+      width: 100%; padding: 9px; background: var(--purple);
+      color: white; border: none; border-radius: 50px;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s;
+    }
+    .profile-card-follow:hover { background: var(--purple-light); }
+    .profile-card-follow.following { background: var(--purple-pale); color: var(--purple); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
+    }
+    .empty-state .emoji { font-size: 48px; margin-bottom: 16px; }
+    .empty-state h3 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 8px; }
+    .empty-state p { font-size: 14px; color: var(--text-soft); margin-bottom: 20px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 880px) {
+      .page-body { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .filter-bar { gap: 8px; }
+      .filter-right { margin-left: 0; width: 100%; }
+      .search-wrap input { width: 100%; }
+      .grid-feed { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .hero { padding: 40px 16px 36px; }
+      .post-img-wrap { height: 200px; }
+      .hero-stats { gap: 24px; }
+      .hero-stat-num { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <ul class="nav-links">
+    <li><a href="about.html">About US</a></li>
+    <li><a href="#" class="active">Community</a></li>
+  </ul>
+  <div class="nav-logo">
+    <span></span>
+    WANDR
+  </div>
+  <a href="Homepage.html">
+  <div class="nav-actions">
+    <button class="btn-outline">Home</button>
+    <button class="btn-primary" onclick="openModal()">+ Share</button>
+  </div></a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">✦ Traveller Community</div>
+  <h1>Stories from the<br/><em>road less travelled</em></h1>
+  <p>Discover real itineraries, hidden finds, and travel tips from fellow explorers around the world.</p>
+  <div class="hero-actions">
+    <button class="btn-hero" onclick="openModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Share your journey
+    </button>
+    <button class="btn-hero-ghost" onclick="document.querySelector('.page-body').scrollIntoView({behavior:'smooth'})">Explore posts ↓</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat-item">
+      <div class="hero-stat-num" id="heroTravellers">4,218</div>
+      <div class="hero-stat-lbl">Travellers</div>
+    </div>
+    <div class="hero-stat-item">
+      <div class="hero-stat-num" id="heroPosts">1,034</div>
+      <div class="hero-stat-lbl">Stories shared</div>
+    </div>
+    <div class="hero-stat-item">
+      <div class="hero-stat-num">87</div>
+      <div class="hero-stat-lbl">Countries covered</div>
+    </div>
+    <div class="hero-stat-item">
+      <div class="hero-stat-num">143K</div>
+      <div class="hero-stat-lbl">Photos uploaded</div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="page-body">
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-chip active" data-filter="all">All posts</button>
+    <button class="filter-chip" data-filter="itinerary">🗺 Itineraries</button>
+    <button class="filter-chip" data-filter="finding">🔍 Findings</button>
+    <button class="filter-chip" data-filter="tip">💡 Tips</button>
+    <button class="filter-chip" data-filter="photo">📷 Photos</button>
+    <div class="filter-right">
+      <select class="sort-select" id="sortSelect" onchange="sortChanged()">
+        <option value="latest">Latest</option>
+        <option value="popular">Most liked</option>
+        <option value="discussed">Most discussed</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="listViewBtn" title="List view" onclick="setView('list')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </button>
+        <button class="view-btn" id="gridViewBtn" title="Grid view" onclick="setView('grid')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </button>
+      </div>
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search destinations, tags…" oninput="filterPosts()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEED -->
+  <main>
+    <div class="feed" id="feed"></div>
+    <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+      <button class="btn-load" onclick="loadMore()">Load more posts</button>
+    </div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <!-- Stats + CTA -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">Community 🌍</div>
+      <div class="stat-row">
+        <div><div class="stat-num">4,218</div><div class="stat-lbl">Travellers</div></div>
+        <div><div class="stat-num">1,034</div><div class="stat-lbl">Posts</div></div>
+        <div><div class="stat-num">87</div><div class="stat-lbl">Countries</div></div>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:11px" onclick="openModal()">+ Share your journey</button>
+    </div>
+
+    <!-- Trending -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">Trending now 🔥</div>
+      <div id="trendingList"></div>
+    </div>
+
+    <!-- Top Travellers -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">Top travellers ✨</div>
+      <div id="topTravellers"></div>
+    </div>
+
+    <!-- Destinations -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">Explore by destination</div>
+      <div class="dest-grid">
+        <div class="dest-pill" onclick="filterByTag('Japan')"><span class="flag">🇯🇵</span><div class="dname">Japan</div></div>
+        <div class="dest-pill" onclick="filterByTag('Portugal')"><span class="flag">🇵🇹</span><div class="dname">Portugal</div></div>
+        <div class="dest-pill" onclick="filterByTag('Morocco')"><span class="flag">🇲🇦</span><div class="dname">Morocco</div></div>
+        <div class="dest-pill" onclick="filterByTag('Vietnam')"><span class="flag">🇻🇳</span><div class="dname">Vietnam</div></div>
+        <div class="dest-pill" onclick="filterByTag('Peru')"><span class="flag">🇵🇪</span><div class="dname">Peru</div></div>
+        <div class="dest-pill" onclick="filterByTag('Iceland')"><span class="flag">🇮🇸</span><div class="dname">Iceland</div></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- NEW POST MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h2>Share your journey ✈️</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Post type</label>
+      <div class="type-select" id="typeSelect">
+        <button class="type-btn" data-type="itinerary" onclick="selectType(this)">🗺 Itinerary</button>
+        <button class="type-btn" data-type="finding"   onclick="selectType(this)">🔍 Finding</button>
+        <button class="type-btn" data-type="tip"       onclick="selectType(this)">💡 Tip</button>
+        <button class="type-btn" data-type="photo"     onclick="selectType(this)">📷 Photo Story</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input class="form-control" id="postTitle" placeholder="e.g. 10 days through the Amalfi Coast…" type="text" maxlength="100"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Destination(s)</label>
+      <input class="form-control" id="postDest" placeholder="e.g. Italy, Japan, Vietnam" type="text"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Your story</label>
+      <textarea class="form-control" id="postBody" rows="5" placeholder="Share what you discovered, your route, tips, hidden gems…" maxlength="1000" oninput="updateCharCount(this,1000,'bodyCount')"></textarea>
+      <div class="char-count"><span id="bodyCount">0</span>/1000</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Tags <span style="color:var(--text-soft);font-weight:400">(comma separated)</span></label>
+      <input class="form-control" id="postTags" placeholder="e.g. budget travel, solo, food" type="text"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Photos <span style="color:var(--text-soft);font-weight:400">(up to 5 images)</span></label>
+      <div class="upload-zone" id="uploadZone"
+           onclick="document.getElementById('photoInput').click()"
+           ondragover="handleDragOver(event)"
+           ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 8px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Click or drag & drop photos here
+        <div style="font-size:12px;margin-top:4px;color:var(--text-soft)">JPG, PNG, WebP · Max 5 images</div>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="previewPhotos(event)"/>
+      <div class="upload-preview" id="uploadPreview"></div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="submitPost()">Publish post →</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMMENTS DRAWER -->
+<div class="comments-overlay" id="commentsOverlay" onclick="closeCommentsOutside(event)">
+  <div class="comments-drawer" id="commentsDrawer">
+    <div class="drawer-header">
+      <h3>Comments <span id="commentCount" style="font-family:'DM Sans';font-size:14px;color:var(--text-soft)"></span></h3>
+      <button class="modal-close" onclick="closeComments()">×</button>
+    </div>
+    <div class="drawer-post-preview" id="drawerPostPreview"></div>
+    <div class="comments-list" id="commentsList"></div>
+    <div class="comment-input-area">
+      <div style="font-size:12px;color:var(--text-soft);margin-bottom:8px;">Commenting as <strong style="color:var(--text-dark)">You</strong></div>
+      <div class="comment-input-row">
+        <textarea class="comment-input" id="commentInput" placeholder="Add a comment…" rows="1"
+          oninput="autoResizeTextarea(this)"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitComment()}"
+        ></textarea>
+        <button class="comment-send" onclick="submitComment()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST DETAIL MODAL -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetailOutside(event)">
+  <div class="detail-modal" id="detailModal">
+    <div class="detail-close-wrap" style="position:relative">
+      <button class="detail-close" onclick="closeDetail()">×</button>
+    </div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxClick(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <button class="lightbox-nav prev-lb" onclick="lbNav(-1)">‹</button>
+  <img id="lightboxImg" src="" alt=""/>
+  <button class="lightbox-nav next-lb" onclick="lbNav(1)">›</button>
+  <div class="lightbox-counter" id="lbCounter"></div>
+</div>
+
+<!-- PROFILE HOVER CARD -->
+<div class="profile-card" id="profileCard">
+  <div class="profile-card-top">
+    <div class="profile-card-avatar" id="pcAvatar"></div>
+    <div>
+      <div class="profile-card-name" id="pcName"></div>
+      <div class="profile-card-handle" id="pcHandle"></div>
+    </div>
+  </div>
+  <div class="profile-card-bio" id="pcBio"></div>
+  <div class="profile-card-stats">
+    <div class="profile-card-stat"><span id="pcPosts"></span><small>Posts</small></div>
+    <div class="profile-card-stat"><span id="pcLikes"></span><small>Likes</small></div>
+    <div class="profile-card-stat"><span id="pcCountries"></span><small>Countries</small></div>
+  </div>
+  <button class="profile-card-follow" id="pcFollowBtn" onclick="toggleProfileFollow()">Follow</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✅</span>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
+const PLACEHOLDER_IMGS = [
+  'https://images.unsplash.com/photo-1548013146-72479768bada?w=900&q=80',
+  'https://images.unsplash.com/photo-1504512485720-7d83a16ee930?w=900&q=80',
+  'https://images.unsplash.com/photo-1529515412800-e4de4f04a08f?w=900&q=80',
+  'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80',
+  'https://images.unsplash.com/photo-1464082354059-27db6ce50048?w=900&q=80',
+  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=80',
+  'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=900&q=80',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80',
+];
+
+const EXTRA_IMGS = [
+  [
+    'https://images.unsplash.com/photo-1504512485720-7d83a16ee930?w=900&q=80',
+    'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=900&q=80',
+    'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=900&q=80',
+  ],
+  [
+    'https://images.unsplash.com/photo-1529515412800-e4de4f04a08f?w=900&q=80',
+    'https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=900&q=80',
+  ],
+  ['https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80'],
+  [
+    'https://images.unsplash.com/photo-1464082354059-27db6ce50048?w=900&q=80',
+    'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?w=900&q=80',
+    'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=900&q=80',
+    'https://images.unsplash.com/photo-1555881400-a80f8d3e3671?w=900&q=80',
+  ],
+  [
+    'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=80',
+    'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=900&q=80',
+  ],
+];
+
+const AUTHOR_PROFILES = {
+  'Priya Menon':  { initials:'PM', bio:'Solo traveller & itinerary obsessive. Tokyo → Kyoto → Osaka is my spiritual home.', posts:14, likes:892, countries:23 },
+  'Carlos Reyes': { initials:'CR', bio:'Born curious. Found happiness in souks, medinas, and unexpected doors.', posts:9, likes:512, countries:18 },
+  'Lena Fischer': { initials:'LF', bio:'Adventure trekker & altitude junkie. Always booking the next mountain.', posts:21, likes:1203, countries:31 },
+  'Aisha Nkomo':  { initials:'AN', bio:'Photographer & slow traveller. I collect golden hours and tiled facades.', posts:17, likes:2840, countries:27 },
+  'Ben Hartley':  { initials:'BH', bio:'Motorbike nomad. Mostly lost, always happy. Vietnam changed my life.', posts:11, likes:973, countries:15 },
+  'You':          { initials:'YO', bio:'New to the community! Just posted my first journey.', posts:1, likes:0, countries:1 },
+};
+
+const SEED_POSTS = [
+  {
+    id: 1, type: 'itinerary', author: 'Priya Menon', initials: 'PM',
+    time: '2 hours ago', title: '14 Days in Japan: A Cherry Blossom Itinerary for First-Timers',
+    desc: 'After months of planning I finally did it — the full Japan spring circuit. Tokyo → Kyoto → Hiroshima → Osaka. Cherry blossoms were peak in Maruyama Park, and the bullet train system made everything so seamless. Here\'s my full day-by-day breakdown with costs and hidden spots.',
+    fullDesc: 'After months of planning I finally did it — the full Japan spring circuit. Tokyo → Kyoto → Hiroshima → Osaka. Cherry blossoms were peak in Maruyama Park, and the bullet train system made everything so seamless.\n\nDay 1-4: Tokyo. Shibuya Crossing at dusk is the best introduction to Japanese energy. Spend a morning in Yanaka — old-world Tokyo that survived the bombings. Day 5-8: Kyoto. Stay near Fushimi Inari to beat the crowds. The bamboo grove in Arashiyama is genuinely magical at 6am before tourists arrive.\n\nDay 9-10: Hiroshima & Miyajima. The Peace Memorial is essential — go with a guide. Day 11-14: Osaka. Eat everything. Literally everything.\n\nTotal budget: ~£2,200 for 2 weeks including flights from London.',
+    tags: ['Japan','Spring','Itinerary','Solo Travel'], imgs: EXTRA_IMGS[0],
+    likes: 142, comments: 38, saved: false, liked: false,
+    commentList: [
+      { id: 1, author: 'Tomás Bauer', initials: 'TB', text: 'This is exactly what I needed! Planning my trip for April 2027. Did you pre-book JR Pass or at the station?', time: '1h ago', likes: 4, liked: false, replies: [
+        { id: 11, author: 'Priya Menon', initials: 'PM', text: 'Pre-book for sure — it\'s slightly cheaper and saves time. I used the official JR website.', time: '45m ago', likes: 2, liked: false }
+      ]},
+      { id: 2, author: 'Mei Lin', initials: 'ML', text: 'The Yanaka tip is gold. We spent 3 hours just wandering there. Totally underrated!', time: '30m ago', likes: 7, liked: false, replies: [] },
+    ],
+  },
+  {
+    id: 2, type: 'finding', author: 'Carlos Reyes', initials: 'CR',
+    time: '5 hours ago', title: 'Hidden Riad in Fes Medina — No Tourists, Incredible Food',
+    desc: 'Stumbled on Riad Andalib while completely lost in the Fes el-Bali labyrinth. No sign outside, just a heavy wooden door. Inside: a stunning courtyard, mint tea on arrival, and a tagine that changed my life. They don\'t advertise online. Here\'s the exact alley coordinates.',
+    fullDesc: 'Stumbled on Riad Andalib while completely lost in the Fes el-Bali labyrinth. No sign outside, just a heavy wooden door. Inside: a stunning courtyard, mint tea on arrival, and a tagine that changed my life.\n\nThe owner, Rachid, speaks four languages and has been running the riad for 30 years. He\'ll show you the tanneries from a rooftop that isn\'t on TripAdvisor. Dinner is served on the terrace — 7pm, 120 dirhams, no menu, whatever was at the market that morning.\n\nHow to find it: Enter Bab Rcif, take the third left past the blue-tiled fountain, follow the sound of hammering brass workers, and look for a carved cedar door with no handle. Ring the bell. Worth it every time.',
+    tags: ['Morocco','Hidden Gem','Food','Off The Beaten Path'], imgs: EXTRA_IMGS[1],
+    likes: 89, comments: 21, saved: false, liked: false,
+    commentList: [
+      { id: 3, author: 'Sara Okonkwo', initials: 'SO', text: 'Fes is criminally underrated compared to Marrakech. Bookmarking this immediately!', time: '4h ago', likes: 12, liked: false, replies: [] },
+    ],
+  },
+  {
+    id: 3, type: 'tip', author: 'Lena Fischer', initials: 'LF',
+    time: '1 day ago', title: '7 Things I Wish I Knew Before Trekking the Inca Trail',
+    desc: 'The Inca Trail is physically demanding in ways guidebooks undersell. Altitude hit me hard on Day 2 — coca tea helped more than I expected. Book permits 6 months in advance, pack half what you think you need, and ALWAYS tip your porters generously.',
+    fullDesc: 'The Inca Trail is physically demanding in ways guidebooks undersell. Here\'s what they don\'t tell you:\n\n1. Altitude sickness is real. Spend 2-3 days acclimatising in Cusco first. Diamox helps but coca tea works surprisingly well.\n2. Book permits 6 months in advance minimum — they sell out within hours of opening.\n3. Pack half what you think you need. Porters carry a weight limit; the lighter your bag, the happier everyone is.\n4. Dead Woman\'s Pass (Day 2, 4,215m) is brutal. No shame in going extremely slow.\n5. The "back entrance" to Machu Picchu through the Sun Gate at sunrise is the most cinematic moment of your life.\n6. Tip your porters well. They carry your tent, food, and sleeping bag at altitude in sandals.\n7. The trail closes every February for maintenance. Don\'t book February.',
+    tags: ['Peru','Trekking','Altitude','Tips'], imgs: EXTRA_IMGS[2],
+    likes: 203, comments: 57, saved: false, liked: false,
+    commentList: [
+      { id: 4, author: 'Jake Morley', initials: 'JM', text: 'Just did the trail last month! 100% agree on the porter tipping. They are absolute heroes.', time: '20h ago', likes: 15, liked: false, replies: [
+        { id: 41, author: 'Lena Fischer', initials: 'LF', text: 'Right? One of my porters was 58 years old and overtook me on Dead Woman\'s Pass in flip flops. Humbling.', time: '19h ago', likes: 23, liked: false }
+      ]},
+      { id: 5, author: 'Nadia V.', initials: 'NV', text: 'The coca tea thing really works! I was sceptical but it genuinely helped with headaches.', time: '15h ago', likes: 8, liked: false, replies: [] },
+    ],
+  },
+  {
+    id: 4, type: 'photo', author: 'Aisha Nkomo', initials: 'AN',
+    time: '2 days ago', title: 'Golden Hour in Lisbon: A Photo Journey Through Alfama',
+    desc: 'Spent three evenings chasing the perfect fado soundtrack and warm light through Alfama\'s tiled streets. Every turn reveals a miradouro with a completely different view of the Tagus. These are my 12 favourite shots — all taken on a single lens.',
+    fullDesc: 'Spent three evenings chasing the perfect fado soundtrack and warm light through Alfama\'s tiled streets. Every turn reveals a miradouro with a completely different view of the Tagus.\n\nGear: Sony A7IV + 35mm 1.8. No tripod. All handheld.\n\nMiradouro das Portas do Sol catches the best late afternoon light around 6:30pm. The cats of Alfama are an art subject of their own — I filled an entire memory card just on them.\n\nFor the tiled facades: the Rua de São Tomé stretch between 4-5pm is divine. Locals dry laundry above and the tiles glow.\n\nThe fado playing through open windows as the sky turns amber — that\'s the sound of Lisbon. It\'s untranslatable. Go.',
+    tags: ['Portugal','Photography','Lisbon','Golden Hour'], imgs: EXTRA_IMGS[3],
+    likes: 317, comments: 84, saved: false, liked: false,
+    commentList: [
+      { id: 6, author: 'Paulo Ferreira', initials: 'PF', text: 'As a Portuguese person, this made me incredibly proud. You captured Alfama perfectly!', time: '2d ago', likes: 28, liked: false, replies: [] },
+      { id: 7, author: 'Remy Blanc', initials: 'RB', text: 'What time of year did you go? Trying to plan around the best light.', time: '1d ago', likes: 3, liked: false, replies: [
+        { id: 71, author: 'Aisha Nkomo', initials: 'AN', text: 'Late September — perfect weather, fewer tourists than summer, and the light has that golden quality all afternoon.', time: '1d ago', likes: 9, liked: false }
+      ]},
+    ],
+  },
+  {
+    id: 5, type: 'itinerary', author: 'Ben Hartley', initials: 'BH',
+    time: '3 days ago', title: 'Hoi An to Hanoi: 3 Weeks Slow-Travelling Vietnam by Motorbike',
+    desc: 'Rented a semi-automatic Honda Win in Da Nang for $200 and rode north for three weeks. The Hai Van Pass at sunrise is the most cinematic thing I\'ve ever seen. This post includes fuel costs, overnight stays, mechanic contacts, and everything I\'d change on a second trip.',
+    fullDesc: 'Rented a semi-automatic Honda Win in Da Nang for $200 and rode north for three weeks. The Hai Van Pass at sunrise is the most cinematic thing I\'ve ever seen.\n\nDay 1-3: Hoi An. Spend longer than you think — the Ancient Town is stunning but the surrounding countryside by bike is what you\'re here for.\n\nDay 4: The Hai Van Pass. Leave Da Nang by 5:30am to ride the pass at sunrise before the trucks. Stop at the old French/American bunkers. Genuinely moved me.\n\nDay 5-9: Hue. Imperial Citadel, Thien Mu pagoda, and the ghost-town perfume river at night.\n\nDay 10-14: Phong Nha. Caving. Book Paradise Cave for the full-day tour — it\'s other-worldly.\n\nDay 15-21: Hà Nội approach via the Ho Chi Minh trail roads. These mountain passes are unknown to most tourists. Pure paradise.\n\nTotal spend: $640 for 21 days including bike rental, fuel, food, accommodation, and one emergency mechanic visit.',
+    tags: ['Vietnam','Motorbike','Slow Travel','Southeast Asia'], imgs: EXTRA_IMGS[4],
+    likes: 178, comments: 49, saved: false, liked: false,
+    commentList: [
+      { id: 8, author: 'Dan Cooper', initials: 'DC', text: 'Did the same route in 2023! Phong Nha is criminally underrated. Glad more people are talking about it.', time: '2d ago', likes: 11, liked: false, replies: [] },
+    ],
+  },
+];
+
+const TRENDING = [
+  { title: 'Japan Sakura Season 2026 — Best Viewing Spots', posts: '48 posts' },
+  { title: 'Solo Female Travel: Morocco Safety Tips', posts: '32 posts' },
+  { title: 'Budget Europe Rail Pass — Worth It?', posts: '27 posts' },
+  { title: 'Best Street Food Cities in Southeast Asia', posts: '24 posts' },
+  { title: 'Iceland Summer Midnight Sun Guide', posts: '19 posts' },
+];
+
+const TOP_TRAVELLERS = [
+  { name: 'Aisha Nkomo', initials: 'AN', posts: 17, tagline: 'Photographer · 27 countries' },
+  { name: 'Lena Fischer', initials: 'LF', posts: 21, tagline: 'Trekker · 31 countries' },
+  { name: 'Priya Menon',  initials: 'PM', posts: 14, tagline: 'Solo traveller · 23 countries' },
+  { name: 'Ben Hartley',  initials: 'BH', posts: 11, tagline: 'Nomad · 15 countries' },
+];
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let posts = [...SEED_POSTS];
+let selectedType = '';
+let uploadedFiles = [];
+let activeFilter = 'all';
+let visibleCount = 5;
+let currentView = 'list';
+let activeCommentPostId = null;
+let lbImgs = [];
+let lbIndex = 0;
+let profileHoverTimer = null;
+let currentProfileAuthor = null;
+let followed = new Set();
+let followedTravellers = new Set();
+
+/* ═══════════════════════════════════════════
+   RENDER POSTS
+═══════════════════════════════════════════ */
+function renderPosts() {
+  const searchVal = document.getElementById('searchInput').value.toLowerCase();
+  const sortVal = document.getElementById('sortSelect').value;
+  let filtered = posts.filter(p => {
+    const matchFilter = activeFilter === 'all' || p.type === activeFilter;
+    const matchSearch = !searchVal ||
+      p.title.toLowerCase().includes(searchVal) ||
+      p.tags.some(t => t.toLowerCase().includes(searchVal)) ||
+      p.desc.toLowerCase().includes(searchVal) ||
+      p.author.toLowerCase().includes(searchVal);
+    return matchFilter && matchSearch;
+  });
+
+  if (sortVal === 'popular') filtered.sort((a,b) => b.likes - a.likes);
+  else if (sortVal === 'discussed') filtered.sort((a,b) => b.comments - a.comments);
+
+  const feed = document.getElementById('feed');
+  feed.className = currentView === 'grid' ? 'grid-feed' : 'feed';
+
+  const visible = filtered.slice(0, visibleCount);
+  if (visible.length === 0) {
+    feed.innerHTML = `<div class="empty-state">
+      <div class="emoji">🌍</div>
+      <h3>No posts found</h3>
+      <p>Try a different filter or search term, or be the first to share about this!</p>
+      <button class="btn-primary" onclick="openModal()">Share your journey</button>
+    </div>`;
+  } else {
+    feed.innerHTML = visible.map((p, i) => postHTML(p, i)).join('');
+  }
+
+  document.getElementById('loadMoreWrap').style.display =
+    filtered.length > visibleCount ? 'block' : 'none';
+}
+
+function postHTML(p) {
+  const badgeMap  = { itinerary:'badge-itinerary', finding:'badge-finding', tip:'badge-tip', photo:'badge-photo' };
+  const badgeLabelMap = { itinerary:'🗺 Itinerary', finding:'🔍 Finding', tip:'💡 Tip', photo:'📷 Photo Story' };
+  const tags = p.tags.map(t => `<span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('');
+
+  const imgs = p.imgs || [p.img || PLACEHOLDER_IMGS[0]];
+  const hasMultiple = imgs.length > 1;
+  const carouselId = `car-${p.id}`;
+
+  const imgBlock = `
+    <div class="post-img-wrap">
+      <div class="carousel" id="${carouselId}">
+        <div class="carousel-slides" id="${carouselId}-slides" onclick="openLightboxForPost(${p.id}, 0)">
+          ${imgs.map(src => `<img src="${src}" alt="${p.title}" loading="lazy"/>`).join('')}
+        </div>
+        ${hasMultiple ? `
+        <button class="carousel-btn prev" onclick="carNav('${carouselId}',-1,event)">‹</button>
+        <button class="carousel-btn next" onclick="carNav('${carouselId}',1,event)">›</button>
+        <div class="carousel-dots">
+          ${imgs.map((_,i) => `<div class="carousel-dot ${i===0?'active':''}" onclick="carGoTo('${carouselId}',${i},event)"></div>`).join('')}
+        </div>
+        ` : ''}
+        ${hasMultiple ? `<div class="post-img-count">1 / ${imgs.length}</div>` : ''}
+      </div>
+    </div>`;
+
+  return `
+    <article class="post-card" data-id="${p.id}">
+      ${imgBlock}
+      <div class="post-body">
+        <div class="post-meta">
+          <div class="avatar" onmouseenter="showProfileCard(event,'${p.author}')" onmouseleave="hideProfileCard()">${p.initials}</div>
+          <div>
+            <div class="post-author" onmouseenter="showProfileCard(event,'${p.author}')" onmouseleave="hideProfileCard()">${p.author}</div>
+            <div class="post-time">${p.time}</div>
+          </div>
+          <span class="post-badge ${badgeMap[p.type]}">${badgeLabelMap[p.type]}</span>
+        </div>
+        <h2 class="post-title" onclick="openDetail(${p.id})">${p.title}</h2>
+        <p class="post-desc">${p.desc}</p>
+        <div class="post-tags">${tags}</div>
+        <div class="post-footer">
+          <button class="post-action ${p.liked?'liked':''}" onclick="toggleLike(${p.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            ${p.likes}
+          </button>
+          <button class="post-action" onclick="openComments(${p.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            ${p.comments}
+          </button>
+          <button class="post-action ${p.saved?'saved-on':''}" onclick="toggleSave(${p.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            ${p.saved ? 'Saved' : 'Save'}
+          </button>
+          <button class="read-more" onclick="openDetail(${p.id})">Read more →</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+/* ═══════════════════════════════════════════
+   RENDER SIDEBAR
+═══════════════════════════════════════════ */
+function renderTrending() {
+  document.getElementById('trendingList').innerHTML = TRENDING.map((t,i) => `
+    <div class="trending-item" onclick="filterByTag(t.title.split(' ')[0])">
+      <div class="trending-num">${String(i+1).padStart(2,'0')}</div>
+      <div>
+        <div class="trending-text">${t.title}</div>
+        <div class="trending-meta">${t.posts}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderTopTravellers() {
+  document.getElementById('topTravellers').innerHTML = TOP_TRAVELLERS.map(t => `
+    <div class="traveller-row">
+      <div class="traveller-avatar">${t.initials}</div>
+      <div>
+        <div class="traveller-name">${t.name}</div>
+        <div class="traveller-posts">${t.tagline}</div>
+      </div>
+      <button class="traveller-follow ${followedTravellers.has(t.name)?'following':''}"
+        onclick="toggleFollowTraveller('${t.name}', this)">
+        ${followedTravellers.has(t.name) ? 'Following' : 'Follow'}
+      </button>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════
+   INTERACTIONS
+═══════════════════════════════════════════ */
+function toggleLike(id) {
+  const p = posts.find(x => x.id === id);
+  p.liked = !p.liked;
+  p.likes += p.liked ? 1 : -1;
+  renderPosts();
+}
+function toggleSave(id) {
+  const p = posts.find(x => x.id === id);
+  p.saved = !p.saved;
+  renderPosts();
+  showToast(p.saved ? '🔖 Post saved to your collection!' : 'Removed from saved');
+}
+
+document.querySelectorAll('.filter-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    visibleCount = 5;
+    renderPosts();
+  });
+});
+
+function filterByTag(tag) {
+  document.getElementById('searchInput').value = tag;
+  filterPosts();
+  document.querySelector('.page-body').scrollIntoView({ behavior: 'smooth' });
+}
+
+function filterPosts() { visibleCount = 5; renderPosts(); }
+function loadMore() { visibleCount += 4; renderPosts(); }
+function sortChanged() { renderPosts(); }
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('listViewBtn').classList.toggle('active', v === 'list');
+  document.getElementById('gridViewBtn').classList.toggle('active', v === 'grid');
+  renderPosts();
+}
+
+function toggleFollowTraveller(name, btn) {
+  if (followedTravellers.has(name)) {
+    followedTravellers.delete(name);
+    btn.textContent = 'Follow';
+    btn.classList.remove('following');
+    showToast(`Unfollowed ${name}`);
+  } else {
+    followedTravellers.add(name);
+    btn.textContent = 'Following';
+    btn.classList.add('following');
+    showToast(`✨ Now following ${name}!`);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CAROUSEL
+═══════════════════════════════════════════ */
+const carStates = {};
+function getCarState(id) {
+  if (!carStates[id]) carStates[id] = { index: 0 };
+  return carStates[id];
+}
+function carNav(id, dir, e) {
+  e && e.stopPropagation();
+  const p = posts.find(p => `car-${p.id}` === id);
+  const imgs = p ? (p.imgs || [p.img]) : [];
+  const state = getCarState(id);
+  state.index = (state.index + dir + imgs.length) % imgs.length;
+  updateCarousel(id, state.index, imgs.length);
+}
+function carGoTo(id, idx, e) {
+  e && e.stopPropagation();
+  const p = posts.find(p => `car-${p.id}` === id);
+  const imgs = p ? (p.imgs || [p.img]) : [];
+  getCarState(id).index = idx;
+  updateCarousel(id, idx, imgs.length);
+}
+function updateCarousel(id, idx, total) {
+  const slides = document.getElementById(`${id}-slides`);
+  if (slides) slides.style.transform = `translateX(-${idx * 100}%)`;
+  const counter = document.querySelector(`#${id} .post-img-count`);
+  if (counter) counter.textContent = `${idx+1} / ${total}`;
+  const dots = document.querySelectorAll(`#${id} .carousel-dot`);
+  dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+}
+
+/* ═══════════════════════════════════════════
+   LIGHTBOX
+═══════════════════════════════════════════ */
+function openLightboxForPost(postId, startIdx) {
+  const p = posts.find(x => x.id === postId);
+  lbImgs = p ? (p.imgs || [p.img]) : [];
+  lbIndex = startIdx;
+  document.getElementById('lightboxImg').src = lbImgs[lbIndex];
+  updateLbCounter();
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+function closeLightboxClick(e) { if (e.target === document.getElementById('lightbox')) closeLightbox(); }
+function lbNav(dir) {
+  lbIndex = (lbIndex + dir + lbImgs.length) % lbImgs.length;
+  document.getElementById('lightboxImg').src = lbImgs[lbIndex];
+  updateLbCounter();
+}
+function updateLbCounter() {
+  const c = document.getElementById('lbCounter');
+  c.textContent = lbImgs.length > 1 ? `${lbIndex+1} / ${lbImgs.length}` : '';
+}
+document.addEventListener('keydown', e => {
+  if (document.getElementById('lightbox').classList.contains('open')) {
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'Escape')     closeLightbox();
+  }
+  if (document.getElementById('detailOverlay').classList.contains('open') && e.key === 'Escape') closeDetail();
+  if (document.getElementById('commentsOverlay').classList.contains('open') && e.key === 'Escape') closeComments();
+});
+
+/* ═══════════════════════════════════════════
+   COMMENTS DRAWER
+═══════════════════════════════════════════ */
+function openComments(id) {
+  activeCommentPostId = id;
+  const p = posts.find(x => x.id === id);
+  document.getElementById('commentCount').textContent = `(${p.commentList.length})`;
+  document.getElementById('drawerPostPreview').innerHTML = `
+    <h4>${p.title}</h4>
+    <p>by ${p.author} · ${p.time}</p>`;
+  renderComments(p);
+  document.getElementById('commentsOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('commentInput').focus(), 400);
+}
+function closeComments() { document.getElementById('commentsOverlay').classList.remove('open'); }
+function closeCommentsOutside(e) { if (e.target === document.getElementById('commentsOverlay')) closeComments(); }
+
+function renderComments(p) {
+  const list = document.getElementById('commentsList');
+  if (!p.commentList.length) {
+    list.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--text-soft);">
+      <div style="font-size:32px;margin-bottom:12px">💬</div>
+      <div style="font-size:14px">No comments yet — be the first!</div>
+    </div>`;
+    return;
+  }
+  list.innerHTML = p.commentList.map(c => `
+    <div class="comment-item" id="comment-${c.id}">
+      <div class="comment-avatar">${c.initials}</div>
+      <div class="comment-body">
+        <div class="comment-author">${c.author}</div>
+        <div class="comment-text">${c.text}</div>
+        <div class="comment-meta">
+          <span>${c.time}</span>
+          <button class="comment-like-btn ${c.liked?'liked':''}" onclick="likeComment(${p.id},${c.id})">
+            ♥ ${c.likes}
+          </button>
+          <button class="comment-reply-btn" onclick="setReplyTo(${p.id},${c.id},'${c.author}')">Reply</button>
+        </div>
+        ${c.replies && c.replies.length ? `
+        <div class="reply-thread">
+          ${c.replies.map(r => `
+            <div class="comment-item">
+              <div class="comment-avatar">${r.initials}</div>
+              <div class="comment-body">
+                <div class="comment-author">${r.author}</div>
+                <div class="comment-text">${r.text}</div>
+                <div class="comment-meta">
+                  <span>${r.time}</span>
+                  <button class="comment-like-btn ${r.liked?'liked':''}" onclick="likeReply(${p.id},${c.id},${r.id})">♥ ${r.likes}</button>
+                </div>
+              </div>
+            </div>`).join('')}
+        </div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+let replyingTo = null;
+function setReplyTo(postId, commentId, authorName) {
+  replyingTo = { postId, commentId };
+  const input = document.getElementById('commentInput');
+  input.placeholder = `Replying to ${authorName}…`;
+  input.focus();
+  showToast(`💬 Replying to ${authorName}`);
+}
+function submitComment() {
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const p = posts.find(x => x.id === activeCommentPostId);
+  const newComment = {
+    id: Date.now(), author: 'You', initials: 'YO',
+    text, time: 'just now', likes: 0, liked: false, replies: []
+  };
+  if (replyingTo && replyingTo.postId === activeCommentPostId) {
+    const parent = p.commentList.find(c => c.id === replyingTo.commentId);
+    if (parent) parent.replies.push({ ...newComment, id: Date.now() });
+    replyingTo = null;
+    input.placeholder = 'Add a comment…';
+  } else {
+    p.commentList.push(newComment);
+    p.comments++;
+  }
+  input.value = '';
+  input.style.height = '';
+  document.getElementById('commentCount').textContent = `(${p.commentList.length})`;
+  renderComments(p);
+  renderPosts();
+  const list = document.getElementById('commentsList');
+  setTimeout(() => list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' }), 100);
+}
+function likeComment(postId, commentId) {
+  const p = posts.find(x => x.id === postId);
+  const c = p.commentList.find(c => c.id === commentId);
+  c.liked = !c.liked;
+  c.likes += c.liked ? 1 : -1;
+  renderComments(p);
+}
+function likeReply(postId, commentId, replyId) {
+  const p = posts.find(x => x.id === postId);
+  const c = p.commentList.find(c => c.id === commentId);
+  const r = c.replies.find(r => r.id === replyId);
+  r.liked = !r.liked;
+  r.likes += r.liked ? 1 : -1;
+  renderComments(p);
+}
+function autoResizeTextarea(el) {
+  el.style.height = '';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+/* ═══════════════════════════════════════════
+   POST DETAIL MODAL
+═══════════════════════════════════════════ */
+function openDetail(id) {
+  const p = posts.find(x => x.id === id);
+  const imgs = p.imgs || [p.img];
+  const badgeMap = { itinerary:'badge-itinerary', finding:'badge-finding', tip:'badge-tip', photo:'badge-photo' };
+  const badgeLabelMap = { itinerary:'🗺 Itinerary', finding:'🔍 Finding', tip:'💡 Tip', photo:'📷 Photo Story' };
+  const tags = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  const paragraphs = (p.fullDesc || p.desc).split('\n\n').map(para => `<p>${para}</p>`).join('');
+  const extraImgs = imgs.length > 1 ? `
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+      ${imgs.slice(1).map((src,i) => `<img src="${src}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:1.5px solid var(--border)" onclick="openLightboxForPost(${p.id},${i+1})" loading="lazy"/>`).join('')}
+    </div>` : '';
+
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-close-wrap">
+      <img class="detail-hero" src="${imgs[0]}" alt="${p.title}" onclick="openLightboxForPost(${p.id},0)" style="cursor:pointer"/>
+    </div>
+    <div class="detail-body">
+      <div class="detail-meta">
+        <div class="avatar" style="width:44px;height:44px;font-size:15px">${p.initials}</div>
+        <div>
+          <div class="post-author">${p.author}</div>
+          <div class="post-time">${p.time}</div>
+        </div>
+        <span class="post-badge ${badgeMap[p.type]}">${badgeLabelMap[p.type]}</span>
+      </div>
+      <h2>${p.title}</h2>
+      ${paragraphs}
+      ${extraImgs}
+      <div class="post-tags" style="margin-top:20px">${tags}</div>
+      <div class="post-footer" style="margin-top:20px">
+        <button class="post-action ${p.liked?'liked':''}" onclick="toggleLike(${p.id});refreshDetail(${p.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          ${p.likes} likes
+        </button>
+        <button class="post-action" onclick="closeDetail();openComments(${p.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          ${p.comments} comments
+        </button>
+        <button class="post-action ${p.saved?'saved-on':''}" onclick="toggleSave(${p.id});refreshDetail(${p.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          ${p.saved ? 'Saved' : 'Save'}
+        </button>
+      </div>
+    </div>`;
+  document.getElementById('detailOverlay').classList.add('open');
+}
+function refreshDetail(id) { openDetail(id); }
+function closeDetail() { document.getElementById('detailOverlay').classList.remove('open'); }
+function closeDetailOutside(e) { if (e.target === document.getElementById('detailOverlay')) closeDetail(); }
+
+/* ═══════════════════════════════════════════
+   POST MODAL
+═══════════════════════════════════════════ */
+function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); resetForm(); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.className = 'type-btn');
+  selectedType = btn.dataset.type;
+  btn.classList.add(`sel-${selectedType}`);
+}
+
+function previewPhotos(e) {
+  const files = Array.from(e.target.files).slice(0, 5);
+  uploadedFiles = files;
+  renderUploadPreview(files.map((f,i) => ({ file: f, idx: i })));
+}
+function renderUploadPreview(fileItems) {
+  const preview = document.getElementById('uploadPreview');
+  preview.innerHTML = '';
+  fileItems.forEach(({ file, idx }) => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const wrap = document.createElement('div');
+      wrap.className = 'upload-preview-item';
+      const img = document.createElement('img');
+      img.src = ev.target.result;
+      const rm = document.createElement('button');
+      rm.className = 'remove-img';
+      rm.innerHTML = '×';
+      rm.onclick = () => {
+        uploadedFiles.splice(idx, 1);
+        wrap.remove();
+      };
+      wrap.appendChild(img);
+      wrap.appendChild(rm);
+      preview.appendChild(wrap);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.add('drag-over');
+}
+function handleDragLeave() {
+  document.getElementById('uploadZone').classList.remove('drag-over');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag-over');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).slice(0, 5);
+  uploadedFiles = files;
+  renderUploadPreview(files.map((f,i) => ({ file: f, idx: i })));
+}
+
+function updateCharCount(el, max, countId) {
+  document.getElementById(countId).textContent = el.value.length;
+}
+
+function resetForm() {
+  ['postTitle','postDest','postBody','postTags'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('uploadPreview').innerHTML = '';
+  document.getElementById('photoInput').value = '';
+  document.getElementById('bodyCount').textContent = '0';
+  document.querySelectorAll('.type-btn').forEach(b => b.className = 'type-btn');
+  selectedType = '';
+  uploadedFiles = [];
+}
+
+function submitPost() {
+  const title = document.getElementById('postTitle').value.trim();
+  const desc  = document.getElementById('postBody').value.trim();
+  if (!title) { showToast('⚠️ Please add a title'); return; }
+  if (!desc)  { showToast('⚠️ Please add a description'); return; }
+
+  const rawTags = document.getElementById('postTags').value.trim();
+  const tags = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : ['Community'];
+  const dest = document.getElementById('postDest').value.trim();
+  if (dest) tags.unshift(dest);
+
+  const previewImgs = document.querySelectorAll('#uploadPreview img');
+  const imgs = previewImgs.length > 0
+    ? Array.from(previewImgs).map(img => img.src)
+    : [PLACEHOLDER_IMGS[Math.floor(Math.random() * PLACEHOLDER_IMGS.length)]];
+
+  const newPost = {
+    id: Date.now(), type: selectedType || 'finding',
+    author: 'You', initials: 'YO', time: 'just now',
+    title, desc, fullDesc: desc, tags, imgs,
+    likes: 0, comments: 0, saved: false, liked: false,
+    commentList: [],
+  };
+  posts.unshift(newPost);
+  closeModal();
+  activeFilter = 'all';
+  visibleCount = posts.length;
+  renderPosts();
+  showToast('🎉 Your post is live! Welcome to the community.');
+}
+
+/* ═══════════════════════════════════════════
+   PROFILE HOVER CARD
+═══════════════════════════════════════════ */
+function showProfileCard(e, author) {
+  profileHoverTimer = setTimeout(() => {
+    const profile = AUTHOR_PROFILES[author];
+    if (!profile) return;
+    currentProfileAuthor = author;
+    document.getElementById('pcAvatar').textContent = profile.initials;
+    document.getElementById('pcName').textContent = author;
+    document.getElementById('pcHandle').textContent = `@${author.toLowerCase().replace(' ','_')}`;
+    document.getElementById('pcBio').textContent = profile.bio;
+    document.getElementById('pcPosts').textContent = profile.posts;
+    document.getElementById('pcLikes').textContent = profile.likes;
+    document.getElementById('pcCountries').textContent = profile.countries;
+    const followBtn = document.getElementById('pcFollowBtn');
+    followBtn.textContent = followed.has(author) ? 'Following' : 'Follow';
+    followBtn.className = 'profile-card-follow' + (followed.has(author) ? ' following' : '');
+
+    const card = document.getElementById('profileCard');
+    const rect = e.target.getBoundingClientRect();
+    let top = rect.bottom + window.scrollY + 8;
+    let left = rect.left + window.scrollX;
+    if (left + 260 > window.innerWidth - 20) left = window.innerWidth - 280;
+    card.style.top = top + 'px';
+    card.style.left = left + 'px';
+    card.classList.add('visible');
+  }, 600);
+}
+function hideProfileCard() {
+  clearTimeout(profileHoverTimer);
+  setTimeout(() => {
+    if (!document.getElementById('profileCard').matches(':hover')) {
+      document.getElementById('profileCard').classList.remove('visible');
+    }
+  }, 200);
+}
+document.getElementById('profileCard').addEventListener('mouseleave', () => {
+  document.getElementById('profileCard').classList.remove('visible');
+});
+function toggleProfileFollow() {
+  if (!currentProfileAuthor) return;
+  const btn = document.getElementById('pcFollowBtn');
+  if (followed.has(currentProfileAuthor)) {
+    followed.delete(currentProfileAuthor);
+    btn.textContent = 'Follow';
+    btn.classList.remove('following');
+    showToast(`Unfollowed ${currentProfileAuthor}`);
+  } else {
+    followed.add(currentProfileAuthor);
+    btn.textContent = 'Following';
+    btn.classList.add('following');
+    showToast(`✨ Now following ${currentProfileAuthor}!`);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+renderPosts();
+renderTrending();
+renderTopTravellers();
+</script>
+</body>
+</html>

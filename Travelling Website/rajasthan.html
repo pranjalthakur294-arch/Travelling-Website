@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Rajasthan Tourism Map</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f8fafc;
+}
+
+h1{
+text-align:center;
+margin:20px;
+color:#0f172a;
+}
+
+#map{
+width:90%;
+height:600px;
+margin:auto;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Explore Rajasthan Tourism</h1>
+
+<div id="map"></div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+
+<script>
+
+const configuredToken = window.MAPBOX_TOKEN || (typeof localStorage !== 'undefined' && localStorage.getItem('MAPBOX_ACCESS_TOKEN')) || 'YOUR_MAPBOX_TOKEN_HERE';
+mapboxgl.accessToken = configuredToken;
+
+let map = null;
+if (!configuredToken || configuredToken === 'YOUR_MAPBOX_TOKEN_HERE' || !configuredToken.startsWith('pk.')) {
+  const mapContainer = document.getElementById('map');
+  if (mapContainer) {
+    mapContainer.style.display = 'flex';
+    mapContainer.style.alignItems = 'center';
+    mapContainer.style.justifyContent = 'center';
+    mapContainer.style.background = '#1a1a24';
+    mapContainer.style.color = '#fff';
+    mapContainer.style.fontFamily = 'sans-serif';
+    mapContainer.style.textAlign = 'center';
+    mapContainer.style.padding = '20px';
+    mapContainer.innerHTML = `
+      <div style="max-width:480px;line-height:1.6;">
+        <div style="font-size:32px;margin-bottom:12px;">🗺️</div>
+        <h3 style="margin:0 0 8px 0;font-size:18px;">Interactive Rajasthan Map</h3>
+        <p style="font-size:14px;color:#aaa;margin-bottom:16px;">Mapbox public token not yet configured. To view interactive satellite and street navigation, configure your free Mapbox public token safely.</p>
+        <code style="background:rgba(255,255,255,0.1);padding:6px 12px;border-radius:6px;font-size:12px;display:inline-block;">localStorage.setItem('MAPBOX_ACCESS_TOKEN', 'pk.ey...')</code>
+      </div>`;
+  }
+} else {
+  map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [73.6846, 26.9124],
+    zoom: 6
+  });
+}
+
+const places = [
+{
+name:"Jaipur",
+coords:[75.7873,26.9124],
+desc:"The Pink City"
+},
+
+{
+name:"Udaipur",
+coords:[73.6833,24.5854],
+desc:"City of Lakes"
+},
+
+{
+name:"Jaisalmer",
+coords:[70.9083,26.9157],
+desc:"Golden Desert City"
+},
+
+{
+name:"Bikaner",
+coords:[73.3119,28.0229],
+desc:"Camel Festival & Junagarh Fort"
+}
+];
+
+if (map) {
+places.forEach(place => {
+
+const marker = new mapboxgl.Marker()
+.setLngLat(place.coords)
+.setPopup(
+new mapboxgl.Popup().setHTML(
+`<h3>${place.name}</h3><p>${place.desc}</p>`
+)
+)
+.addTo(map);
+
+});
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Mexico Itinerary – Lonely Planet Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400;1,9..144,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0a0d08;
+      --chili: #c42b1a;
+      --marigold: #e8931a;
+      --jade: #1a7a4a;
+      --turquoise: #0e8a8a;
+      --cream: #f7f5ee;
+      --warm: #ece5d0;
+      --muted: #6e7060;
+      --card: #ffffff;
+      --obsidian: #120f0a;
+      --deepjungle: #0a1f10;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 490px;
+      overflow: hidden;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 50%;
+      filter: brightness(0.48);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(150deg, rgba(10,13,8,0.7) 0%, transparent 52%),
+        linear-gradient(to bottom, transparent 25%, rgba(10,13,8,0.88) 100%);
+    }
+    /* Aztec-inspired diamond lattice */
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.045;
+      background-image:
+        repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 28px),
+        repeating-linear-gradient(-45deg, #fff 0, #fff 1px, transparent 0, transparent 28px);
+    }
+
+    .nav-logo {
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+    .nav-logo .small { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+    .nav-logo h1 { font-family: 'didot', serif;color: rgba(255,255,255,0.6); font-size: 38px; line-height: 1; }
+
+    .hero-content {
+      position: absolute;
+      bottom: 52px;
+      left: 64px;
+      right: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--marigold);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: 60px;
+      color: #fff;
+      line-height: 1.02;
+      font-weight: 700;
+    }
+    .hero-title em { font-style: italic; font-weight: 600; color: var(--marigold); }
+
+    .hero-meta { text-align: right; }
+    .hero-meta .meta-row {
+      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      justify-content: flex-end;
+    }
+    .hero-meta .meta-row .icon { color: var(--marigold); font-size: 15px; }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip {
+      background: var(--obsidian);
+      display: flex;
+      justify-content: center;
+    }
+    .summary-item {
+      padding: 18px 44px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.55);
+      font-size: 13px;
+      text-align: center;
+    }
+    .summary-item:last-child { border-right: none; }
+    .summary-item strong {
+      display: block;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .section-heading h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 30px;
+      white-space: nowrap;
+    }
+    .section-heading .line { flex:1; height:1px; background: var(--warm); }
+
+    /* ── ROUTE BAR ── */
+    .route-bar {
+      background: linear-gradient(135deg, #0a1f10 0%, #0e3320 100%);
+      border-radius: 16px;
+      padding: 22px 28px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      animation: fadeUp .5s .05s ease both;
+    }
+    .route-city { text-align: center; flex-shrink: 0; }
+    .route-city .city-name { color: #fff; font-weight: 600; font-size: 14px; }
+    .route-city .city-days { color: rgba(255,255,255,0.42); font-size: 11px; margin-top: 3px; }
+    .route-arrow { flex:1; text-align: center; color: var(--marigold); font-size: 20px; padding: 0 8px; min-width: 40px; }
+
+    /* ── DAY CARD ── */
+    .day-card {
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 16px rgba(10,13,8,0.08);
+      transition: transform .22s, box-shadow .22s;
+      animation: fadeUp .5s ease both;
+    }
+    .day-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(10,13,8,0.15); }
+    .day-card:nth-child(2) { animation-delay: .08s; }
+    .day-card:nth-child(3) { animation-delay: .16s; }
+    .day-card:nth-child(4) { animation-delay: .24s; }
+    .day-card:nth-child(5) { animation-delay: .32s; }
+    .day-card:nth-child(6) { animation-delay: .40s; }
+
+    .day-card-header { display: grid; grid-template-columns: 220px 1fr; }
+    .day-img { height: 178px; width: 100%; object-fit: cover; display: block; }
+    .day-info { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; }
+    .day-tag {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--chili);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .day-name { font-family: 'Fraunces', serif; font-size: 23px; margin-bottom: 9px; }
+    .day-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .day-activities {
+      border-top: 1px solid #eee8d8;
+      padding: 18px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .activity { display: flex; gap: 14px; align-items: flex-start; font-size: 14px; }
+    .activity-time { font-size: 11px; color: var(--muted); font-weight: 600; min-width: 46px; padding-top: 2px; letter-spacing: .5px; }
+    .activity-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--marigold); margin-top: 4px; flex-shrink: 0; }
+    .activity-text { color: #0d1008; line-height: 1.56; }
+    .activity-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 32px; }
+
+    .sidebar-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(10,13,8,0.07);
+      animation: fadeUp .5s ease both;
+    }
+    .sidebar-card:nth-child(1) { animation-delay: .18s; }
+    .sidebar-card:nth-child(2) { animation-delay: .28s; }
+    .sidebar-card:nth-child(3) { animation-delay: .36s; }
+    .sidebar-card:nth-child(4) { animation-delay: .44s; }
+    .sidebar-card h3 { font-family: 'Fraunces', serif; font-size: 19px; margin-bottom: 16px; }
+
+    .hotel-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: center; }
+    .hotel-item:last-child { margin-bottom: 0; }
+    .hotel-thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .hotel-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .hotel-stars { color: var(--marigold); font-size: 12px; margin-bottom: 2px; }
+    .hotel-price { font-size: 12px; color: var(--muted); }
+
+    .weather-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid #eee8d8;
+      font-size: 13px;
+    }
+    .weather-row:last-child { border-bottom: none; }
+    .w-day { color: var(--muted); font-size: 12px; min-width: 80px; }
+    .w-icon { font-size: 19px; }
+    .w-temp { font-weight: 600; font-size: 14px; }
+    .w-desc { font-size: 11px; color: var(--muted); text-align: right; }
+
+    .tip-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; color: #141a0e; line-height: 1.56; }
+    .tip-item:last-child { margin-bottom: 0; }
+    .tip-icon { font-size: 19px; flex-shrink: 0; }
+
+    .ess-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #eee8d8;
+      font-size: 13px;
+    }
+    .ess-item:last-child { border-bottom: none; }
+    .ess-icon { font-size: 17px; }
+    .ess-label { color: var(--muted); min-width: 76px; }
+    .ess-val { font-weight: 500; }
+
+    /* ── CTA ── */
+    .cta-bar {
+      background: linear-gradient(135deg, #0a1f10 0%, #0e3320 100%);
+      padding: 34px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .cta-text h3 { font-family: 'Fraunces', serif; color: #fff; font-size: 26px; margin-bottom: 5px; }
+    .cta-text p { color: rgba(255,255,255,0.48); font-size: 14px; }
+    .cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+    .btn-primary {
+      padding: 14px 30px;
+      border-radius: 30px;
+      border: none;
+      background: var(--chili);
+      color: #fff;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-outline {
+      padding: 13px 26px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #fff;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=1600&auto=format&fit=crop" alt="Mexico"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+  <div class="nav-logo">
+    
+    <h1>WANDR</h1>
+  </div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-label">Your personalised itinerary</div>
+      <div class="hero-title">10 Days in<br><em>Wild Mexico</em></div>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-row"><span class="icon">✈</span> 8 Nov – 18 Nov 2025</div>
+      <div class="meta-row"><span class="icon">👤</span> 2 Adults</div>
+      <div class="meta-row"><span class="icon">🏨</span> Boutique Haciendas & Eco-Lodges</div>
+      <div class="meta-row"><span class="icon">💰</span> Mid-range · ~$120 USD/day</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY STRIP -->
+<div class="summary-strip">
+  <div class="summary-item"><strong>10</strong>Days</div>
+  <div class="summary-item"><strong>26</strong>Experiences</div>
+  <div class="summary-item"><strong>4</strong>Regions</div>
+  <div class="summary-item"><strong>~$60</strong>Per person/day</div>
+  <div class="summary-item"><strong>Mexico City · Oaxaca · Yucatán · Tulum</strong>Route</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="itinerary">
+
+    <div class="section-heading">
+      <h2>Day by Day</h2>
+      <div class="line"></div>
+    </div>
+
+    <!-- ROUTE BAR -->
+    <div class="route-bar">
+      <div class="route-city"><div class="city-name">✈ Mexico City</div><div class="city-days">Days 1–3</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🌶 Oaxaca</div><div class="city-days">Days 4–5</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🏛 Yucatán</div><div class="city-days">Days 6–8</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🌊 Tulum</div><div class="city-days">Days 9–10</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">✈ Depart</div><div class="city-days">Day 10</div></div>
+    </div>
+
+    <!-- DAY 1–3 MEXICO CITY -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396?w=500&auto=format&fit=crop" alt="Mexico City"/>
+        <div class="day-info">
+          <div class="day-tag">Days 1–3 · Mexico City</div>
+          <div class="day-name">The Capital of Everything</div>
+          <div class="day-desc">Mexico City is one of the great megacities — 22 million people, 160 museums, the best food scene in the Americas, and an Aztec pyramid under the main square. It defies comprehension and rewards surrender.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Zócalo & Templo Mayor at sunrise</strong>The ancient Aztec ceremonial centre was discovered beneath the cathedral in 1978. Walk the excavated ruins, then look up at the Colonial cathedral built from its stones — 500 years of conquest in one glance.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Palacio Nacional murals — Diego Rivera</strong>The greatest mural in the Americas covers the entire staircase wall. Rivera spent 25 years on it. You need at least one hour just to begin to see it properly.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lunch at Mercado de San Juan</strong>The city's best gourmet market. Try tlayudas, chapulines (toasted grasshoppers with lime — yes, really) and a michelada while standing at the counter.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Museo Frida Kahlo, Coyoacán</strong>The Blue House where Frida was born, lived and died. Her studio, her personal objects, her pain — all preserved exactly as she left them. Book ahead; numbers are controlled.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Day 2: Teotihuacán pyramids (day trip)</strong>The Pyramid of the Sun is the third largest pyramid on Earth. Climb it at 9am before the heat is punishing. The Avenue of the Dead stretches two kilometres into the plain below you.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Dinner & mezcal in Roma Norte</strong>Mexico City's most creative neighbourhood. Dinner at Contramar (grilled fish, book ahead), then mezcal at Bósforo — a tiny bar run by a mezcal philosopher.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 4–5 OAXACA -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500&auto=format&fit=crop" alt="Oaxaca"/>
+        <div class="day-info">
+          <div class="day-tag">Days 4–5 · Oaxaca</div>
+          <div class="day-name">The Soul of Mexican Cuisine</div>
+          <div class="day-desc">Oaxaca is where Mexican food reaches its highest expression — seven moles, tlayudas, chapulines, mezcal from single-village distilleries. The Colonial centre is jade-green and baroque. The markets are overwhelming in the best way.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Mercado Benito Juárez at opening</strong>Arrive before the heat. Stalls selling dried chillies, Oaxacan string cheese, tejate (ancient chocolate-maize drink) and insects with chilli salt. Buy everything. Eat standing.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Monte Albán — Zapotec ruins</strong>A 2,500-year-old city levelled across a mountain top. The scale is staggering; the views of the Valley of Oaxaca are among the finest in Mexico.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Mole negro tasting lunch</strong>At Casa Oaxaca restaurant — chef Alejandro Ruiz's mole negro takes three days to prepare. This is the dish that defines a civilization.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Mezcal palenque visit near Mitla</strong>A small family distillery using clay pot stills. Watch the agave roasting pits, smell the smoke, taste seven expressions straight from the still.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Day 5: Hierve el Agua — petrified waterfalls</strong>Mineral-laden springs have created frozen limestone cascades over a valley. Swim in the cliff-edge infinity pools. Surreal, remote, extraordinary.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 6–8 YUCATÁN -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=500&auto=format&fit=crop" alt="Chichen Itza Yucatan"/>
+        <div class="day-info">
+          <div class="day-tag">Days 6–8 · Yucatán Peninsula</div>
+          <div class="day-name">Maya, Cenotes & Colonial Gold</div>
+          <div class="day-desc">The Yucatán is another country within a country — flat limestone jungle, underground rivers, Maya cities abandoned to the jungle, and Mérida, one of the finest Colonial cities in the Americas.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Chichén Itzá — first entry</strong>Get there the moment the gates open. By 10am, tour groups make the site feel like a theme park. At 7am, El Castillo pyramid belongs to you and the birds.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Cenote Ik Kil</strong>A sacred Maya sinkhole — vines trailing to a perfect circle of turquoise water 30m below the jungle floor. Swim before the day-trippers arrive from Cancún.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Mérida — the White City</strong>Check in to a restored hacienda in the centro histórico. Mérida has the highest concentration of Colonial mansions in the Americas — and the best marquesitas (crispy crepes) in Mexico.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Day 7: Uxmal ruins</strong>Less visited than Chichén Itzá but architecturally more refined. The Pyramid of the Magician has a rounded profile unlike any other structure in Mesoamerica.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Day 8: Rio Secreto underground river</strong>Strap on a headlamp and wade through a 600m stretch of subterranean river through cathedral stalactite chambers. The silence underground is total.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 9–10 TULUM -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=500&auto=format&fit=crop" alt="Tulum"/>
+        <div class="day-info">
+          <div class="day-tag">Days 9–10 · Tulum</div>
+          <div class="day-name">Cliffside Ruins & Caribbean Blue</div>
+          <div class="day-desc">Tulum is the only Maya site built on a cliff overlooking the Caribbean Sea. Swim below the ruins, explore jungle cenotes, and eat the freshest fish tacos of your life as the sun sets into the jungle behind you.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Tulum ruins at sunrise</strong>The postcard image of Mexico — a Maya temple on a white cliff above turquoise Caribbean water. Arrive for opening; the light is gold and the beach below empty.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Cenote Dos Ojos — snorkelling</strong>Two enormous connected cenotes in the jungle. Float through crystal-clear water over ancient limestone formations. One of the most beautiful places in Mexico — no hyperbole.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Fish tacos on the beach road</strong>La Eufemia or El Camello Jr — no tables, no menus, just perfect grilled fish, hand-pressed tortillas and cold Modelo under a palm roof. This is why you came.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Sian Ka'an Biosphere Reserve</strong>A UNESCO-protected wilderness of mangroves, lagoons and jungle. Boat through flooded Maya channels; spot flamingos, manatees and crocodiles as the sun drops.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Farewell dinner at Hartwood</strong>Open-fire cooking in the jungle — no electricity, the menu changes daily based on what arrived from local farms that morning. Reserve the moment you land in Mexico.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end itinerary -->
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>Where you'll stay</h3>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&auto=format&fit=crop" alt="Mexico City hotel"/>
+        <div>
+          <div class="hotel-name">Condesa DF, Mexico City</div>
+          <div class="hotel-stars">★★★★★ · Roma / Condesa</div>
+          <div class="hotel-price">~$220/night · Nights 1–3</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=200&auto=format&fit=crop" alt="Oaxaca hotel"/>
+        <div>
+          <div class="hotel-name">Casa Antonieta, Oaxaca</div>
+          <div class="hotel-stars">★★★★ · Centro Histórico</div>
+          <div class="hotel-price">~$130/night · Nights 4–5</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=200&auto=format&fit=crop" alt="Merida hotel"/>
+        <div>
+          <div class="hotel-name">Hacienda Puerta Campeche</div>
+          <div class="hotel-stars">★★★★★ · Mérida</div>
+          <div class="hotel-price">~$195/night · Nights 6–8</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=200&auto=format&fit=crop" alt="Tulum hotel"/>
+        <div>
+          <div class="hotel-name">Azulik, Tulum</div>
+          <div class="hotel-stars">★★★★★ · Jungle Cliffside</div>
+          <div class="hotel-price">~$350/night · Nights 9–10</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Weather in November</h3>
+      <div class="weather-row">
+        <span class="w-day">Mexico City</span>
+        <span class="w-icon">🌤</span>
+        <span class="w-temp">22°C</span>
+        <span class="w-desc">Dry season begins</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Oaxaca</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">26°C</span>
+        <span class="w-desc">Warm & clear</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Yucatán</span>
+        <span class="w-icon">🌤</span>
+        <span class="w-temp">29°C</span>
+        <span class="w-desc">Occasional showers</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Tulum</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">28°C</span>
+        <span class="w-desc">Ideal beach weather</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Essential info</h3>
+      <div class="ess-item"><span class="ess-icon">🪙</span><span class="ess-label">Currency</span><span class="ess-val">Mexican Peso (MXN)</span></div>
+      <div class="ess-item"><span class="ess-icon">✈</span><span class="ess-label">Flights</span><span class="ess-val">Volaris / Aeromexico domestic</span></div>
+      <div class="ess-item"><span class="ess-icon">📶</span><span class="ess-label">SIM card</span><span class="ess-val">Telcel · best rural coverage</span></div>
+      <div class="ess-item"><span class="ess-icon">🛂</span><span class="ess-label">Visa</span><span class="ess-val">180 days visa-free for most</span></div>
+      <div class="ess-item"><span class="ess-icon">💉</span><span class="ess-label">Health</span><span class="ess-val">Hep A, Typhoid, Malaria check</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Local tips</h3>
+      <div class="tip-item">
+        <span class="tip-icon">🌮</span>
+        The best tacos in Mexico cost under 20 pesos. If a taco costs more than $5 USD, you're in the tourist version of Mexico. Walk one block further.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🥃</span>
+        Mezcal is not tequila. It's made from over 30 agave species, often in tiny batches in clay pots. Sip it slowly — don't shoot it. The smoky ones aren't even the best ones.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🏛</span>
+        Book Frida Kahlo Museum, Chichén Itzá early-entry and Hartwood restaurant months in advance. These fill completely.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🚌</span>
+        ADO buses between cities are modern, punctual and safe — often better than flying when you factor in airport time. The overnight CDMX–Oaxaca bus is an institution.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🌊</span>
+        In cenotes, wear reef-safe sunscreen only — or none at all. The water is an underground river system; whatever you put on your skin enters the aquifer.
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>Make it yours</h3>
+    <p>Customize this experience exactly the way you want.</p>
+  </div>
+  <div class="cta-btns">
+    <a href="trip.html">
+      <button class="btn-primary">Customize Trip →</button>
+    </a>
+    <a href="Homepage.html">
+      <button class="btn-outline">Explore More</button>
+    </a>
+  </div>
+</div>
+</body>
+</html>

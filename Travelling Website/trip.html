@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lonely Planet – Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: #fff; color: #111; }
+    .trip-header { position: relative; width: 92%; max-width: 1300px; margin: 18px auto 0; display: flex; align-items: center; justify-content: center; }
+    .trip-logo { text-align: center; }
+    .trip-logo span { display: block; font-size: 12px; letter-spacing: 2px; color: #999; }
+    .trip-logo h1 { font-family: 'didot', serif; font-size: 38px; font-weight: 700; line-height: 1; }
+    .trip-progress { position: absolute; right: 0; font-size: 14px; color: #888; }
+    .trip-container { width: 92%; max-width: 1300px; margin: 22px auto 0; min-height: calc(100vh - 90px); }
+    .step { display: none; grid-template-columns: 1fr 1fr; gap: 48px; align-items: flex-start; }
+    .step.active { display: grid; }
+    .trip-left { position: relative; height: 520px; border-radius: 20px; overflow: hidden; flex-shrink: 0; }
+    .trip-left img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s; }
+    .trip-text { position: absolute; bottom: 44px; left: 36px; color: #fff; font-size: 34px; font-weight: 700; text-shadow: 0 4px 18px rgba(0,0,0,0.45); max-width: 75%; line-height: 1.2; }
+    .trip-right { padding-top: 40px; display: flex; flex-direction: column; gap: 0; }
+    .trip-right h2 { font-size: 19px; font-weight: 700; margin-bottom: 14px; }
+    .field-wrap { position: relative; margin-bottom: 22px; }
+    .styled-input { width: 100%; padding: 17px 20px; border-radius: 14px; border: 1.5px solid #ddd; font-size: 15px; font-family: 'DM Sans', sans-serif; background: #fafafa; color: #333; outline: none; cursor: pointer; transition: border-color .2s; }
+    .styled-input:focus, .styled-input:hover { border-color: #bbb; }
+    .input-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #aaa; pointer-events: none; font-size: 18px; }
+    .float-wrap { position: relative; margin-bottom: 22px; }
+    .float-wrap label { position: absolute; top: 10px; left: 18px; font-size: 11px; color: #888; pointer-events: none; }
+    .float-wrap input { width: 100%; padding: 26px 18px 10px; border-radius: 14px; border: 1.5px solid #ddd; font-size: 22px; font-family: 'DM Sans', sans-serif; font-weight: 600; background: #fafafa; outline: none; }
+    .dropdown-list { position: absolute; top: calc(100% + 6px); left: 0; width: 100%; background: #fff; border: 1.5px solid #ddd; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 28px rgba(0,0,0,0.09); display: none; z-index: 200; }
+    .dropdown-list div { padding: 15px 20px; font-size: 15px; font-weight: 500; cursor: pointer; }
+    .dropdown-list div:hover { background: #f5f5f5; }
+    .traveler-dropdown { position: absolute; top: calc(100% + 6px); left: 0; width: 100%; background: #fff; border: 1.5px solid #ddd; border-radius: 14px; padding: 20px; display: none; box-shadow: 0 10px 28px rgba(0,0,0,0.09); z-index: 200; }
+    .traveler-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .traveler-row:last-child { margin-bottom: 0; }
+    .label-group { display: flex; flex-direction: column; }
+    .label-title { font-weight: 600; font-size: 15px; }
+    .label-sub { font-size: 12px; color: #999; }
+    .controls { display: flex; align-items: center; gap: 14px; }
+    .controls button { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #ccc; background: #fff; font-size: 18px; cursor: pointer; line-height: 1; }
+    .controls span { font-size: 16px; font-weight: 600; min-width: 20px; text-align: center; }
+    .radio-group { margin-bottom: 24px; }
+    .radio-option { display: flex; align-items: center; gap: 14px; padding: 14px 0; cursor: pointer; font-size: 15px; color: #333; border-bottom: 1px solid #f0f0f0; }
+    .radio-option:last-child { border-bottom: none; }
+    .radio-circle { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; transition: border-color .2s, background .2s; position: relative; }
+    .radio-option.selected .radio-circle { border-color: #4f46e5; background: #4f46e5; }
+    .radio-option.selected .radio-circle::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+    .image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; max-height: 420px; overflow-y: auto; }
+    .grid-card { border-radius: 14px; overflow: hidden; border: 2.5px solid transparent; cursor: pointer; transition: border-color .2s, transform .15s; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+    .grid-card:hover { transform: translateY(-2px); }
+    .grid-card.selected { border-color: #4f46e5; }
+    .grid-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+    .grid-card-label { padding: 10px 12px 12px; font-size: 14px; font-weight: 600; }
+    .grid-card-sub { font-size: 12px; color: #888; font-weight: 400; margin-top: 2px; }
+    .grid-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .grid-header h2 { font-size: 19px; }
+    .max-badge { font-size: 13px; color: #999; }
+    .btn-row { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+    .btn-back { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid #ddd; background: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .btn-continue { flex: 1; padding: 15px; border: none; border-radius: 30px; font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: opacity .2s; }
+    .btn-continue.active { background: linear-gradient(90deg, #4f46e5, #a21caf); color: #fff; }
+    .btn-continue.inactive { background: #e5e5e5; color: #aaa; cursor: default; }
+    .btn-continue-solo { padding: 15px 40px; border: none; border-radius: 30px; background: linear-gradient(90deg, #4f46e5, #a21caf); color: #fff; font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; }
+    .step1-right { padding-top: 120px; }
+
+    /* Itinerary overlay */
+    #itineraryOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
+    #itineraryOverlay.show { display: flex; }
+    .itin-modal { background: #fff; border-radius: 24px; width: 90%; max-width: 820px; max-height: 85vh; overflow-y: auto; padding: 48px 52px; position: relative; }
+    .itin-close { position: absolute; top: 20px; right: 24px; font-size: 28px; cursor: pointer; color: #888; border: none; background: none; }
+    .itin-flag { font-size: 52px; margin-bottom: 8px; }
+    .itin-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; margin-bottom: 6px; }
+    .itin-subtitle { font-size: 15px; color: #888; margin-bottom: 32px; }
+    .itin-day { margin-bottom: 28px; }
+    .itin-day-header { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; color: #4f46e5; text-transform: uppercase; margin-bottom: 8px; }
+    .itin-day-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .itin-day-desc { font-size: 15px; color: #555; line-height: 1.7; }
+    .itin-divider { height: 1px; background: #f0f0f0; margin: 20px 0; }
+    .itin-tip { background: #f5f3ff; border-radius: 14px; padding: 16px 20px; margin-top: 28px; }
+    .itin-tip-label { font-size: 12px; font-weight: 700; color: #4f46e5; letter-spacing: 1px; margin-bottom: 4px; }
+    .itin-tip-text { font-size: 14px; color: #444; }
+    .itin-cta { display: inline-block; margin-top: 28px; padding: 14px 36px; border: none; border-radius: 30px; background: linear-gradient(90deg, #4f46e5, #a21caf); color: #fff; font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<header class="trip-header">
+  <div class="trip-logo">
+    <a href="main.html" style="text-decoration:none;color:inherit;">
+      <h1>WANDR</h1>
+    </a>
+  </div>
+  <div class="trip-progress" id="progressText">1 out of 6</div>
+</header>
+
+<div class="trip-container">
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step1">
+    <div class="trip-left">
+      <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&auto=format&fit=crop" alt="Road trip"/>
+      <div class="trip-text">Your trip starts now.</div>
+    </div>
+    <div class="trip-right step1-right">
+      <h2>Where do you want to go?</h2>
+      <div class="field-wrap" style="margin-bottom:24px">
+        <input class="styled-input" id="destInput" placeholder="Destination" readonly onclick="toggleDrop('destList')"/>
+        <div class="dropdown-list" id="destList">
+          <div onclick="pickDest('🌴 India','india')">🌴 India</div>
+          <div onclick="pickDest('⛩️ Japan','japan')">⛩️ Japan</div>
+          <div onclick="pickDest('🍕 Italy','italy')">🍕 Italy</div>
+          <div onclick="pickDest('💃 Spain','spain')">💃 Spain</div>
+          <div onclick="pickDest('🌮 Mexico','mexico')">🌮 Mexico</div>
+          <div onclick="pickDest('🏔️ Switzerland','switzerland')">🏔️ Switzerland</div>
+        </div>
+      </div>
+      <h2>Bringing a plus one?</h2>
+      <div class="field-wrap">
+        <div class="styled-input" id="travelerDisplay" onclick="toggleDrop('travelerDrop')">Adults 1, Children 0</div>
+        <div class="traveler-dropdown" id="travelerDrop">
+          <div class="traveler-row">
+            <div class="label-group"><span class="label-title">Adults</span><span class="label-sub">Age 18+</span></div>
+            <div class="controls">
+              <button onclick="changeTraveler('adults',-1)">−</button>
+              <span id="adultCount">1</span>
+              <button onclick="changeTraveler('adults',1)">+</button>
+            </div>
+          </div>
+          <div class="traveler-row">
+            <div class="label-group"><span class="label-title">Children</span><span class="label-sub">Age 0–17</span></div>
+            <div class="controls">
+              <button onclick="changeTraveler('children',-1)">−</button>
+              <span id="childCount">0</span>
+              <button onclick="changeTraveler('children',1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-continue-solo" onclick="goTo(2)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step2">
+    <div class="trip-left">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&auto=format&fit=crop" alt="Beach"/>
+      <div class="trip-text">Let's start with the basics.</div>
+    </div>
+    <div class="trip-right" style="padding-top:80px">
+      <h2>When do you want to go?</h2>
+      <div class="field-wrap" style="margin-bottom:24px">
+        <input class="styled-input" id="dateInput" type="text" placeholder="Take-off date*" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" oninput="checkCont('cont2')"/>
+        <span class="input-icon">📅</span>
+      </div>
+      <h2>How long do you want to stay?</h2>
+      <div class="float-wrap">
+        <label>Trip Duration (days)*</label>
+        <input type="number" id="durationInput" value="4" min="1" max="90" oninput="checkCont('cont2')"/>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo(1)">‹</button>
+        <button class="btn-continue inactive" id="cont2" onclick="tryGoTo(3,'cont2')">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step3">
+    <div class="trip-left">
+      <img src="https://images.unsplash.com/photo-1596394723269-b2cbca4e6313?w=900&auto=format&fit=crop" alt="Eco lodge"/>
+      <div class="trip-text">Your room is almost ready.</div>
+    </div>
+    <div class="trip-right" style="padding-top:30px">
+      <h2>What do you expect from your accommodation?</h2>
+      <div class="radio-group" id="accomGroup">
+        <div class="radio-option" onclick="selectRadio('accomGroup', this, 'cont3')"><div class="radio-circle"></div>My hotel should be nice, but good value</div>
+        <div class="radio-option" onclick="selectRadio('accomGroup', this, 'cont3')"><div class="radio-circle"></div>My hotel should be an oasis</div>
+      </div>
+      <h2>We love boutique hotels, full of local charm.<br>What's your preference?</h2>
+      <div class="radio-group" id="boutiqueGroup">
+        <div class="radio-option" onclick="selectRadio('boutiqueGroup', this, 'cont3')"><div class="radio-circle"></div>Eco-lodges, agriturismos, and nature escapes</div>
+        <div class="radio-option" onclick="selectRadio('boutiqueGroup', this, 'cont3')"><div class="radio-circle"></div>City living, in the heart of the action</div>
+        <div class="radio-option" onclick="selectRadio('boutiqueGroup', this, 'cont3')"><div class="radio-circle"></div>Best of both worlds</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo(2)">‹</button>
+        <button class="btn-continue inactive" id="cont3" onclick="tryGoTo(4,'cont3')">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step4">
+    <div class="trip-left">
+      <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=900&auto=format&fit=crop" alt="Desert"/>
+      <div class="trip-text">What's your style?</div>
+    </div>
+    <div class="trip-right" style="padding-top:10px">
+      <div class="grid-header">
+        <h2>Pick four things every good vacation has.</h2>
+        <span class="max-badge" id="maxBadge">4 max</span>
+      </div>
+      <div class="image-grid" id="styleGrid">
+        <div class="grid-card" onclick="toggleCard(this)"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&auto=format&fit=crop" alt="Paris"/><div class="grid-card-label">Lover of the classics</div></div>
+        <div class="grid-card" onclick="toggleCard(this)"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=400&auto=format&fit=crop" alt="Local culture"/><div class="grid-card-label">Immerse myself in local culture</div></div>
+        <div class="grid-card" onclick="toggleCard(this)"><img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&auto=format&fit=crop" alt="Tokyo streets"/><div class="grid-card-label">Urban adventurer</div></div>
+        <div class="grid-card" onclick="toggleCard(this)"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&auto=format&fit=crop" alt="Forest"/><div class="grid-card-label">Explore wild &amp; untouched</div></div>
+        <div class="grid-card" onclick="toggleCard(this)"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&auto=format&fit=crop" alt="Food market"/><div class="grid-card-label">Self-described foodie<div class="grid-card-sub">Show me the best local flavors</div></div></div>
+        <div class="grid-card" onclick="toggleCard(this)"><img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=400&auto=format&fit=crop" alt="Craft"/><div class="grid-card-label">Introduce me to my new fav</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo(3)">‹</button>
+        <button class="btn-continue inactive" id="cont4" onclick="tryGoTo(5,'cont4')">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step5">
+    <div class="trip-left">
+      <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&auto=format&fit=crop" alt="Adventure"/>
+      <div class="trip-text">Almost there.</div>
+    </div>
+    <div class="trip-right" style="padding-top:60px">
+      <h2>What's your budget per person per day?</h2>
+      <div class="radio-group" id="budgetGroup">
+        <div class="radio-option" onclick="selectRadio('budgetGroup', this, 'cont5')"><div class="radio-circle"></div>Budget – Under $100/day</div>
+        <div class="radio-option" onclick="selectRadio('budgetGroup', this, 'cont5')"><div class="radio-circle"></div>Mid-range – $100–$300/day</div>
+        <div class="radio-option" onclick="selectRadio('budgetGroup', this, 'cont5')"><div class="radio-circle"></div>Premium – $300–$600/day</div>
+        <div class="radio-option" onclick="selectRadio('budgetGroup', this, 'cont5')"><div class="radio-circle"></div>Luxury – No limits</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo(4)">‹</button>
+        <button class="btn-continue inactive" id="cont5" onclick="tryGoTo(6,'cont5')">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step" id="step6">
+    <div class="trip-left">
+      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=900&auto=format&fit=crop" alt="Scenic view"/>
+      <div class="trip-text">Your journey awaits. 🌍</div>
+    </div>
+    <div class="trip-right" style="padding-top:80px">
+      <h2>One last thing — your name &amp; email</h2>
+      <div class="field-wrap" style="margin-bottom:18px">
+        <input class="styled-input" id="nameInput" placeholder="Full name" oninput="checkStep6()"/>
+      </div>
+      <div class="field-wrap" style="margin-bottom:24px">
+        <input class="styled-input" id="emailInput" placeholder="Email address" type="email" oninput="checkStep6()"/>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo(5)">‹</button>
+        <button class="btn-continue inactive" id="cont6" onclick="submitJourney()">Build my itinerary →</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<script>
+
+let selectedDest = null;
+let adults = 1, children = 0;
+let currentStep = 1;
+
+function pickDest(label, key) {
+  document.getElementById('destInput').value = label;
+  document.getElementById('destList').style.display = 'none';
+  selectedDest = key;
+}
+
+function toggleDrop(id) {
+  const el = document.getElementById(id);
+  const showing = el.style.display === 'block';
+  document.querySelectorAll('.dropdown-list, .traveler-dropdown').forEach(d => d.style.display = 'none');
+  el.style.display = showing ? 'none' : 'block';
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.field-wrap')) {
+    document.querySelectorAll('.dropdown-list, .traveler-dropdown').forEach(d => d.style.display = 'none');
+  }
+});
+
+function changeTraveler(type, delta) {
+  if (type === 'adults') {
+    adults = Math.max(1, adults + delta);
+    document.getElementById('adultCount').textContent = adults;
+  } else {
+    children = Math.max(0, children + delta);
+    document.getElementById('childCount').textContent = children;
+  }
+  document.getElementById('travelerDisplay').textContent = 'Adults ' + adults + ', Children ' + children;
+}
+
+function selectRadio(groupId, el, contId) {
+  document.querySelectorAll('#' + groupId + ' .radio-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  if (contId) checkCont(contId);
+}
+
+function checkCont(id) {
+  let ok = false;
+  if (id === 'cont2') {
+    const d = document.getElementById('dateInput').value;
+    const dur = document.getElementById('durationInput').value;
+    ok = d && dur && parseInt(dur) > 0;
+  } else if (id === 'cont3') {
+    ok = document.querySelector('#accomGroup .selected') && document.querySelector('#boutiqueGroup .selected');
+  } else if (id === 'cont4') {
+    ok = document.querySelectorAll('#styleGrid .grid-card.selected').length >= 1;
+  } else if (id === 'cont5') {
+    ok = !!document.querySelector('#budgetGroup .selected');
+  }
+  const btn = document.getElementById(id);
+  if (btn) btn.className = 'btn-continue ' + (ok ? 'active' : 'inactive');
+}
+
+function checkStep6() {
+  const n = document.getElementById('nameInput').value.trim();
+  const e = document.getElementById('emailInput').value.trim();
+  const ok = n.length > 1 && e.includes('@');
+  document.getElementById('cont6').className = 'btn-continue ' + (ok ? 'active' : 'inactive');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const savedEmail = sessionStorage.getItem('userEmail') || localStorage.getItem('userEmail');
+  if (savedEmail) {
+    const emailField = document.getElementById('emailInput');
+    if (emailField) {
+      emailField.value = savedEmail;
+      checkStep6();
+    }
+  }
+
+  // Prepopulate authenticated user details from session cookie
+  const apiBase = (window.location.protocol.startsWith('http') && !window.location.origin.includes(':3000')) ? '' : 'http://localhost:3000';
+  fetch(apiBase + '/api/me', { credentials: 'include' })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.authenticated && data.user) {
+        const emailField = document.getElementById('emailInput');
+        const nameField = document.getElementById('nameInput');
+        if (emailField && (!emailField.value || emailField.value === '')) {
+          emailField.value = data.user.email || '';
+        }
+        if (nameField && (!nameField.value || nameField.value === '')) {
+          nameField.value = data.user.name || '';
+        }
+        checkStep6();
+      }
+    })
+    .catch(() => null);
+});
+
+let selectedCards = 0;
+function toggleCard(card) {
+  if (card.classList.contains('selected')) {
+    card.classList.remove('selected');
+    selectedCards--;
+  } else {
+    if (selectedCards >= 4) return;
+    card.classList.add('selected');
+    selectedCards++;
+  }
+  document.getElementById('maxBadge').textContent = (4 - selectedCards) + ' remaining';
+  checkCont('cont4');
+}
+
+function goTo(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.getElementById('progressText').textContent = n + ' out of 6';
+  currentStep = n;
+}
+
+function tryGoTo(n, contId) {
+  const btn = document.getElementById(contId);
+  if (!btn || btn.classList.contains('inactive')) return;
+  goTo(n);
+}
+
+function submitJourney() {
+  const btn = document.getElementById('cont6');
+  if (!btn || btn.classList.contains('inactive')) return;
+
+  const fullName = document.getElementById('nameInput').value.trim();
+  const destination = selectedDest;
+  const date = document.getElementById('dateInput').value;
+  const duration = document.getElementById('durationInput').value;
+  const email = document.getElementById('emailInput').value.trim();
+  const budget = document.querySelector('#budgetGroup .selected')?.innerText?.trim() || 'Standard';
+
+  if (!destination) {
+    alert('Please select a destination on Step 1.');
+    goTo(1);
+    return;
+  }
+
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  btn.textContent = '✓ Building your itinerary...';
+  btn.style.background = 'linear-gradient(90deg,#16a34a,#059669)';
+  btn.disabled = true;
+
+  const endpoint = (window.location.protocol.startsWith('http') && !window.location.origin.includes(':3000'))
+    ? '/saveTrip'
+    : 'http://localhost:3000/saveTrip';
+
+  fetch(endpoint, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      fullName,
+      destination,
+      date,
+      duration,
+      adults,
+      children,
+      budget,
+      email
+    })
+  })
+  .then(async res => {
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data || !data.success) {
+      const msg = (data && data.message) ? data.message : 'Failed to save trip to database.';
+      throw new Error(msg);
+    }
+    return data;
+  })
+  .then(data => {
+    sessionStorage.setItem('userEmail', email);
+    localStorage.setItem('userEmail', email);
+    if (duration) localStorage.setItem('tripDuration', duration);
+    if (destination) localStorage.setItem('tripDestination', destination);
+    setTimeout(() => {
+      openItinerary();
+    }, 700);
+  })
+  .catch(err => {
+    console.error('Trip save error:', err);
+    alert('Error: ' + err.message);
+    btn.textContent = 'Build my itinerary →';
+    btn.style.background = '';
+    btn.disabled = false;
+  });
+}
+
+function openItinerary() {
+  if (!selectedDest) {
+    alert('Please select destination');
+    return;
+  }
+
+  if (selectedDest === 'india') {
+    window.location.href = 'itinerary.html';
+  } else if (selectedDest === 'spain') {
+    window.location.href = 'spain-itinerary.html';
+  } else if (selectedDest === 'japan') {
+    window.location.href = 'japan_itinerary.html';
+  } else if (selectedDest === 'italy') {
+    window.location.href = 'italy-itinerary.html';
+  } else if (selectedDest === 'mexico') {
+    window.location.href = 'mexico-itinerary.html';
+  } else if (selectedDest === 'switzerland') {
+    window.location.href = 'switzerland_itinerary.html';
+  } else {
+    window.location.href = 'itinerary.html';
+  }
+}
+</script>
+</body>
+</html>

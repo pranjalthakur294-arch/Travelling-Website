@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journeys — Travel To Switzerland</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #c9a84c;
+      --dark: #1a1a1a;
+      --off-white: #f7f5f2;
+      --mid-gray: #6b6b6b;
+      --light-gray: #e8e4de;
+      --warm-white: #fdfbf8;
+      --ice: #eef4f8;
+      --alpine: #2c5f7a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(253,251,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-logo {
+      font-family: 'didot', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 9px 22px;
+      border: 1.5px solid var(--dark);
+      border-radius: 100px;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--dark); color: white; }
+
+    .btn-primary {
+      padding: 9px 22px;
+      border: none;
+      border-radius: 100px;
+      background: #7c3aed;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=85') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.13); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,20,30,0.18) 0%,
+        rgba(10,20,30,0.46) 50%,
+        rgba(10,20,30,0.82) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 9vw, 110px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: #7c3aed;
+      color: white;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 0.2s, opacity 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+
+    .hero-cta:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,20,30,0.62);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-item {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.48);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── INTRO ─── */
+    .intro-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 85vh;
+      background: var(--off-white);
+    }
+
+    .intro-left {
+      padding: 100px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .intro-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .intro-body {
+      font-size: 16px;
+      color: var(--mid-gray);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .intro-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .intro-right:hover img { transform: scale(1.03); }
+
+    .intro-badge {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: rgba(253,251,248,0.96);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px 28px;
+      max-width: 280px;
+    }
+
+    .intro-badge-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .intro-badge-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .intro-badge-sub {
+      font-size: 13px;
+      color: var(--mid-gray);
+      margin-top: 4px;
+      cursor: pointer;
+    }
+
+    .itinerary-callout {
+      background: #eef4f8;
+      padding: 20px 32px;
+      border-radius: 16px;
+      border-left: 4px solid var(--alpine);
+      margin-top: 32px;
+    }
+
+    .itinerary-callout p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+
+    .itinerary-callout span {
+      font-size: 13px;
+      color: var(--mid-gray);
+    }
+
+    /* ─── THINGS TO SEE ─── */
+    .things-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .section-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .things-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+    }
+
+    .thing-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thing-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .thing-card:hover img { transform: scale(1.05); }
+
+    .thing-card-main { grid-row: 1 / 3; height: 580px; }
+    .thing-card-sm   { height: 270px; }
+
+    .thing-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 24px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.72));
+      color: white;
+    }
+
+    .thing-caption p { font-size: 14px; line-height: 1.5; }
+
+    /* ─── CANTONS ─── */
+    .cantons-section {
+      padding: 100px 80px;
+      background: var(--alpine);
+      color: white;
+    }
+
+    .cantons-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .cantons-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 640px;
+      line-height: 1.15;
+    }
+
+    .cantons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .canton-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 2/3;
+      cursor: pointer;
+    }
+
+    .canton-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.6);
+      transition: transform 0.6s ease, filter 0.4s;
+    }
+
+    .canton-card:hover img {
+      transform: scale(1.07);
+      filter: brightness(0.4);
+    }
+
+    .canton-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 22px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.88));
+    }
+
+    .canton-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .canton-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .canton-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+
+    /* ─── SEASONS ─── */
+    .seasons-section {
+      padding: 100px 80px;
+      background: var(--ice);
+    }
+
+    .seasons-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .seasons-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .seasons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .season-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 28px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .season-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(44,95,122,0.1);
+    }
+
+    .season-icon { font-size: 32px; margin-bottom: 16px; }
+
+    .season-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--alpine);
+      margin-bottom: 12px;
+    }
+
+    .season-desc { font-size: 14px; color: var(--mid-gray); line-height: 1.7; }
+
+    /* ─── FESTIVALS ─── */
+    .festivals-section {
+      padding: 100px 80px;
+      background: var(--dark);
+    }
+
+    .festivals-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .festivals-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 600px;
+      color: white;
+    }
+
+    .festivals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .festival-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .festival-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.62);
+    }
+
+    .festival-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.42);
+    }
+
+    .festival-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 28px 28px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.88));
+    }
+
+    .festival-month {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .festival-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .festival-region { font-size: 13px; color: rgba(255,255,255,0.58); }
+
+    /* ─── WHY SWITZERLAND ─── */
+    .why-section {
+      padding: 100px 80px;
+      background: var(--off-white);
+      text-align: center;
+    }
+
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .why-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 64px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .fact-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 24px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .fact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(44,95,122,0.1);
+    }
+
+    .fact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--alpine);
+      margin-bottom: 8px;
+    }
+
+    .fact-label { font-size: 15px; color: var(--mid-gray); line-height: 1.5; }
+
+    /* ─── TRAVEL STYLES ─── */
+    .styles-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .styles-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .styles-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .style-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--off-white);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .style-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.12);
+    }
+
+    .style-img { width: 100%; height: 210px; object-fit: cover; display: block; }
+
+    .style-body { padding: 22px 24px 26px; }
+
+    .style-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .style-desc { font-size: 14px; color: var(--mid-gray); line-height: 1.6; }
+
+    /* ─── CHOCOLATE & TRAINS STRIP ─── */
+    .strip-section {
+      padding: 72px 80px;
+      background: var(--alpine);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      color: white;
+    }
+
+    .strip-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .strip-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .strip-item h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .strip-item p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+    }
+
+    /* ─── TREE BANNER ─── */
+    .tree-banner {
+      background: #1a2a1a;
+      padding: 24px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.78);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1100px) {
+      nav { padding: 16px 24px; }
+      .intro-section { grid-template-columns: 1fr; }
+      .intro-right { height: 460px; }
+      .intro-left { padding: 60px 40px; }
+      .things-section, .seasons-section, .festivals-section,
+      .cantons-section, .why-section, .styles-section,
+      .strip-section { padding: 70px 40px; }
+      .seasons-grid { grid-template-columns: 1fr 1fr; }
+      .styles-grid { grid-template-columns: 1fr 1fr; }
+      .festivals-grid { grid-template-columns: 1fr 1fr; }
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      .cantons-grid { grid-template-columns: 1fr 1fr; }
+      .strip-section { grid-template-columns: 1fr; gap: 32px; }
+      footer { grid-template-columns: 1fr 1fr; padding: 40px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .things-grid { grid-template-columns: 1fr; }
+      .thing-card-main { height: 360px; grid-row: auto; }
+      .seasons-grid, .festivals-grid, .styles-grid,
+      .facts-grid, .cantons-grid { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="Homepage.html">Destination</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+        <div class="nav-logo">WANDR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+
+    <div class="nav-actions">
+      <a href="trip.html">
+      <button class="btn-primary">Start Planning</button>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Central Europe</p>
+      <h1 class="hero-title">Travel To <em>Switzerland.</em></h1>
+      <p class="hero-sub">Whatever you want, we can make it happen.</p>
+      <a href="trip.html"><button class="hero-cta">Craft Your Trip</button></a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-label">Best Time to Visit</div>
+        <div class="stat-value">June to Sept,<br>Dec to March</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Capital</div>
+        <div class="stat-value">BERN</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Population</div>
+        <div class="stat-value">8.7 M</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Area</div>
+        <div class="stat-value">41,285 SQ KM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Official Languages</div>
+        <div class="stat-value">German, French,<br>Italian, Romansh</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro-section">
+    <div class="intro-left">
+      <p class="intro-tag">Precise, pristine and wildly, achingly beautiful</p>
+      <h2 class="intro-heading">Peaks, Lakes &amp; the Art of Living Well</h2>
+      <p class="intro-body">
+        Folded between the Alps and the Jura, Switzerland compresses more natural drama into its small frame than almost anywhere else on earth. Glaciers spill into turquoise lakes, wildflower meadows climb toward snow-capped peaks, and medieval towns sit in valleys so green they seem almost unreal.
+      </p>
+      <p class="intro-body">
+        Four languages are spoken. Four cultures overlap — each leaving its mark on the food, the architecture, the temperament of its people. In the German-speaking cantons, things run with clockwork precision. Cross into French Switzerland and the pace softens, the food grows richer, the café terrasses linger longer into the evening.
+      </p>
+      <p class="intro-body">
+        Switzerland is not a country that shouts. It rewards the patient traveller — the one who takes the cogwheel railway to the summit at dawn, who lingers over fondue as the valley lights flicker below, who finds the small village that no guidebook has yet discovered.
+      </p>
+      <div class="itinerary-callout">
+        <p>Explore on your own terms</p>
+        <span>This is just a sample itinerary. Your trip will be tailor-made and personalized to you.</span>
+      </div>
+    </div>
+
+    <div class="intro-right">
+      <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=900&q=85" alt="Swiss Alps reflection in lake" />
+       <a href="switzerland_itinerary.html" style="color:inherit;text-decoration:none;">
+      <div class="intro-badge">
+        <div class="intro-badge-label">Featured Experience</div>
+        <div class="intro-badge-text">SWITZERLAND AT FINEST</div>
+        <div class="intro-badge-sub">View Itinerary →</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP THINGS TO SEE -->
+  <section class="things-section">
+    <div class="section-header">
+      <div class="section-dot"></div>
+      <span class="section-label">Top Things to See</span>
+    </div>
+
+    <div class="things-grid">
+      <div class="thing-card thing-card-main">
+        <img src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=900&q=85" alt="Matterhorn at sunrise" />
+        <div class="thing-caption">
+          <p>The Matterhorn at sunrise — Switzerland's most iconic peak rising 4,478 metres above Zermatt, pyramid-perfect against a pale alpine sky</p>
+        </div>
+      </div>
+      <div>
+        <div class="thing-card thing-card-sm" style="margin-bottom:16px">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80" alt="Lake Geneva" />
+          <div class="thing-caption">
+            <p>Lake Geneva's glass-calm waters reflecting the Savoy Alps — the Lavaux vineyards climbing the slopes above, a UNESCO treasure</p>
+          </div>
+        </div>
+        <div class="thing-card thing-card-sm">
+          <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=700&q=80" alt="Jungfrau railway" />
+          <div class="thing-caption">
+            <p>The Jungfrau railway — the highest train station in Europe, hauling travellers up into a world of eternal snow and breathtaking silence</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CANTONS / REGIONS -->
+  <section class="cantons-section">
+    <p class="cantons-eyebrow">26 Cantons, Four Cultures</p>
+    <h2 class="cantons-title">Every Region of Switzerland Speaks a Different Language</h2>
+
+    <div class="cantons-grid">
+      <div class="canton-card">
+        <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&q=80" alt="Zurich" />
+        <div class="canton-info">
+          <div class="canton-tag">German Switzerland</div>
+          <div class="canton-name">Zurich</div>
+          <div class="canton-desc">Design, finance, lakeside café culture & world-class museums</div>
+        </div>
+      </div>
+      <div class="canton-card">
+        <img src="images/geneva.jpeg" alt="Geneva" />
+        <div class="canton-info">
+          <div class="canton-tag">French Switzerland</div>
+          <div class="canton-name">Geneva</div>
+          <div class="canton-desc">Diplomacy, lakeside elegance, Jet d'Eau & fine watchmaking</div>
+        </div>
+      </div>
+      <div class="canton-card">
+        <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=600&q=80" alt="Lugano Ticino" />
+        <div class="canton-info">
+          <div class="canton-tag">Italian Switzerland</div>
+          <div class="canton-name">Lugano</div>
+          <div class="canton-desc">Mediterranean palms, piazzas, lakeside promenades & risotto</div>
+        </div>
+      </div>
+      <div class="canton-card">
+        <img src="https://images.unsplash.com/photo-1520466809213-7b9a56adcd45?w=600&q=80" alt="Graubünden Alps" />
+        <div class="canton-info">
+          <div class="canton-tag">Graubünden</div>
+          <div class="canton-name">St. Moritz</div>
+          <div class="canton-desc">Glacier skiing, glittering lakes & the world's most glamorous resort</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONS — 4 in Switzerland -->
+  <section class="seasons-section">
+    <h2 class="seasons-title">Best Time to Visit Switzerland</h2>
+    <p class="seasons-sub">Switzerland transforms completely with every season</p>
+
+    <div class="seasons-grid">
+      <div class="season-card">
+        <div class="season-icon">🌸</div>
+        <div class="season-name">Spring (Mar – May)</div>
+        <p class="season-desc">Wildflowers erupt across alpine meadows. Ski season winds down on the highest peaks while valleys burst into green below.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">☀️</div>
+        <div class="season-name">Summer (Jun – Sep)</div>
+        <p class="season-desc">Peak hiking season. Cable cars run to flower-carpeted summits, lakes shimmer for swimming, and the days stretch long and golden.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🍂</div>
+        <div class="season-name">Autumn (Oct – Nov)</div>
+        <p class="season-desc">Crisp air, amber forests, grape harvest festivals along Lake Geneva, and the first dusting of snow on the high peaks.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">❄️</div>
+        <div class="season-name">Winter (Dec – Feb)</div>
+        <p class="season-desc">World-class skiing in Verbier, Zermatt and St. Moritz. Christmas markets glow in Bern. The Alps in snow are utterly magical.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FESTIVALS -->
+  <section class="festivals-section">
+    <p class="festivals-eyebrow">Culture &amp; Celebration</p>
+    <h2 class="festivals-title">Switzerland's Most Unforgettable Festivals</h2>
+
+    <div class="festivals-grid">
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1467377791767-c929b5dc9a23?w=600&q=80" alt="Montreux Jazz Festival" />
+        <div class="festival-info">
+          <div class="festival-month">July</div>
+          <div class="festival-name">Montreux Jazz Festival</div>
+          <div class="festival-region">Montreux, Vaud</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1548199569-3e1c6aa8f469?w=600&q=80" alt="Basel Fasnacht" />
+        <div class="festival-info">
+          <div class="festival-month">February / March</div>
+          <div class="festival-name">Basel Fasnacht</div>
+          <div class="festival-region">Basel</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/luce.jpg" alt="Lucerne Festival" />
+        <div class="festival-info">
+          <div class="festival-month">August</div>
+          <div class="festival-name">Lucerne Festival</div>
+          <div class="festival-region">Lucerne</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1512551980832-13df02babc9e?w=600&q=80" alt="Christmas Markets" />
+        <div class="festival-info">
+          <div class="festival-month">December</div>
+          <div class="festival-name">Christmas Markets</div>
+          <div class="festival-region">Bern, Zurich, Basel</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1535930891776-0c2dfb7fda1a?w=600&q=80" alt="Zurich Street Parade" />
+        <div class="festival-info">
+          <div class="festival-month">August</div>
+          <div class="festival-name">Zurich Street Parade</div>
+          <div class="festival-region">Zurich</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=600&q=80" alt="Fête des Vignerons" />
+        <div class="festival-info">
+          <div class="festival-month">Every 20–25 Years</div>
+          <div class="festival-name">Fête des Vignerons</div>
+          <div class="festival-region">Vevey, Vaud</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY SWITZERLAND -->
+  <section class="why-section">
+    <h2 class="why-title">Why Travel Switzerland</h2>
+    <p class="why-sub">A compact country that somehow contains an entire world of wonder</p>
+
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="13">0</span></div>
+        <p class="fact-label">UNESCO World Heritage Sites</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="208">0</span></div>
+        <p class="fact-label">Mountains Over 3,000 Metres</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="1500">0</span>+</div>
+        <p class="fact-label">Lakes Dotting the Landscape</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="26">0</span></div>
+        <p class="fact-label">Unique Cantons to Explore</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="65">0</span>+</div>
+        <p class="fact-label">Scenic Railway Routes</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="4">0</span></div>
+        <p class="fact-label">Official Languages Spoken</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL STYLES -->
+  <section class="styles-section">
+    <h2 class="styles-title">Explore By Travel Style</h2>
+    <p class="styles-sub">Find your Switzerland based on your passions</p>
+
+    <div class="styles-grid">
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80" alt="Adventure" />
+        <div class="style-body">
+          <div class="style-name">Adventure</div>
+          <p class="style-desc">Via Ferrata in Engelberg, paragliding over Interlaken, glacier hiking on the Aletsch</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1548777123-e216912df7d8?w=600&q=80" alt="Skiing" />
+        <div class="style-body">
+          <div class="style-name">Skiing</div>
+          <p class="style-desc">Verbier, Zermatt, St. Moritz, Davos — the world's finest winter playgrounds</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="Nature" />
+        <div class="style-body">
+          <div class="style-name">Nature</div>
+          <p class="style-desc">Aletsch Glacier, Bernese Oberland, Engadine valley, Rhine Falls</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1474690870753-1b92efa1f2d8?w=600&q=80" alt="Scenic Trains" />
+        <div class="style-body">
+          <div class="style-name">Scenic Trains</div>
+          <p class="style-desc">Glacier Express, Bernina Express, Golden Pass — journeys that are the destination</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?w=600&q=80" alt="Food & Fondue" />
+        <div class="style-body">
+          <div class="style-name">Food &amp; Fondue</div>
+          <p class="style-desc">Raclette, Rösti, Zürcher Geschnetzeltes, world-class chocolate & Swiss cheese</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=600&q=80" alt="Luxury" />
+        <div class="style-body">
+          <div class="style-name">Luxury</div>
+          <p class="style-desc">Palace hotels on lakeshores, Michelin dining, private chalets & spa retreats</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURE STRIP -->
+  <section class="strip-section">
+    <div class="strip-item">
+      <div class="strip-icon">🚂</div>
+      <div>
+        <h3>The World's Most Scenic Railways</h3>
+        <p>Switzerland's trains don't just move you between places — they are the experience. The Glacier Express, Bernina Express and Golden Pass line curve through scenery that defeats the imagination.</p>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">🍫</div>
+      <div>
+        <h3>Chocolate, Cheese & Craft</h3>
+        <p>Lindt, Sprüngli, Cailler — Swiss chocolate is not a souvenir, it is an art form. Visit the dairy farms of Gruyères or tour the Maison Cailler in Broc for the full story.</p>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">⌚</div>
+      <div>
+        <h3>The Art of the Timepiece</h3>
+        <p>From the watchmakers of Geneva to the museums of La Chaux-de-Fonds, Switzerland's relationship with time is unlike anywhere else. Precision is not a habit here — it is a philosophy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREE BANNER -->
+  <div class="tree-banner">
+    🌿 &nbsp; We plant a tree for every trip booked through Journeys
+  </div>
+
+ <script>
+    const counters = document.querySelectorAll('.counter');
+    let started = false;
+
+    function startCounters() {
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const increment = Math.max(1, Math.ceil(target / 80));
+        const update = () => {
+          count += increment;
+          if (count >= target) { counter.textContent = target.toLocaleString(); return; }
+          counter.textContent = count.toLocaleString();
+          requestAnimationFrame(update);
+        };
+        update();
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      if (started) return;
+      const section = document.querySelector('.why-section');
+      if (!section) return;
+      if (section.getBoundingClientRect().top < window.innerHeight - 100) {
+        started = true;
+        startCounters();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journeys — Travel To Mexico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #c9a84c;
+      --dark: #1a1a1a;
+      --off-white: #f7f5f2;
+      --mid-gray: #6b6b6b;
+      --light-gray: #e8e4de;
+      --warm-white: #fdfbf8;
+      --terracotta: #b5451b;
+      --jungle: #2a5c3f;
+      --sand: #f5ede0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(253,251,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-logo {
+      font-family: 'didot', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 9px 22px;
+      border: 1.5px solid var(--dark);
+      border-radius: 100px;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--dark); color: white; }
+
+    .btn-primary {
+      padding: 9px 22px;
+      border: none;
+      border-radius: 100px;
+      background: #7c3aed;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1518638150340-f706e86654de?w=1800&q=85') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.13); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(20,8,2,0.2) 0%,
+        rgba(20,8,2,0.5) 50%,
+        rgba(20,8,2,0.82) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 9vw, 110px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: #7c3aed;
+      color: white;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 0.2s, opacity 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+
+    .hero-cta:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      background: rgba(20,8,2,0.65);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-item {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.48);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── INTRO ─── */
+    .intro-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 85vh;
+      background: var(--sand);
+    }
+
+    .intro-left {
+      padding: 100px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 24px;
+    }
+
+    .intro-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .intro-body {
+      font-size: 16px;
+      color: var(--mid-gray);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .intro-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .intro-right:hover img { transform: scale(1.03); }
+
+    .intro-badge {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: rgba(253,251,248,0.96);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px 28px;
+      max-width: 280px;
+    }
+
+    .intro-badge-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 6px;
+    }
+
+    .intro-badge-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .intro-badge-sub {
+      font-size: 13px;
+      color: var(--mid-gray);
+      margin-top: 4px;
+      cursor: pointer;
+    }
+
+    .itinerary-callout {
+      background: rgba(181,69,27,0.08);
+      padding: 20px 32px;
+      border-radius: 16px;
+      border-left: 4px solid var(--terracotta);
+      margin-top: 32px;
+    }
+
+    .itinerary-callout p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+
+    .itinerary-callout span {
+      font-size: 13px;
+      color: var(--mid-gray);
+    }
+
+    /* ─── THINGS TO SEE ─── */
+    .things-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .section-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--terracotta);
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .things-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+    }
+
+    .thing-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thing-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .thing-card:hover img { transform: scale(1.05); }
+
+    .thing-card-main { grid-row: 1 / 3; height: 580px; }
+    .thing-card-sm   { height: 270px; }
+
+    .thing-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 24px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      color: white;
+    }
+
+    .thing-caption p { font-size: 14px; line-height: 1.5; }
+
+    /* ─── REGIONS ─── */
+    .regions-section {
+      padding: 100px 80px;
+      background: var(--terracotta);
+      color: white;
+    }
+
+    .regions-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .regions-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 640px;
+      line-height: 1.15;
+    }
+
+    .regions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .region-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 2/3;
+      cursor: pointer;
+    }
+
+    .region-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.62);
+      transition: transform 0.6s ease, filter 0.4s;
+    }
+
+    .region-card:hover img {
+      transform: scale(1.07);
+      filter: brightness(0.42);
+    }
+
+    .region-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 22px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    }
+
+    .region-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .region-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .region-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+
+    /* ─── SEASONS ─── */
+    .seasons-section {
+      padding: 100px 80px;
+      background: var(--off-white);
+    }
+
+    .seasons-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .seasons-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .seasons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .season-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 32px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .season-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(181,69,27,0.1);
+    }
+
+    .season-icon { font-size: 32px; margin-bottom: 16px; }
+
+    .season-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--terracotta);
+      margin-bottom: 12px;
+    }
+
+    .season-desc { font-size: 15px; color: var(--mid-gray); line-height: 1.7; }
+
+    /* ─── FESTIVALS ─── */
+    .festivals-section {
+      padding: 100px 80px;
+      background: var(--dark);
+    }
+
+    .festivals-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .festivals-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 620px;
+      color: white;
+      line-height: 1.15;
+    }
+
+    .festivals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .festival-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .festival-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.6);
+    }
+
+    .festival-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.4);
+    }
+
+    .festival-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 28px 28px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    }
+
+    .festival-month {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .festival-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .festival-region { font-size: 13px; color: rgba(255,255,255,0.58); }
+
+    /* ─── WHY MEXICO ─── */
+    .why-section {
+      padding: 100px 80px;
+      background: var(--sand);
+      text-align: center;
+    }
+
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .why-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 64px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .fact-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 24px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .fact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(181,69,27,0.1);
+    }
+
+    .fact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--terracotta);
+      margin-bottom: 8px;
+    }
+
+    .fact-label { font-size: 15px; color: var(--mid-gray); line-height: 1.5; }
+
+    /* ─── TRAVEL STYLES ─── */
+    .styles-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .styles-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .styles-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .style-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--off-white);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .style-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.12);
+    }
+
+    .style-img { width: 100%; height: 210px; object-fit: cover; display: block; }
+
+    .style-body { padding: 22px 24px 26px; }
+
+    .style-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .style-desc { font-size: 14px; color: var(--mid-gray); line-height: 1.6; }
+
+    /* ─── SIGNATURE STRIP ─── */
+    .strip-section {
+      padding: 72px 80px;
+      background: var(--jungle);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      color: white;
+    }
+
+    .strip-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .strip-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .strip-item h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .strip-item p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+    }
+
+    /* ─── TREE BANNER ─── */
+    .tree-banner {
+      background: #1a2a1a;
+      padding: 24px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.78);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1100px) {
+      nav { padding: 16px 24px; }
+      .intro-section { grid-template-columns: 1fr; }
+      .intro-right { height: 460px; }
+      .intro-left { padding: 60px 40px; }
+      .things-section, .seasons-section, .festivals-section,
+      .regions-section, .why-section, .styles-section,
+      .strip-section { padding: 70px 40px; }
+      .seasons-grid, .styles-grid { grid-template-columns: 1fr 1fr; }
+      .festivals-grid { grid-template-columns: 1fr 1fr; }
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      .regions-grid { grid-template-columns: 1fr 1fr; }
+      .strip-section { grid-template-columns: 1fr; gap: 32px; }
+      footer { grid-template-columns: 1fr 1fr; padding: 40px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .things-grid { grid-template-columns: 1fr; }
+      .thing-card-main { height: 360px; grid-row: auto; }
+      .seasons-grid, .festivals-grid, .styles-grid,
+      .facts-grid, .regions-grid { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="Homepage.html">Destination</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-logo">WANDR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+    <div class="nav-actions">
+      <a href="trip.html">
+          <button class="btn-primary">Start Planning</button>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">North America</p>
+      <h1 class="hero-title">Travel To <em>Mexico.</em></h1>
+      <p class="hero-sub">Whatever you want, we can make it happen.</p>
+      <a href="trip.html"><button class="hero-cta">Craft Your Trip</button></a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-label">Best Time to Visit</div>
+        <div class="stat-value">November to April</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Capital</div>
+        <div class="stat-value">MEXICO CITY</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Population</div>
+        <div class="stat-value">128 M</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Area</div>
+        <div class="stat-value">1,964,375 SQ KM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Official Language</div>
+        <div class="stat-value">Spanish + 68<br>Indigenous Languages</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro-section">
+    <div class="intro-left">
+      <p class="intro-tag">Ancient, vibrant & gloriously alive</p>
+      <h2 class="intro-heading">Pyramids, Jungle &amp; the World's Greatest Street Food</h2>
+      <p class="intro-body">
+        Few countries contain more worlds within one border. Mexico is the ghost of ancient Mesoamerica — the Aztec, the Maya, the Zapotec — still breathing through its pyramids, its markets, its languages and its ceremonies. Beneath every colonial city square lie the foundations of something far older.
+      </p>
+      <p class="intro-body">
+        The Pacific coast blazes with surf towns and mezcal bars. The Yucatán jungle conceals cenotes of impossible blue. The mountains of Oaxaca overflow with mole negro, weaving traditions and mezcal distilleries where time appears to have stopped sometime around 1940. Mexico City pulses with a ferocity that rivals any megalopolis on earth.
+      </p>
+      <p class="intro-body">
+        This is a country that feeds you — with flavour, with colour, with noise, with generosity. The table is never empty. The music never quite stops. And something about the light, the terracotta and the bougainvillea, stays with you long after you leave.
+      </p>
+      <div class="itinerary-callout">
+        <p>Explore on your own terms</p>
+        <span>This is just a sample itinerary. Your trip will be tailor-made and personalized to you.</span>
+      </div>
+    </div>
+
+    <div class="intro-right">
+      <img src="images/itza.jpg" alt="Chichen Itza pyramid Mexico" />
+       <a href="mexico-itinerary.html" style="color:inherit;text-decoration:none;">
+      <div class="intro-badge">
+        <div class="intro-badge-label">Featured Experience</div>
+        <div class="intro-badge-text">MEXICO AT FINEST</div>
+        <div class="intro-badge-sub">View Itinerary →</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP THINGS TO SEE -->
+  <section class="things-section">
+    <div class="section-header">
+      <div class="section-dot"></div>
+      <span class="section-label">Top Things to See</span>
+    </div>
+
+    <div class="things-grid">
+      <div class="thing-card thing-card-main">
+        <img src="https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=900&q=85" alt="Chichen Itza" />
+        <div class="thing-caption">
+          <p>Chichén Itzá — the great Maya city-state whose El Castillo pyramid rises from the Yucatán jungle, one of the New Seven Wonders of the World</p>
+        </div>
+      </div>
+      <div>
+        <div class="thing-card thing-card-sm" style="margin-bottom:16px">
+          <img src="https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396?w=700&q=80" alt="Mexico City" />
+          <div class="thing-caption">
+            <p>Mexico City's Zócalo — one of the largest plazas on earth, ringed by baroque cathedrals built atop the ruins of Tenochtitlán</p>
+          </div>
+        </div>
+        <div class="thing-card thing-card-sm">
+          <img src="images/cenotes.jpg" alt="Cenotes Yucatan" />
+          <div class="thing-caption">
+            <p>The cenotes of the Yucatán — sacred sinkholes of crystal-clear water hidden beneath the jungle, once offerings to the Maya rain god Chaac</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGIONS -->
+  <section class="regions-section">
+    <p class="regions-eyebrow">32 States, Countless Worlds</p>
+    <h2 class="regions-title">Every Corner of Mexico is a Country Unto Itself</h2>
+
+    <div class="regions-grid">
+      <div class="region-card">
+        <img src="images/cenotes.jpg" alt="Oaxaca" />
+        <div class="region-info">
+          <div class="region-tag">Southern Mexico</div>
+          <div class="region-name">Oaxaca</div>
+          <div class="region-desc">Mole negro, mezcal, indigenous markets & Monte Albán ruins</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="images/yucantan.jpg" alt="Yucatan Peninsula" />
+        <div class="region-info">
+          <div class="region-tag">Yucatán Peninsula</div>
+          <div class="region-name">Mérida</div>
+          <div class="region-desc">Maya ruins, colonial grandeur, cenotes & Caribbean coast</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=600&q=80" alt="Baja California" />
+        <div class="region-info">
+          <div class="region-tag">Pacific Mexico</div>
+          <div class="region-name">Baja California</div>
+          <div class="region-desc">Whale watching, surf, wine valleys & dramatic desert coastline</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="images/Guelaguetza.jpg" alt="Mexico City" />
+        <div class="region-info">
+          <div class="region-tag">Capital</div>
+          <div class="region-name">Mexico City</div>
+          <div class="region-desc">Art, tacos, Frida Kahlo, Lucha Libre & 21 million stories</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONS -->
+  <section class="seasons-section">
+    <h2 class="seasons-title">Best Time to Visit Mexico</h2>
+    <p class="seasons-sub">Mexico's size means every region has its own rhythm</p>
+
+    <div class="seasons-grid">
+      <div class="season-card">
+        <div class="season-icon">☀️</div>
+        <div class="season-name">Dry Season (Nov – Apr)</div>
+        <p class="season-desc">The golden window — warm, sunny days with almost no rain. Perfect for beach resorts, ruins and city exploration across the country.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🌧️</div>
+        <div class="season-name">Rainy Season (May – Oct)</div>
+        <p class="season-desc">Lush, green and less crowded. Showers arrive in afternoon bursts — mornings are often brilliant. Waterfalls are at their most dramatic.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🐋</div>
+        <div class="season-name">Whale Season (Jan – Mar)</div>
+        <p class="season-desc">Grey whales migrate to Baja California's lagoons to breed. One of the world's great wildlife encounters — unforgettable and unmissable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FESTIVALS -->
+  <section class="festivals-section">
+    <p class="festivals-eyebrow">Culture &amp; Celebration</p>
+    <h2 class="festivals-title">Mexico's Most Unforgettable Festivals</h2>
+
+    <div class="festivals-grid">
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80" alt="Día de los Muertos" />
+        <div class="festival-info">
+          <div class="festival-month">November 1 – 2</div>
+          <div class="festival-name">Día de los Muertos</div>
+          <div class="festival-region">Oaxaca, Michoacán & nationwide</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/Guelaguetza.jpg" alt="Guelaguetza" />
+        <div class="festival-info">
+          <div class="festival-month">July</div>
+          <div class="festival-name">Guelaguetza</div>
+          <div class="festival-region">Oaxaca City</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&q=80" alt="Carnaval Veracruz" />
+        <div class="festival-info">
+          <div class="festival-month">February / March</div>
+          <div class="festival-name">Carnaval</div>
+          <div class="festival-region">Veracruz & Mazatlán</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1602491453631-e2a5ad90a131?w=600&q=80" alt="Cinco de Mayo" />
+        <div class="festival-info">
+          <div class="festival-month">May 5</div>
+          <div class="festival-name">Cinco de Mayo</div>
+          <div class="festival-region">Puebla</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=600&q=80" alt="Festival Cervantino" />
+        <div class="festival-info">
+          <div class="festival-month">October</div>
+          <div class="festival-name">Festival Cervantino</div>
+          <div class="festival-region">Guanajuato</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1512551980832-13df02babc9e?w=600&q=80" alt="Las Posadas" />
+        <div class="festival-info">
+          <div class="festival-month">December</div>
+          <div class="festival-name">Las Posadas</div>
+          <div class="festival-region">Nationwide</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY MEXICO -->
+  <section class="why-section">
+    <h2 class="why-title">Why Travel Mexico</h2>
+    <p class="why-sub">Ancient civilisations, wild nature and a table that never empties</p>
+
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="35">0</span></div>
+        <p class="fact-label">UNESCO World Heritage Sites</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="68">0</span>+</div>
+        <p class="fact-label">Indigenous Languages Still Spoken</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="3000">0</span>+</div>
+        <p class="fact-label">Years of Continuous Civilisation</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="9330">0</span>+</div>
+        <p class="fact-label">Kilometres of Pacific & Gulf Coastline</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="32">0</span></div>
+        <p class="fact-label">Diverse States to Explore</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="1">0</span></div>
+        <p class="fact-label">UNESCO-Recognised Cuisine in the World</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL STYLES -->
+  <section class="styles-section">
+    <h2 class="styles-title">Explore By Travel Style</h2>
+    <p class="styles-sub">Find your Mexico based on your passions</p>
+
+    <div class="styles-grid">
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=600&q=80" alt="Ruins & History" />
+        <div class="style-body">
+          <div class="style-name">Ruins &amp; History</div>
+          <p class="style-desc">Chichén Itzá, Teotihuacán, Palenque, Monte Albán, Uxmal</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Beaches" />
+        <div class="style-body">
+          <div class="style-name">Beaches</div>
+          <p class="style-desc">Tulum, Cabo San Lucas, Riviera Maya, Puerto Escondido, Sayulita</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Food" />
+        <div class="style-body">
+          <div class="style-name">Food</div>
+          <p class="style-desc">Tacos al pastor, mole negro, tamales, street tlayudas & mezcal</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80" alt="Nature & Wildlife" />
+        <div class="style-body">
+          <div class="style-name">Nature &amp; Wildlife</div>
+          <p class="style-desc">Monarch butterfly reserves, grey whale lagoons, jaguar jungle, whale sharks</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80" alt="Adventure" />
+        <div class="style-body">
+          <div class="style-name">Adventure</div>
+          <p class="style-desc">Cenote diving, Copper Canyon hiking, surfing Oaxaca, zip-lining Chiapas</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80" alt="Festivals" />
+        <div class="style-body">
+          <div class="style-name">Festivals</div>
+          <p class="style-desc">Día de los Muertos, Guelaguetza, Carnaval, Las Posadas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURE STRIP -->
+  <section class="strip-section">
+    <div class="strip-item">
+      <div class="strip-icon">🌮</div>
+      <div>
+        <h3>A UNESCO-Recognised Cuisine</h3>
+        <p>Mexican food is one of only a handful of cuisines inscribed on UNESCO's Intangible Cultural Heritage list. From the 36 distinct chillies to the complex ritual of mole, eating here is an act of culture.</p>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">🏛️</div>
+      <div>
+        <h3>Five Ancient Civilisations</h3>
+        <p>The Olmec, Zapotec, Teotihuacán, Maya and Aztec each left behind cities, calendars, art and cosmologies that still shape Mexican identity. No other country carries this weight of layered history.</p>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">🎨</div>
+      <div>
+        <h3>Art Born from Revolution</h3>
+        <p>Diego Rivera, Frida Kahlo, José Clemente Orozco — the Mexican muralist movement created a public art tradition unlike any other. Their work covers entire government buildings, alive and defiant.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREE BANNER -->
+  <div class="tree-banner">
+    🌿 &nbsp; We plant a tree for every trip booked through Journeys
+  </div>
+
+  
+
+  <script>
+    const counters = document.querySelectorAll('.counter');
+    let started = false;
+
+    function startCounters() {
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const increment = Math.max(1, Math.ceil(target / 80));
+        const update = () => {
+          count += increment;
+          if (count >= target) { counter.textContent = target.toLocaleString(); return; }
+          counter.textContent = count.toLocaleString();
+          requestAnimationFrame(update);
+        };
+        update();
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      if (started) return;
+      const section = document.querySelector('.why-section');
+      if (!section) return;
+      if (section.getBoundingClientRect().top < window.innerHeight - 100) {
+        started = true;
+        startCounters();
+      }
+    });
+  </script>
+</body>
+</html>

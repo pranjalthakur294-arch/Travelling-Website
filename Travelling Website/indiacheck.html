@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journeys — Travel To India</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold:       #c9a84c;
+      --dark:       #1a1a1a;
+      --off-white:  #f7f5f2;
+      --mid-gray:   #6b6b6b;
+      --light-gray: #e8e4de;
+      --warm-white: #fdfbf8;
+      --saffron:    #c8600a;
+      --spice:      #7c2d12;
+      --sand:       #fdf3e7;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(253,251,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-logo {
+      font-family: 'didot', serif;
+      font-size: 38px;
+      font-weight:700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-actions { display: flex; gap: 12px; align-items: center; }
+
+    .btn-outline {
+      padding: 9px 22px;
+      border: 1.5px solid var(--dark);
+      border-radius: 100px;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--dark); color: white; }
+
+    .btn-primary {
+      padding: 9px 22px;
+      border: none;
+      border-radius: 100px;
+      background: #7c3aed;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('images/kathak.jpg') ;
+      
+  background-size: cover ; 
+  background-position: center ;
+  background-repeat: no-repeat;
+
+  transform: scale(1.05);
+  animation: heroZoom 22s ease-in-out infinite alternate;
+}
+
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.12); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15,5,2,0.18) 0%,
+        rgba(15,5,2,0.46) 50%,
+        rgba(15,5,2,0.80) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 9vw, 110px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-title em { font-style: italic; color: var(--gold); }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: #7c3aed;
+      color: white;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 0.2s, opacity 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+      text-decoration: none;
+    }
+
+    .hero-cta:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      background: rgba(15,5,2,0.65);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-item {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.48);
+      margin-bottom: 6px;
+    }
+
+    .stat-value { font-size: 15px; font-weight: 600; line-height: 1.3; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── INTRO ─── */
+    .intro-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 85vh;
+      background: var(--sand);
+    }
+
+    .intro-left {
+      padding: 100px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 24px;
+    }
+
+    .intro-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .intro-body {
+      font-size: 16px;
+      color: var(--mid-gray);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .intro-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .intro-right:hover img { transform: scale(1.03); }
+
+    .intro-badge {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: rgba(253,251,248,0.96);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px 28px;
+      max-width: 290px;
+    }
+
+    .intro-badge-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 6px;
+    }
+
+    .intro-badge-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .intro-badge-sub {
+      font-size: 13px;
+      color: var(--mid-gray);
+      margin-top: 4px;
+      cursor: pointer;
+    }
+
+    .itinerary-callout {
+      background: rgba(200,96,10,0.08);
+      padding: 20px 32px;
+      border-radius: 16px;
+      border-left: 4px solid var(--saffron);
+      margin-top: 32px;
+    }
+
+    .itinerary-callout p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+
+    .itinerary-callout span { font-size: 13px; color: var(--mid-gray); }
+
+    /* ─── THINGS TO SEE ─── */
+    .things-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .section-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--saffron);
+    }
+
+    .section-label { font-size: 14px; font-weight: 500; color: var(--dark); }
+
+    /* Top 2-col grid */
+    .things-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+    }
+
+    .thing-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thing-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .thing-card:hover img { transform: scale(1.05); }
+
+    .thing-card-main { grid-row: 1 / 3; height: 530px; }
+    .thing-card-sm   { height: 255px; }
+
+    .thing-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 24px 22px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.74));
+      color: white;
+    }
+
+    .thing-caption p { font-size: 14px; line-height: 1.5; }
+
+    /* Bottom row — 3 cards */
+    .things-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .things-bottom .thing-card { height: 260px; }
+
+    /* ─── REGIONS ─── */
+    .regions-section {
+      padding: 100px 80px;
+      background: var(--spice);
+      color: white;
+    }
+
+    .regions-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .regions-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 640px;
+      line-height: 1.15;
+    }
+
+    .regions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .region-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 2/3;
+      cursor: pointer;
+    }
+
+    .region-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.62);
+      transition: transform 0.6s ease, filter 0.4s;
+    }
+
+    .region-card:hover img { transform: scale(1.07); filter: brightness(0.42); }
+
+    .region-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 22px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    }
+
+    .region-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .region-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .region-desc { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+    /* ─── SEASONS ─── */
+    .seasons-section {
+      padding: 100px 80px;
+      background: var(--off-white);
+    }
+
+    .seasons-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .seasons-sub { font-size: 16px; color: var(--mid-gray); margin-bottom: 60px; }
+
+    .seasons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .season-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 32px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .season-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(200,96,10,0.1);
+    }
+
+    .season-icon { font-size: 32px; margin-bottom: 16px; }
+
+    .season-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--saffron);
+      margin-bottom: 12px;
+    }
+
+    .season-desc { font-size: 15px; color: var(--mid-gray); line-height: 1.7; }
+
+    /* ─── FESTIVALS ─── */
+    .festivals-section {
+      padding: 100px 80px;
+      background: var(--dark);
+    }
+
+    .festivals-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .festivals-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 620px;
+      color: white;
+      line-height: 1.15;
+    }
+
+    .festivals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .festival-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .festival-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.62);
+    }
+
+    .festival-item:hover img { transform: scale(1.08); filter: brightness(0.42); }
+
+    .festival-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 28px 28px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    }
+
+    .festival-month {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .festival-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .festival-region { font-size: 13px; color: rgba(255,255,255,0.58); }
+
+    /* ─── WHY INDIA ─── */
+    .why-section {
+      padding: 100px 80px;
+      background: var(--sand);
+      text-align: center;
+    }
+
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .why-sub { font-size: 16px; color: var(--mid-gray); margin-bottom: 64px; }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .fact-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 24px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .fact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(200,96,10,0.1);
+    }
+
+    .fact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--saffron);
+      margin-bottom: 8px;
+    }
+
+    .fact-label { font-size: 15px; color: var(--mid-gray); line-height: 1.5; }
+
+    /* ─── TRAVEL STYLES ─── */
+    .styles-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .styles-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .styles-sub { font-size: 16px; color: var(--mid-gray); margin-bottom: 60px; }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .style-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--off-white);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .style-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.12);
+    }
+
+    .style-img { width: 100%; height: 210px; object-fit: cover; display: block; }
+
+    .style-body { padding: 22px 24px 26px; }
+
+    .style-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .style-desc { font-size: 14px; color: var(--mid-gray); line-height: 1.6; }
+
+    /* ─── SIGNATURE STRIP ─── */
+    .strip-section {
+      padding: 72px 80px;
+      background: #3b1f0a;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      color: white;
+    }
+
+    .strip-item { display: flex; gap: 20px; align-items: flex-start; }
+
+    .strip-icon { font-size: 36px; flex-shrink: 0; margin-top: 4px; }
+
+    .strip-item h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .strip-item p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; }
+
+    /* ─── TREE BANNER ─── */
+    .tree-banner {
+      background: #1a2a1a;
+      padding: 24px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.78);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1100px) {
+      nav { padding: 16px 24px; }
+      .intro-section { grid-template-columns: 1fr; }
+      .intro-right { height: 460px; }
+      .intro-left { padding: 60px 40px; }
+      .things-section, .seasons-section, .festivals-section,
+      .regions-section, .why-section, .styles-section,
+      .strip-section { padding: 70px 40px; }
+      .seasons-grid, .styles-grid { grid-template-columns: 1fr 1fr; }
+      .festivals-grid { grid-template-columns: 1fr 1fr; }
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      .regions-grid { grid-template-columns: 1fr 1fr; }
+      .strip-section { grid-template-columns: 1fr; gap: 32px; }
+      footer { grid-template-columns: 1fr 1fr; padding: 40px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .things-grid { grid-template-columns: 1fr; }
+      .thing-card-main { height: 360px; grid-row: auto; }
+      .things-bottom { grid-template-columns: 1fr; }
+      .things-bottom .thing-card { height: 220px; }
+      .seasons-grid, .festivals-grid, .styles-grid,
+      .facts-grid, .regions-grid { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="Homepage.html">Destination</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+        <div class="nav-logo">WANDR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+    <div class="nav-actions">
+     <a href="trip.html">
+      <button class="btn-primary">Start Planning</button>
+      </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">South Asia</p>
+      <h1 class="hero-title">Travel To <em>India.</em></h1>
+      <p class="hero-sub">Whatever you want, we can make it happen.</p>
+      <a href="trip.html" class="hero-cta">Craft Your Trip</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-label">Best Time to Visit</div>
+        <div class="stat-value">November to March,<br/>July–Sept for Himalayas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Capital</div>
+        <div class="stat-value">NEW DELHI</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Population</div>
+        <div class="stat-value">1.4 B</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Area</div>
+        <div class="stat-value">3,287,263 SQ KM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Official Languages</div>
+        <div class="stat-value">Hindi, Bengali,<br/>and many many more</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro-section">
+    <div class="intro-left">
+      <p class="intro-tag">Vast and unfathomable, a kaleidoscope of cultures</p>
+      <h2 class="intro-heading">Ancient Empires, Sacred Rivers &amp; Infinite Colour</h2>
+      <p class="intro-body">
+        Crowned by the Himalayas and crossed by sacred rivers, India is vast and layered — a mosaic of cultures and the birthplace of several of the world's great religions. Empires from ancient Persia to the British Raj have sought its riches, and countless civilisations have risen and fallen across its plains, deserts, mountains and jungles, yet India endures.
+      </p>
+      <p class="intro-body">
+        Vibrant and demanding in equal measure, the country wrestles with relentless energy; its villages move to older rhythms shaped by monsoon and harvest. Amid the noise and colour, there are moments of stillness — dawn spilling over temple spires, prayer flags stirring in mountain air, the call to worship drifting across a river at dusk.
+      </p>
+      <p class="intro-body">
+        India is not easily defined or neatly understood. It is a place of extremes and continuities, where ancient traditions and modern ambitions coexist, sometimes in friction, often in harmony — and always with unmistakable intensity.
+      </p>
+      <div class="itinerary-callout">
+        <p>Explore on your own terms</p>
+        <span>This is just a sample itinerary. Your trip will be tailor-made and personalized to you.</span>
+      </div>
+    </div>
+
+    <div class="intro-right">
+      <img src="images/hawamahal.jpg" alt="Hawa Mahal, Jaipur" />
+      <a href="itinerary.html" style="color:inherit;text-decoration:none;">
+      <div class="intro-badge">
+        <div class="intro-badge-label">Featured Experience</div>
+        <div class="intro-badge-text">INDIA AT FINEST</div>
+        <div class="intro-badge-sub">View Itinerary →</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP THINGS TO SEE -->
+  <section class="things-section">
+    <div class="section-header">
+      <div class="section-dot"></div>
+      <span class="section-label">Top Things to See</span>
+    </div>
+
+    <!-- Top row -->
+    <div class="things-grid">
+      <div class="thing-card thing-card-main">
+        <img src="images/tajmahal.jpg" alt="Taj Mahal" />
+        <div class="thing-caption">
+          <p>The white marble magnificence of the Taj Mahal — a monument to eternal love rising above the banks of the Yamuna in Agra</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="thing-card thing-card-sm">
+          <img src="images/toytrain.jpg" alt="Darjeeling Toy Train" />
+          <div class="thing-caption">
+            <p>Himalayan views and Raj-era oddities in Shimla and Darjeeling, the quintessential Indian hill stations</p>
+          </div>
+        </div>
+        <div class="thing-card thing-card-sm">
+          <img src="images/ladakh.jpg" alt="Ladakh" />
+          <div class="thing-caption">
+            <p>An otherworldly landscape of mountains and monasteries in remote, breathless Ladakh</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="things-bottom">
+      <div class="thing-card">
+        <img src="images/varanasi.jpg" alt="Varanasi" />
+        <div class="thing-caption">
+          <p>The unbelievable tide of humanity crowding the banks of the sacred River Ganges in Varanasi</p>
+        </div>
+      </div>
+      <div class="thing-card">
+        <img src="images/pangong.jpg" alt="Pangong Lake" />
+        <div class="thing-caption">
+          <p>Pangong Lake — a strip of impossible blue at 4,350 metres, straddling India and Tibet in the Ladakhi highlands</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGIONS -->
+  <section class="regions-section">
+    <p class="regions-eyebrow">28 States, Eight Union Territories</p>
+    <h2 class="regions-title">Every Corner of India Holds a Civilisation Unto Itself</h2>
+
+    <div class="regions-grid">
+      <div class="region-card">
+        <img src="images/hawamahal.jpg" alt="Rajasthan" />
+        <div class="region-info">
+          <div class="region-tag">Northwest India</div>
+          <div class="region-name">Rajasthan</div>
+          <div class="region-desc">Forts, palaces, desert dunes & royal splendour in the Pink City</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="images/kerala.jpg" alt="Kerala" />
+        <div class="region-info">
+          <div class="region-tag">South India</div>
+          <div class="region-name">Kerala</div>
+          <div class="region-desc">Backwaters, spice gardens, Kathakali dance & Ayurvedic healing</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="images/varanasi.jpg" alt="Varanasi" />
+        <div class="region-info">
+          <div class="region-tag">North India</div>
+          <div class="region-name">Varanasi</div>
+          <div class="region-desc">Ghats, rituals, silk weaving & the world's oldest living city</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="images/ladda.jpg" alt="Himalayas" />
+        <div class="region-info">
+          <div class="region-tag">The Himalayas</div>
+          <div class="region-name">Ladakh</div>
+          <div class="region-desc">Monasteries, high passes, starlit skies & Buddhist tranquility</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONS -->
+  <section class="seasons-section">
+    <h2 class="seasons-title">Best Time to Visit India</h2>
+    <p class="seasons-sub">India's scale means every season opens a different door</p>
+
+    <div class="seasons-grid">
+      <div class="season-card">
+        <div class="season-icon">❄️</div>
+        <div class="season-name">Winter (Nov – Feb)</div>
+        <p class="season-desc">The golden window for most of India — cool, dry days perfect for Rajasthan, Agra, Goa and the Golden Triangle. Nights in the desert can be biting cold.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">☀️</div>
+        <div class="season-name">Summer (Mar – Jun)</div>
+        <p class="season-desc">The Himalayas open up — Ladakh, Spiti and Uttarakhand are at their most accessible. The plains are fierce, but hill stations offer cool refuge.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🌧️</div>
+        <div class="season-name">Monsoon (Jul – Sep)</div>
+        <p class="season-desc">The landscape transforms into deep green. Kerala and Meghalaya are extraordinary. Fewer crowds, lower prices — and the rain itself is an experience.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FESTIVALS -->
+  <section class="festivals-section">
+    <p class="festivals-eyebrow">Culture &amp; Celebration</p>
+    <h2 class="festivals-title">India's Most Unforgettable Festivals</h2>
+
+    <div class="festivals-grid">
+      <div class="festival-item">
+        <img src="images/holi.jpg" alt="Holi" />
+        <div class="festival-info">
+          <div class="festival-month">March</div>
+          <div class="festival-name">Holi</div>
+          <div class="festival-region">Mathura, Vrindavan & nationwide</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/diwali.jpg" alt="Diwali" />
+        <div class="festival-info">
+          <div class="festival-month">October / November</div>
+          <div class="festival-name">Diwali</div>
+          <div class="festival-region">Nationwide</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/navratri.jpg" alt="Navratri" />
+        <div class="festival-info">
+          <div class="festival-month">October</div>
+          <div class="festival-name">Navratri</div>
+          <div class="festival-region">Gujarat & nationwide</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/pongal.jpg" alt="Pongal" />
+        <div class="festival-info">
+          <div class="festival-month">January</div>
+          <div class="festival-name">Pongal</div>
+          <div class="festival-region">Tamil Nadu</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/ganeshji.jpg" alt="Ganesh Chaturthi" />
+        <div class="festival-info">
+          <div class="festival-month">August / September</div>
+          <div class="festival-name">Ganesh Chaturthi</div>
+          <div class="festival-region">Mumbai & Maharashtra</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/hornbill.jpg" alt="Hornbill Festival" />
+        <div class="festival-info">
+          <div class="festival-month">December</div>
+          <div class="festival-name">Hornbill Festival</div>
+          <div class="festival-region">Nagaland, Northeast India</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY INDIA -->
+  <section class="why-section">
+    <h2 class="why-title">Why Travel India</h2>
+    <p class="why-sub">A land of diversity, ancient civilisation and unforgettable experience</p>
+
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="42">0</span></div>
+        <p class="fact-label">UNESCO World Heritage Sites</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="2000">0</span>+</div>
+        <p class="fact-label">Festivals Celebrated Every Year</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="5000">0</span>+</div>
+        <p class="fact-label">Years of Continuous Civilisation</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="1600">0</span>+</div>
+        <p class="fact-label">Dialects & Languages Spoken</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="28">0</span></div>
+        <p class="fact-label">States, Each with Unique Culture</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="8">0</span></div>
+        <p class="fact-label">Union Territories to Explore</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL STYLES -->
+  <section class="styles-section">
+    <h2 class="styles-title">Explore By Travel Style</h2>
+    <p class="styles-sub">Find your India based on your passions</p>
+
+    <div class="styles-grid">
+      <div class="style-card">
+        <img class="style-img" src="images/ladakh.jpg" alt="Adventure" />
+        <div class="style-body">
+          <div class="style-name">Adventure</div>
+          <p class="style-desc">Trekking in Ladakh, white-water rafting in Rishikesh, Spiti Valley expeditions</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="images/india_beach.jpg" alt="Beaches" />
+        <div class="style-body">
+          <div class="style-name">Beaches</div>
+          <p class="style-desc">Goa's shores, Andaman islands, Varkala cliffs, Lakshadweep atolls</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="images/amer.jpg" alt="Heritage" />
+        <div class="style-body">
+          <div class="style-name">Heritage</div>
+          <p class="style-desc">Taj Mahal, Hampi, Khajuraho, Amer Fort, Ellora & Ajanta caves</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="images/delta.jpg" alt="Nature" />
+        <div class="style-body">
+          <div class="style-name">Nature</div>
+          <p class="style-desc">Tiger reserves, Kerala backwaters, Sundarbans delta, Western Ghats</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="images/dishes.jpg" alt="Food" />
+        <div class="style-body">
+          <div class="style-name">Food</div>
+          <p class="style-desc">Discover India's 1,000+ regional cuisines — from chaat to Chettinad</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="images/diwali.jpg" alt="Festivals" />
+        <div class="style-body">
+          <div class="style-name">Festivals</div>
+          <p class="style-desc">Holi, Diwali, Navratri, Pongal, Ganesh Chaturthi, Hornbill Festival</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURE STRIP -->
+  <section class="strip-section">
+    <div class="strip-item">
+      <div class="strip-icon">🛕</div>
+      <div>
+        <h3>A Spiritual Civilisation</h3>
+        <p>India is the birthplace of Hinduism, Buddhism, Jainism and Sikhism. Every town holds a temple, every river is sacred, and the rituals of daily life carry thousands of years of unbroken meaning.</p>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">🍛</div>
+      <div>
+        <h3>A Cuisine Without Equal</h3>
+        <p>From Punjabi butter chicken to Tamil fish curry to Gujarati thali — India's food changes every hundred kilometres. Street food alone could occupy a lifetime of delicious research.</p>
+      </div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-icon">🚂</div>
+      <div>
+        <h3>The World's Greatest Rail Network</h3>
+        <p>With over 13 million passengers daily, Indian Railways is a country within a country. The overnight trains, the chai-wallahs, the passing landscapes — it is travel as immersion.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREE BANNER -->
+  <div class="tree-banner">
+    🌿 &nbsp; We plant a tree for every trip booked through Journeys
+  </div>
+
+
+
+  <script>
+    const counters = document.querySelectorAll('.counter');
+    let started = false;
+
+    function startCounters() {
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const increment = Math.max(1, Math.ceil(target / 80));
+        const update = () => {
+          count += increment;
+          if (count >= target) { counter.textContent = target.toLocaleString(); return; }
+          counter.textContent = count.toLocaleString();
+          requestAnimationFrame(update);
+        };
+        update();
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      if (started) return;
+      const section = document.querySelector('.why-section');
+      if (!section) return;
+      if (section.getBoundingClientRect().top < window.innerHeight - 100) {
+        started = true;
+        startCounters();
+      }
+    });
+  </script>
+</body>
+</html>

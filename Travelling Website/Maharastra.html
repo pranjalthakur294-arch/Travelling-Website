@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maharashtra | Journeys</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #0f172a;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      width: 100%;
+      background: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 80px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #334155;
+      font-size: 16px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #2563eb;
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      background: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: #1d4ed8;
+    }
+    /* INTERACTIVE MAP SECTION */
+.interactive-map-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  margin-top: 25px;
+}
+
+.interactive-map-card {
+  background: #f8fbff;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.interactive-map-card iframe {
+  width: 100%;
+  height: 430px;
+  border: none;
+  display: block;
+}
+
+.location-panel {
+  background: #f8fbff;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.location-panel h4 {
+  font-size: 26px;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.location-panel p {
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.location-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.location-buttons button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.location-buttons button:hover {
+  background: #2563eb;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.place-details {
+  margin-top: 22px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.place-details h5 {
+  font-size: 22px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.place-details p {
+  margin: 0;
+  font-size: 15px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+@media (max-width: 950px) {
+  .interactive-map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .interactive-map-card iframe {
+    height: 320px;
+  }
+}
+.direction-btn {
+  display: inline-block;
+  margin-top: 18px;
+  text-decoration: none;
+  background: #2563eb;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.direction-btn:hover {
+  background: #1d4ed8;
+}
+
+.map-btn.active {
+  background: #2563eb;
+  color: white;
+}
+
+    /* HERO */
+    .hero {
+      width: 86%;
+      margin: 35px auto 20px;
+      height: 430px;
+      border-radius: 28px;
+      background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+        url("https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1400&auto=format&fit=crop")
+        center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 20px;
+    }
+
+    .hero-content h1 {
+      font-size: 64px;
+      margin-bottom: 16px;
+      font-weight: 800;
+    }
+
+    .hero-content p {
+      font-size: 24px;
+      max-width: 800px;
+      margin: 0 auto 24px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #2563eb;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 40px;
+      font-size: 18px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .hero-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* PAGE TITLE */
+    .page-title {
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+
+    .page-title h2 {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .page-title p {
+      font-size: 20px;
+      color: #64748b;
+    }
+
+    /* CONTAINER */
+    .container {
+      width: 86%;
+      margin: 40px auto;
+    }
+
+    /* SECTION BOX */
+    .section-box {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+      margin-bottom: 30px;
+    }
+
+    .section-box h3 {
+      font-size: 36px;
+      margin-bottom: 18px;
+      color: #0f172a;
+      text-align: center;
+    }
+
+    .section-box p {
+      font-size: 18px;
+      color: #475569;
+      line-height: 1.8;
+      text-align: center;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    /* DESTINATION CARDS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      margin-top: 25px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content {
+      padding: 22px;
+    }
+
+    .card-content h4 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #0f172a;
+    }
+
+    .card-content p {
+      font-size: 16px;
+      color: #64748b;
+      line-height: 1.6;
+      text-align: left;
+      margin-bottom: 14px;
+    }
+
+    .card-content a {
+      text-decoration: none;
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    /* HIGHLIGHTS */
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .highlight-card {
+      background: #f8fbff;
+      border-radius: 18px;
+      padding: 24px 18px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .highlight-card h4 {
+      color: #2563eb;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .highlight-card p {
+      font-size: 15px;
+      color: #475569;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* INFO TABLE STYLE */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 25px;
+    }
+
+    .info-box {
+      background: #f8fbff;
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .info-box h4 {
+      font-size: 22px;
+      color: #2563eb;
+      margin-bottom: 12px;
+    }
+
+    .info-box p {
+      text-align: left;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #475569;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 28px 20px;
+      margin-top: 50px;
+    }
+
+    footer p {
+      font-size: 16px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .highlights {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content h1 {
+        font-size: 48px;
+      }
+
+      .page-title h2 {
+        font-size: 42px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 18px;
+        padding: 20px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 18px;
+      }
+
+      .hero {
+        height: 350px;
+        width: 92%;
+      }
+
+      .hero-content h1 {
+        font-size: 36px;
+      }
+
+      .hero-content p {
+        font-size: 18px;
+      }
+
+      .page-title h2 {
+        font-size: 34px;
+      }
+
+      .container {
+        width: 92%;
+      }
+
+      .cards-grid,
+      .highlights {
+        grid-template-columns: 1fr;
+      }
+
+      .section-box h3 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">Journeys</div>
+
+    <ul class="nav-links">
+      <li><a href="Homepage.html">Home</a></li>
+      <li><a href="Homepage.html" class="active">Destinations</a></li>
+      <li><a href="indiacheck.html">Tourism</a></li>
+      <li><a href="about.html">Contact</a></li>
+    </ul>
+
+    <a href="trip.html" class="nav-btn">Start Planning</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Explore Maharashtra</h1>
+      <p>Discover forts, beaches, hill stations, culture, food and unforgettable journeys.</p>
+      <a href="#places" class="hero-btn">Discover Places</a>
+    </div>
+  </section>
+
+  <!-- PAGE TITLE -->
+  <section class="page-title">
+    <h2>Maharashtra</h2>
+    <p>The land of dreams, heritage and scenic beauty</p>
+  </section>
+
+  <div class="container">
+
+    <!-- ABOUT -->
+    <section class="section-box">
+      <h3>About Maharashtra</h3>
+      <p>
+        Maharashtra is one of the most popular travel states in India. From the energetic streets of Mumbai
+        to the cool hills of Lonavala and Mahabaleshwar, this state offers a beautiful mix of city life,
+        beaches, historic forts, caves, pilgrimage sites and natural landscapes. It is perfect for travellers
+        who want culture, adventure, relaxation and local food all in one destination.
+      </p>
+    </section>
+    <section class="section-box">
+  <h3>Explore Maharashtra on Map</h3>
+
+  <div class="interactive-map-layout">
+    
+    <div class="interactive-map-card">
+      <iframe
+        id="maharashtraMap"
+        src="https://www.google.com/maps?q=Mumbai,Maharashtra,India&output=embed"
+        loading="lazy"
+        allowfullscreen="">
+      </iframe>
+    </div>
+
+    <div class="location-panel">
+      <h4>Top Locations</h4>
+      <p>
+        Click on any destination to preview it on map and open live directions.
+      </p>
+
+      <div class="location-buttons">
+        <button class="map-btn active" onclick="showPlace('Mumbai', this)">Mumbai</button>
+        <button class="map-btn" onclick="showPlace('Pune', this)">Pune</button>
+        <button class="map-btn" onclick="showPlace('Lonavala', this)">Lonavala</button>
+        <button class="map-btn" onclick="showPlace('Mahabaleshwar', this)">Mahabaleshwar</button>
+        <button class="map-btn" onclick="showPlace('Shirdi', this)">Shirdi</button>
+        <button class="map-btn" onclick="showPlace('Ajanta Ellora', this)">Ajanta & Ellora</button>
+      </div>
+
+      <div class="place-details">
+        <h5 id="placeTitle">Mumbai</h5>
+        <p id="placeDescription">
+          Mumbai is the heart of Maharashtra, famous for Marine Drive, Gateway of India, Bollywood, street food and vibrant city life.
+        </p>
+
+        <a id="directionsBtn" href="#" target="_blank" class="direction-btn">
+          Get Live Directions
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+    <!-- TOP PLACES -->
+    <section class="section-box" id="places">
+      <h3>Top Places to Visit</h3>
+
+      <div class="cards-grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1595658658481-d53d3f999875?q=80&w=1200&auto=format&fit=crop" alt="Mumbai">
+          <div class="card-content">
+            <h4>Mumbai</h4>
+            <p>
+              Explore Marine Drive, Gateway of India, Juhu Beach and the fast-paced charm of India’s financial capital.
+            </p>
+            <a href="#">View More</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="images/states/lonavala.jpg" alt="Lonavala">
+          <div class="card-content">
+            <h4>Lonavala</h4>
+            <p>
+              A favourite hill station known for greenery, waterfalls, viewpoints and monsoon beauty near Mumbai and Pune.
+            </p>
+            <a href="#">View More</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=1200&auto=format&fit=crop" alt="Ajanta Ellora">
+          <div class="card-content">
+            <h4>Ajanta & Ellora</h4>
+            <p>
+              Ancient cave monuments famous for their rock-cut architecture, sculptures and historical importance.
+            </p>
+            <a href="#">View More</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Mahabaleshwar">
+          <div class="card-content">
+            <h4>Mahabaleshwar</h4>
+            <p>
+              A peaceful hill station with valleys, strawberry farms, viewpoints and cool weather throughout the year.
+            </p>
+            <a href="#">View More</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" alt="Konkan Coast">
+          <div class="card-content">
+            <h4>Konkan Coast</h4>
+            <p>
+              Enjoy serene beaches, coastal villages, seafood and scenic drives along the western coastline.
+            </p>
+            <a href="#">View More</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200&auto=format&fit=crop" alt="Shirdi">
+          <div class="card-content">
+            <h4>Shirdi</h4>
+            <p>
+              A major spiritual destination visited by devotees from across India for peace, faith and blessings.
+            </p>
+            <a href="#">View More</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section class="section-box">
+      <h3>Maharashtra Highlights</h3>
+
+      <div class="highlights">
+        <div class="highlight-card">
+          <h4>Forts</h4>
+          <p>Historic forts linked with Chhatrapati Shivaji Maharaj and Maratha pride.</p>
+        </div>
+
+        <div class="highlight-card">
+          <h4>Beaches</h4>
+          <p>Beautiful coastal escapes in Alibaug, Tarkarli, Ganpatipule and Konkan.</p>
+        </div>
+
+        <div class="highlight-card">
+          <h4>Hill Stations</h4>
+          <p>Lonavala, Matheran and Mahabaleshwar offer cool weather and natural beauty.</p>
+        </div>
+
+        <div class="highlight-card">
+          <h4>Food</h4>
+          <p>Enjoy vada pav, misal pav, puran poli, modak and delicious local flavours.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAVEL INFO -->
+    <section class="section-box">
+      <h3>Travel Information</h3>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <h4>Best Time to Visit</h4>
+          <p>
+            October to March is the best time to explore Maharashtra. The weather remains pleasant
+            for sightseeing, beach visits and hill station travel.
+          </p>
+        </div>
+
+        <div class="info-box">
+          <h4>Famous Festivals</h4>
+          <p>
+            Ganesh Chaturthi, Gudi Padwa, Diwali and Navratri are celebrated with great energy and attract many visitors.
+          </p>
+        </div>
+
+        <div class="info-box">
+          <h4>Why Visit?</h4>
+          <p>
+            Maharashtra is ideal for travellers who want a mix of modern cities, heritage sites,
+            nature, spiritual tourism and authentic regional culture.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <script>
+  let selectedDestination = "Mumbai, Maharashtra, India";
+
+  function showPlace(place, element) {
+    const map = document.getElementById("maharashtraMap");
+    const title = document.getElementById("placeTitle");
+    const description = document.getElementById("placeDescription");
+    const directionsBtn = document.getElementById("directionsBtn");
+
+    const places = {
+      "Mumbai": {
+        destination: "Mumbai, Maharashtra, India",
+        map: "https://www.google.com/maps?q=Mumbai,Maharashtra,India&output=embed",
+        title: "Mumbai",
+        desc: "Mumbai is the heart of Maharashtra, famous for Marine Drive, Gateway of India, Bollywood, street food and vibrant city life."
+      },
+      "Pune": {
+        destination: "Pune, Maharashtra, India",
+        map: "https://www.google.com/maps?q=Pune,Maharashtra,India&output=embed",
+        title: "Pune",
+        desc: "Pune is known for its educational culture, pleasant weather, historical landmarks and rich Marathi heritage."
+      },
+      "Lonavala": {
+        destination: "Lonavala, Maharashtra, India",
+        map: "https://www.google.com/maps?q=Lonavala,Maharashtra,India&output=embed",
+        title: "Lonavala",
+        desc: "Lonavala is a beautiful hill station known for green valleys, waterfalls, monsoon views and relaxing weekend trips."
+      },
+      "Mahabaleshwar": {
+        destination: "Mahabaleshwar, Maharashtra, India",
+        map: "https://www.google.com/maps?q=Mahabaleshwar,Maharashtra,India&output=embed",
+        title: "Mahabaleshwar",
+        desc: "Mahabaleshwar is famous for strawberry farms, scenic viewpoints, cool climate and peaceful hill station vibes."
+      },
+      "Shirdi": {
+        destination: "Shirdi, Maharashtra, India",
+        map: "https://www.google.com/maps?q=Shirdi,Maharashtra,India&output=embed",
+        title: "Shirdi",
+        desc: "Shirdi is one of the most important spiritual destinations in India and is visited by Sai Baba devotees from all over the country."
+      },
+      "Ajanta Ellora": {
+        destination: "Ajanta Caves, Maharashtra, India",
+        map: "https://www.google.com/maps?q=Ajanta Caves,Maharashtra,India&output=embed",
+        title: "Ajanta & Ellora",
+        desc: "Ajanta and Ellora are world-famous cave monuments known for rock-cut architecture, paintings, sculptures and ancient history."
+      }
+    };
+
+    selectedDestination = places[place].destination;
+    map.src = places[place].map;
+    title.textContent = places[place].title;
+    description.textContent = places[place].desc;
+
+    directionsBtn.href = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(selectedDestination);
+
+    const buttons = document.querySelectorAll(".map-btn");
+    buttons.forEach(btn => btn.classList.remove("active"));
+    element.classList.add("active");
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const directionsBtn = document.getElementById("directionsBtn");
+    directionsBtn.href = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(selectedDestination);
+  });
+</script>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Journeys | Discover Maharashtra with comfort and style</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Italy Itinerary – Lonely Planet Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0e0c08;
+      --terracotta: #c1472b;
+      --ochre: #c9882a;
+      --sage: #4a6741;
+      --cream: #f8f4ed;
+      --warm: #ede5d4;
+      --muted: #7d7060;
+      --card: #ffffff;
+      --stone: #2b2318;
+      --deepstone: #1a1610;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 490px;
+      overflow: hidden;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 45%;
+      filter: brightness(0.50);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(145deg, rgba(14,12,8,0.65) 0%, transparent 55%),
+        linear-gradient(to bottom, transparent 28%, rgba(14,12,8,0.85) 100%);
+    }
+    /* Subtle diagonal hatching inspired by old travel maps */
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        #fff 0, #fff 1px,
+        transparent 0, transparent 22px
+      );
+    }
+
+    .nav-logo {
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+    .nav-logo .small { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+    .nav-logo h1 { font-family: 'didot', serif;color: rgba(255,255,255,0.6); font-size: 38px; line-height: 1; }
+
+    .hero-content {
+      position: absolute;
+      bottom: 52px;
+      left: 64px;
+      right: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .hero-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 58px;
+      color: #fff;
+      line-height: 1.05;
+      font-weight: 700;
+    }
+    .hero-title em { font-style: italic; font-weight: 400; color: var(--ochre); }
+
+    .hero-meta { text-align: right; }
+    .hero-meta .meta-row {
+      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      justify-content: flex-end;
+    }
+    .hero-meta .meta-row .icon { color: var(--ochre); font-size: 15px; }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip {
+      background: var(--deepstone);
+      display: flex;
+      justify-content: center;
+    }
+    .summary-item {
+      padding: 18px 44px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.55);
+      font-size: 13px;
+      text-align: center;
+    }
+    .summary-item:last-child { border-right: none; }
+    .summary-item strong {
+      display: block;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .section-heading h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 28px;
+      white-space: nowrap;
+    }
+    .section-heading .line { flex:1; height:1px; background: var(--warm); }
+
+    /* ── ROUTE BAR ── */
+    .route-bar {
+      background: linear-gradient(135deg, #1a1610 0%, #2b2318 100%);
+      border-radius: 16px;
+      padding: 22px 28px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      animation: fadeUp .5s .05s ease both;
+    }
+    .route-city { text-align: center; flex-shrink: 0; }
+    .route-city .city-name { color: #fff; font-weight: 600; font-size: 14px; }
+    .route-city .city-days { color: rgba(255,255,255,0.42); font-size: 11px; margin-top: 3px; }
+    .route-arrow { flex:1; text-align: center; color: var(--ochre); font-size: 20px; padding: 0 8px; min-width: 40px; }
+
+    /* ── DAY CARD ── */
+    .day-card {
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 16px rgba(14,12,8,0.08);
+      transition: transform .22s, box-shadow .22s;
+      animation: fadeUp .5s ease both;
+    }
+    .day-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(14,12,8,0.15); }
+    .day-card:nth-child(2) { animation-delay: .08s; }
+    .day-card:nth-child(3) { animation-delay: .16s; }
+    .day-card:nth-child(4) { animation-delay: .24s; }
+    .day-card:nth-child(5) { animation-delay: .32s; }
+    .day-card:nth-child(6) { animation-delay: .40s; }
+
+    .day-card-header { display: grid; grid-template-columns: 220px 1fr; }
+    .day-img { height: 178px; width: 100%; object-fit: cover; display: block; }
+    .day-info { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; }
+    .day-tag {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .day-name { font-family: 'Libre Baskerville', serif; font-size: 22px; margin-bottom: 9px; }
+    .day-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .day-activities {
+      border-top: 1px solid #f0e8d8;
+      padding: 18px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .activity { display: flex; gap: 14px; align-items: flex-start; font-size: 14px; }
+    .activity-time { font-size: 11px; color: var(--muted); font-weight: 600; min-width: 46px; padding-top: 2px; letter-spacing: .5px; }
+    .activity-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ochre); margin-top: 4px; flex-shrink: 0; }
+    .activity-text { color: #1a1408; line-height: 1.56; }
+    .activity-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 32px; }
+
+    .sidebar-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(14,12,8,0.07);
+      animation: fadeUp .5s ease both;
+    }
+    .sidebar-card:nth-child(1) { animation-delay: .18s; }
+    .sidebar-card:nth-child(2) { animation-delay: .28s; }
+    .sidebar-card:nth-child(3) { animation-delay: .36s; }
+    .sidebar-card:nth-child(4) { animation-delay: .44s; }
+    .sidebar-card h3 { font-family: 'Libre Baskerville', serif; font-size: 18px; margin-bottom: 16px; }
+
+    .hotel-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: center; }
+    .hotel-item:last-child { margin-bottom: 0; }
+    .hotel-thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .hotel-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .hotel-stars { color: var(--ochre); font-size: 12px; margin-bottom: 2px; }
+    .hotel-price { font-size: 12px; color: var(--muted); }
+
+    .weather-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid #f0e8d8;
+      font-size: 13px;
+    }
+    .weather-row:last-child { border-bottom: none; }
+    .w-day { color: var(--muted); font-size: 12px; min-width: 80px; }
+    .w-icon { font-size: 19px; }
+    .w-temp { font-weight: 600; font-size: 14px; }
+    .w-desc { font-size: 11px; color: var(--muted); text-align: right; }
+
+    .tip-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; color: #211a0e; line-height: 1.56; }
+    .tip-item:last-child { margin-bottom: 0; }
+    .tip-icon { font-size: 19px; flex-shrink: 0; }
+
+    .ess-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #f0e8d8;
+      font-size: 13px;
+    }
+    .ess-item:last-child { border-bottom: none; }
+    .ess-icon { font-size: 17px; }
+    .ess-label { color: var(--muted); min-width: 76px; }
+    .ess-val { font-weight: 500; }
+
+    /* ── CTA ── */
+    .cta-bar {
+      background: linear-gradient(135deg, #1a1610 0%, #2b2318 100%);
+      padding: 34px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .cta-text h3 { font-family: 'Libre Baskerville', serif; color: #fff; font-size: 24px; margin-bottom: 5px; }
+    .cta-text p { color: rgba(255,255,255,0.48); font-size: 14px; }
+    .cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+    .btn-primary {
+      padding: 14px 30px;
+      border-radius: 30px;
+      border: none;
+      background: var(--terracotta);
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-outline {
+      padding: 13px 26px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Jost', sans-serif;
+      cursor: pointer;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1600&auto=format&fit=crop" alt="Rome Colosseum Italy"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+  <div class="nav-logo">
+    
+    <h1>WANDR</h1>
+  </div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-label">Your personalised itinerary</div>
+      <div class="hero-title">9 Days in<br><em>Eternal Italy</em></div>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-row"><span class="icon">✈</span> 3 Jun – 12 Jun 2025</div>
+      <div class="meta-row"><span class="icon">👤</span> 2 Adults</div>
+      <div class="meta-row"><span class="icon">🏨</span> Boutique Palazzi & Design Hotels</div>
+      <div class="meta-row"><span class="icon">💰</span> Mid-range · ~€200/day</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY STRIP -->
+<div class="summary-strip">
+  <div class="summary-item"><strong>9</strong>Days</div>
+  <div class="summary-item"><strong>24</strong>Experiences</div>
+  <div class="summary-item"><strong>4</strong>Cities</div>
+  <div class="summary-item"><strong>~€100</strong>Per person/day</div>
+  <div class="summary-item"><strong>Rome · Florence · Cinque Terre · Venice</strong>Route</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="itinerary">
+
+    <div class="section-heading">
+      <h2>Day by Day</h2>
+      <div class="line"></div>
+    </div>
+
+    <!-- ROUTE BAR -->
+    <div class="route-bar">
+      <div class="route-city"><div class="city-name">✈ Rome</div><div class="city-days">Days 1–3</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🌺 Florence</div><div class="city-days">Days 4–5</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🌊 Cinque Terre</div><div class="city-days">Day 6</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🚤 Venice</div><div class="city-days">Days 7–8</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">✈ Depart</div><div class="city-days">Day 9</div></div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1600189261867-30e5ffe7b8da?w=500&auto=format&fit=crop" alt="Rome"/>
+        <div class="day-info">
+          <div class="day-tag">Days 1–2 · Tuesday–Wednesday · Rome</div>
+          <div class="day-name">The Eternal City Calls</div>
+          <div class="day-desc">Rome is not a city — it is a 2,800-year collision of empire, faith and genius. Give yourself two full days and still feel you've only scratched the surface.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Colosseum & Roman Forum at opening</strong>The first hour is the only hour worth being here — before the crowds arrive and the light is still low and golden. Book timed-entry online weeks ahead.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Palatine Hill</strong>Rome's founding hill. Stand where emperors lived and survey the Forum below — this is history you can feel underfoot.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lunch in Testaccio</strong>Rome's real food neighbourhood. Supplì at Supplì Roma, then cacio e pepe at Flavio al Velavevodetto — don't compromise on either.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Vatican Museums & Sistine Chapel</strong>Book the first-entry morning slot for Day 2 — but spend Day 1 afternoon seeing St Peter's Basilica (free entry, no queue).</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Trastevere at night</strong>Rome's most atmospheric neighbourhood after dark. Cobblestones, ivy-draped walls, outdoor trattorias. Order the house wine — it's always better than it should be.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=500&auto=format&fit=crop" alt="Rome Trevi Pantheon"/>
+        <div class="day-info">
+          <div class="day-tag">Day 3 · Thursday · Rome</div>
+          <div class="day-name">Piazzas, Fountains & Gelato</div>
+          <div class="day-desc">The Rome of fountains and baroque drama — Trevi, the Pantheon, Piazza Navona. A day for getting lost and finding something extraordinary around every corner.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Trevi Fountain before the crowds</strong>At 8am, you may have it to yourself. Toss your coin. Come back at midnight if you want to see it luminous and empty again.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>The Pantheon</strong>Built in 125 AD. The unreinforced concrete dome remains an engineering miracle. The oculus lets in rain — and it still drains perfectly.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Piazza Navona espresso stop</strong>Bernini's Fountain of the Four Rivers in the centre. Have a €4 espresso at a terrace bar and watch Rome do nothing very stylishly.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Borghese Gallery (pre-booked)</strong>Bernini's sculptures — Persephone's flesh dimpling under marble fingers — will ruin all other sculpture for you forever. Strictly 2-hr slots; book months ahead.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">18:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Evening train to Florence — Frecciarossa (1.5 hrs)</strong>Italy's fastest train. Book the quiet car, order a Negroni from the bar, and watch Tuscany emerge.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4–5 FLORENCE -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="images/flo.png" alt="Florence Duomo"/>
+        <div class="day-info">
+          <div class="day-tag">Days 4–5 · Fri–Sat · Florence</div>
+          <div class="day-name">Renaissance, Rebirth & Ribollita</div>
+          <div class="day-desc">Florence is the city where the modern world was invented. Botticelli, Michelangelo, Leonardo — they all walked these streets. Every piazza is a gallery; every gallery is overwhelming.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Uffizi Gallery — first entry slot</strong>The Birth of Venus, Botticelli's Spring, Leonardo's Annunciation. Go early, take your time on the third floor, ignore the gift shop.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Climb the Duomo's cupola</strong>Brunelleschi's dome — an engineering feat that had no business being possible in 1436. The view from the top is every postcard you've ever seen, made real.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Oltrarno neighbourhood</strong>Cross the Arno to the artisans' side. Leatherworkers, bookbinders and framers still operate out of medieval workshops. Browse, then climb to Piazzale Michelangelo for sunset.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Day 5: Accademia — Michelangelo's David</strong>No photograph captures the scale. At 5.17m, David feels impossible. Arrive at opening; the crowds build by 10am.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Chianti wine tasting in the hills</strong>Day-trip south to Greve in Chianti or Panzano. Most estates do walk-in tastings. Pair with pecorino and wild boar salami.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 6 CINQUE TERRE -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1499678329028-101435549a4e?w=500&auto=format&fit=crop" alt="Cinque Terre"/>
+        <div class="day-info">
+          <div class="day-tag">Day 6 · Sunday · Cinque Terre</div>
+          <div class="day-name">Five Villages on a Cliffside</div>
+          <div class="day-desc">Pastel houses stacked above a turquoise Ligurian sea. The five villages — Riomaggiore, Manarola, Corniglia, Vernazza, Monterosso — are connected by trail, ferry and train. Take all three.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Early train from Florence to La Spezia (2.5 hrs)</strong>Change at La Spezia for the local Cinque Terre train. Buy the Cinque Terre Card — covers trail access and unlimited trains between villages.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Hike Riomaggiore to Vernazza</strong>The trail reopened section offers the most dramatic clifftop views. Allow 2.5 hours and stop at every overlook — you'll regret not doing so.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lunch in Vernazza</strong>The prettiest village. Trofie al pesto (Ligurian basil pesto is different — better) at Ristorante Belforte, on the castle tower terrace over the harbour.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Ferry to Monterosso al Mare</strong>The only village with a real beach. Swim, dry off with focaccia and anchovies, then catch the evening train north to Venice.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 7–8 VENICE -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=500&auto=format&fit=crop" alt="Venice"/>
+        <div class="day-info">
+          <div class="day-tag">Days 7–8 · Mon–Tue · Venice</div>
+          <div class="day-name">La Serenissima</div>
+          <div class="day-desc">Venice defies logic. A city of 118 islands, 400 bridges and zero cars — it should have sunk centuries ago, but instead it floats on, impossibly beautiful and magnificently absurd.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>San Marco at dawn — before the crowds</strong>Piazza San Marco is a zoo by 9am. At 7am, the pigeons outnumber the people. The Basilica glows in early light with its Byzantine gold mosaics.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Doge's Palace & the Bridge of Sighs</strong>The seat of Venetian power for 1,000 years. The Secret Itineraries tour takes you through the torture chambers and prison cells — book it.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Vaporetto to Murano & Burano</strong>Murano for glassblowing workshops, Burano for the improbably coloured fishermen's houses. The lagoon light is extraordinary in the afternoon.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Day 8: Frari Church & Peggy Guggenheim</strong>Titian's Assumption in the Frari is a revelation. Then the Guggenheim collection — Picasso, Dalí and Pollock in a palace on the Grand Canal.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Gondola at dusk through the back canals</strong>Skip the Grand Canal gondola — negotiate a ride through the narrow rio canals of Dorsoduro. At dusk, the reflections make the water look like hammered bronze.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">21:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Farewell dinner at Osteria alle Testiere</strong>Only 22 seats. The finest seafood restaurant in Venice — lagoon fish cooked with zero fanfare and total mastery. Book months ahead. Worth every effort.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end itinerary -->
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>Where you'll stay</h3>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&auto=format&fit=crop" alt="Rome hotel"/>
+        <div>
+          <div class="hotel-name">Hotel Raphael, Rome</div>
+          <div class="hotel-stars">★★★★★ · Piazza Navona</div>
+          <div class="hotel-price">~€280/night · Nights 1–3</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=200&auto=format&fit=crop" alt="Florence hotel"/>
+        <div>
+          <div class="hotel-name">Soprarno Suites, Florence</div>
+          <div class="hotel-stars">★★★★ · Oltrarno</div>
+          <div class="hotel-price">~€200/night · Nights 4–5</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=200&auto=format&fit=crop" alt="Cinque Terre"/>
+        <div>
+          <div class="hotel-name">La Torretta, Manarola</div>
+          <div class="hotel-stars">★★★★ · Cliffside Views</div>
+          <div class="hotel-price">~€180/night · Night 6</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=200&auto=format&fit=crop" alt="Venice hotel"/>
+        <div>
+          <div class="hotel-name">Palazzo Stern, Venice</div>
+          <div class="hotel-stars">★★★★★ · Grand Canal, Dorsoduro</div>
+          <div class="hotel-price">~€340/night · Nights 7–8</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Weather in June</h3>
+      <div class="weather-row">
+        <span class="w-day">Rome</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">28°C</span>
+        <span class="w-desc">Warm & sunny</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Florence</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">30°C</span>
+        <span class="w-desc">Hot afternoons</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Cinque Terre</span>
+        <span class="w-icon">🌤</span>
+        <span class="w-temp">26°C</span>
+        <span class="w-desc">Sea breeze</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Venice</span>
+        <span class="w-icon">⛅</span>
+        <span class="w-temp">25°C</span>
+        <span class="w-desc">Humid evenings</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Essential info</h3>
+      <div class="ess-item"><span class="ess-icon">🪙</span><span class="ess-label">Currency</span><span class="ess-val">Euro (€)</span></div>
+      <div class="ess-item"><span class="ess-icon">🚄</span><span class="ess-label">Rail</span><span class="ess-val">Trenitalia Frecciarossa</span></div>
+      <div class="ess-item"><span class="ess-icon">📶</span><span class="ess-label">SIM card</span><span class="ess-val">TIM / WindTre at airport</span></div>
+      <div class="ess-item"><span class="ess-icon">🛂</span><span class="ess-label">Visa</span><span class="ess-val">Schengen · 90 days visa-free</span></div>
+      <div class="ess-item"><span class="ess-icon">🔌</span><span class="ess-label">Plug type</span><span class="ess-val">Type F/L · 230V</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Local tips</h3>
+      <div class="tip-item">
+        <span class="tip-icon">☕</span>
+        Espresso at the bar costs €1–1.50. Sitting down at a terrace triples the price. Stand at the bar like the locals — it's faster, cheaper and more authentic.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎟</span>
+        Book the Borghese Gallery, Uffizi and Colosseum months in advance. Walking in on the day is not possible for the Borghese — it will simply be sold out.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🍝</span>
+        Never order cappuccino after 11am. Never put parmesan on seafood pasta. These are not suggestions — they are Italian law.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🚤</span>
+        In Venice, the vaporetto Line 1 (slow Grand Canal route) is better than any gondola for seeing the city. €9.50 for a single trip — worth every cent.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🌿</span>
+        Avoid tourist menus with photos. If a restaurant has a laminated menu outside, walk on. Find places with a chalkboard — they change with what's fresh that morning.
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- CTA BAR -->
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>Make it yours</h3>
+    <p>Customize this experience exactly the way you want.</p>
+  </div>
+  <div class="cta-btns">
+    <a href="trip.html">
+      <button class="btn-primary">Customize Trip →</button>
+    </a>
+    <a href="Homepage.html">
+      <button class="btn-outline">Explore More</button>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

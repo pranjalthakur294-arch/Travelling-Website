@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Spain Itinerary – Lonely Planet Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0d0a1a;
+      --crimson: #c9263b;
+      --sienna: #d4621a;
+      --gold: #c9952e;
+      --cream: #f7f3ee;
+      --warm: #ede5d8;
+      --muted: #7a6e84;
+      --card: #ffffff;
+      --cobalt: #7c3aed;
+      --midnight: #0d1a3d;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 480px;
+      overflow: hidden;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 55%;
+      filter: brightness(0.52);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(13,10,26,0.6) 0%, transparent 55%),
+                  linear-gradient(to bottom, transparent 30%, rgba(13,10,26,0.82) 100%);
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image:
+        repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 0, transparent 32px),
+        repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 0, transparent 32px);
+    }
+
+    .nav-logo {
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+    .nav-logo .small { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.55); text-transform: uppercase; }
+    .nav-logo h1 { font-family: 'didot', serif;color: rgba(255,255,255,0.6); font-size: 38px; line-height: 1; }
+
+    .hero-content {
+      position: absolute;
+      bottom: 52px;
+      left: 64px;
+      right: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 60px;
+      color: #fff;
+      line-height: 1.0;
+      font-weight: 600;
+    }
+    .hero-title em { font-style: italic; font-weight: 400; color: var(--gold); }
+
+    .hero-meta { text-align: right; }
+    .hero-meta .meta-row {
+      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      justify-content: flex-end;
+    }
+    .hero-meta .meta-row .icon { color: var(--gold); font-size: 15px; }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip {
+      background: var(--midnight);
+      display: flex;
+      justify-content: center;
+    }
+    .summary-item {
+      padding: 18px 44px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      text-align: center;
+    }
+    .summary-item:last-child { border-right: none; }
+    .summary-item strong {
+      display: block;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .section-heading h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+    .section-heading .line { flex:1; height:1px; background: var(--warm); }
+
+    /* ── ROUTE BAR ── */
+    .route-bar {
+      background: linear-gradient(135deg, #0d1a3d 0%, #1a2f6b 100%);
+      border-radius: 16px;
+      padding: 22px 28px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .route-city { text-align: center; flex-shrink: 0; }
+    .route-city .city-name { color: #fff; font-weight: 600; font-size: 14px; }
+    .route-city .city-days { color: rgba(255,255,255,0.45); font-size: 11px; margin-top: 3px; }
+    .route-arrow { flex:1; text-align: center; color: var(--gold); font-size: 20px; padding: 0 8px; min-width: 40px; }
+
+    /* ── DAY CARD ── */
+    .day-card {
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 16px rgba(13,10,26,0.08);
+      transition: transform .22s, box-shadow .22s;
+      animation: fadeUp .5s ease both;
+    }
+    .day-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(13,10,26,0.14); }
+    .day-card:nth-child(2) { animation-delay: .08s; }
+    .day-card:nth-child(3) { animation-delay: .16s; }
+    .day-card:nth-child(4) { animation-delay: .24s; }
+    .day-card:nth-child(5) { animation-delay: .32s; }
+    .day-card:nth-child(6) { animation-delay: .40s; }
+
+    .day-card-header { display: grid; grid-template-columns: 220px 1fr; }
+    .day-img { height: 178px; width: 100%; object-fit: cover; display: block; }
+    .day-info { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; }
+    .day-tag {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--crimson);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .day-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 9px; font-weight: 600; }
+    .day-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .day-activities {
+      border-top: 1px solid #f0e8dc;
+      padding: 18px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .activity { display: flex; gap: 14px; align-items: flex-start; font-size: 14px; }
+    .activity-time { font-size: 11px; color: var(--muted); font-weight: 600; min-width: 46px; padding-top: 2px; letter-spacing: .5px; }
+    .activity-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); margin-top: 4px; flex-shrink: 0; }
+    .activity-text { color: #1a1028; line-height: 1.56; }
+    .activity-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 32px; }
+
+    .sidebar-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(13,10,26,0.07);
+      animation: fadeUp .5s ease both;
+    }
+    .sidebar-card:nth-child(1) { animation-delay: .18s; }
+    .sidebar-card:nth-child(2) { animation-delay: .28s; }
+    .sidebar-card:nth-child(3) { animation-delay: .36s; }
+    .sidebar-card:nth-child(4) { animation-delay: .44s; }
+    .sidebar-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 16px; font-weight: 600; }
+
+    .hotel-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: center; }
+    .hotel-item:last-child { margin-bottom: 0; }
+    .hotel-thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .hotel-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .hotel-stars { color: var(--gold); font-size: 12px; margin-bottom: 2px; }
+    .hotel-price { font-size: 12px; color: var(--muted); }
+
+    .weather-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid #f0e8dc;
+      font-size: 13px;
+    }
+    .weather-row:last-child { border-bottom: none; }
+    .w-day { color: var(--muted); font-size: 12px; min-width: 80px; }
+    .w-icon { font-size: 19px; }
+    .w-temp { font-weight: 600; font-size: 14px; }
+    .w-desc { font-size: 11px; color: var(--muted); text-align: right; }
+
+    .tip-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; color: #221832; line-height: 1.56; }
+    .tip-item:last-child { margin-bottom: 0; }
+    .tip-icon { font-size: 19px; flex-shrink: 0; }
+
+    .ess-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #f0e8dc;
+      font-size: 13px;
+    }
+    .ess-item:last-child { border-bottom: none; }
+    .ess-icon { font-size: 17px; }
+    .ess-label { color: var(--muted); min-width: 76px; }
+    .ess-val { font-weight: 500; }
+
+    /* ── CTA ── */
+    .cta-bar {
+      background: linear-gradient(135deg, #0d1a3d 0%, #1a2f6b 100%);
+      padding: 34px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .cta-text h3 { font-family: 'Cormorant Garamond', serif; color: #fff; font-size: 26px; margin-bottom: 5px; font-weight: 600; }
+    .cta-text p { color: rgba(255,255,255,0.5); font-size: 14px; }
+    .cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+    .btn-primary {
+      padding: 14px 30px;
+      border-radius: 30px;
+      border: none;
+      background: var(--crimson);
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-outline {
+      padding: 13px 26px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(255,255,255,0.22);
+      background: transparent;
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .route-bar { animation: fadeUp .5s .05s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1600&auto=format&fit=crop" alt="Spain"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+  <div class="nav-logo">
+    
+    <h1>WANDR</h1>
+  </div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-label">Your personalised itinerary</div>
+      <div class="hero-title">8 Days in<br><em>Passionate Spain</em></div>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-row"><span class="icon">✈</span> 10 May – 18 May 2025</div>
+      <div class="meta-row"><span class="icon">👤</span> 2 Adults</div>
+      <div class="meta-row"><span class="icon">🏨</span> Boutique Paradors & Design Hotels</div>
+      <div class="meta-row"><span class="icon">💰</span> Mid-range · ~€180/day</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY STRIP -->
+<div class="summary-strip">
+  <div class="summary-item"><strong>8</strong>Days</div>
+  <div class="summary-item"><strong>22</strong>Experiences</div>
+  <div class="summary-item"><strong>4</strong>Cities</div>
+  <div class="summary-item"><strong>~€90</strong>Per person/day</div>
+  <div class="summary-item"><strong>Madrid · Toledo · Seville · Granada</strong>Route</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="itinerary">
+
+    <div class="section-heading">
+      <h2>Day by Day</h2>
+      <div class="line"></div>
+    </div>
+
+    <!-- ROUTE BAR -->
+    <div class="route-bar">
+      <div class="route-city"><div class="city-name">✈ Madrid</div><div class="city-days">Days 1–2</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">⚔️ Toledo</div><div class="city-days">Day 3</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🌸 Seville</div><div class="city-days">Days 4–5</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🕌 Granada</div><div class="city-days">Days 6–7</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">✈ Depart</div><div class="city-days">Day 8</div></div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=500&auto=format&fit=crop" alt="Madrid"/>
+        <div class="day-info">
+          <div class="day-tag">Day 1 · Saturday · Madrid</div>
+          <div class="day-name">Prado, Tapas & Flamenco</div>
+          <div class="day-desc">Madrid doesn't do mornings — it does magnificent afternoons that bleed into nights that never quite end. The Prado is your anchor; the rest unfolds.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Museo del Prado</strong>Velázquez, Goya, El Greco — give yourself at least 3 hours. Download the app for audio commentary that actually earns its keep.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lunch at Mercado de San Miguel</strong>Madrid's iconic iron market hall. Graze on pintxos, jamón ibérico and a cold Mahou beside the locals.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Retiro Park & Crystal Palace</strong>Row a boat on the lake or simply wander the shaded avenues. The glass-and-iron Crystal Palace catches afternoon light beautifully.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">21:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Flamenco at Corral de la Morería</strong>Madrid's most storied flamenco tablao. The raw emotion of the performance hits you somewhere you didn't know you had.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396?w=500&auto=format&fit=crop" alt="Madrid Royal Palace"/>
+        <div class="day-info">
+          <div class="day-tag">Day 2 · Sunday · Madrid</div>
+          <div class="day-name">Royals, Rastro & Rooftops</div>
+          <div class="day-desc">Sunday in Madrid is for the Rastro flea market, the grandeur of the Royal Palace, and watching the city from a rooftop as the sun drops behind the Guadarrama mountains.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>El Rastro Sunday Flea Market</strong>The largest open-air market in Europe. Vintage posters, ceramics, Franco-era curiosities and outrageously good churros nearby.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Palacio Real</strong>3,418 rooms of Bourbon excess. Even the guided highlights tour will leave your jaw on the marble floor.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Malasaña neighbourhood</strong>Madrid's coolest barrio — record shops, independent bookstores and terraza bars with afternoon vermouth.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">18:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Sunset at Templo de Debod</strong>An actual Egyptian temple, dismantled and reassembled in Madrid. Sunset here is a Madrid ritual — get there early.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1555993539-1732b0258235?w=500&auto=format&fit=crop" alt="Toledo"/>
+        <div class="day-info">
+          <div class="day-tag">Day 3 · Monday · Toledo</div>
+          <div class="day-name">The City of Three Cultures</div>
+          <div class="day-desc">Toledo is where Christian, Moorish and Jewish Spain coexisted and collided for centuries. The walled hilltop city is one of the most atmospheric places in all of Europe.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>AVE to Toledo (30 min)</strong>High-speed train from Madrid Atocha. Arrive before the tour groups swarm the old town — timing everything.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Toledo Cathedral</strong>Gothic on the grandest possible scale. El Greco's Disrobing of Christ hangs in the sacristy — one of the finest paintings in Spain.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Barrio Judío & Sinagoga del Tránsito</strong>Toledo's medieval Jewish quarter. The 14th-century synagogue houses a museum of Sephardic culture.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">17:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Night train to Seville (2.5 hrs)</strong>Trade the medieval for the Moorish. Seville awaits with its orange blossom air and flamenco heartbeat.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1559598467-f8b76c8155d0?w=500&auto=format&fit=crop" alt="Seville"/>
+        <div class="day-info">
+          <div class="day-tag">Day 4 · Tuesday · Seville</div>
+          <div class="day-name">Tapas, Tiles & the Alcázar</div>
+          <div class="day-desc">Seville is Spain distilled to its essence — Moorish palaces, labyrinthine alleys trailing orange blossom, and a city that wakes up at midnight and dances till dawn.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Real Alcázar de Sevilla</strong>A UNESCO World Heritage palace of breathtaking Mudéjar craftsmanship. The gardens are worth an hour alone. Game of Thrones was filmed here.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Barrio de Santa Cruz</strong>Get lost in the old Jewish quarter — whitewashed walls, azulejo tiles, and hidden plazas with lemon trees.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Tapas crawl on Calle Betis</strong>Cross the river to Triana. Espinacas con garbanzos, montaditos and cold Cruzcampo beer on the Guadalquivir riverbank.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Giralda tower at sunset</strong>Climb the ancient minaret-turned-bell-tower. The panorama over Seville's rooftops and the river is unforgettable.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 5 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=500&auto=format&fit=crop" alt="Granada Alhambra"/>
+        <div class="day-info">
+          <div class="day-tag">Days 6–7 · Thu–Fri · Granada</div>
+          <div class="day-name">The Alhambra & the Sierra Nevada</div>
+          <div class="day-desc">Nothing in Europe prepares you for the Alhambra. This Nasrid palace complex — intricate stucco, geometric water channels, views of snow-capped peaks — is the peak of human artistry.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Alhambra — Nasrid Palaces</strong>Book weeks ahead; timed entry is strict. The Palacios Nazaríes are the reason you flew to Spain. Mornings are the best light.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Generalife Gardens</strong>The sultan's summer gardens — terraced fountains, cypress-lined paths and rose pergolas above the city.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Albaicín neighbourhood</strong>The ancient Moorish quarter climbs the hillside opposite the Alhambra. The Mirador de San Nicolás offers the definitive view.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Cave flamenco in Sacromonte</strong>Flamenco performed in the gypsy cave dwellings of Sacromonte — rawer and more intimate than any stage show.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">22:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Free tapas culture</strong>In Granada, every drink comes with a free tapa. Stroll Calle Navas and order cold beer — the city feeds you without asking.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end itinerary -->
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>Where you'll stay</h3>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=200&auto=format&fit=crop" alt="Madrid hotel"/>
+        <div>
+          <div class="hotel-name">Hotel Urso, Madrid</div>
+          <div class="hotel-stars">★★★★★ · Alonso Martínez</div>
+          <div class="hotel-price">~€220/night · Nights 1–2</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=200&auto=format&fit=crop" alt="Toledo Parador"/>
+        <div>
+          <div class="hotel-name">Parador de Toledo</div>
+          <div class="hotel-stars">★★★★ · Clifftop Views</div>
+          <div class="hotel-price">~€160/night · Night 3</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=200&auto=format&fit=crop" alt="Seville hotel"/>
+        <div>
+          <div class="hotel-name">Hotel Casa 1800, Seville</div>
+          <div class="hotel-stars">★★★★★ · Santa Cruz</div>
+          <div class="hotel-price">~€195/night · Nights 4–5</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&auto=format&fit=crop" alt="Granada hotel"/>
+        <div>
+          <div class="hotel-name">Parador de Granada</div>
+          <div class="hotel-stars">★★★★★ · Inside the Alhambra</div>
+          <div class="hotel-price">~€380/night · Nights 6–7</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Weather in May</h3>
+      <div class="weather-row">
+        <span class="w-day">Madrid</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">24°C</span>
+        <span class="w-desc">Warm & clear</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Toledo</span>
+        <span class="w-icon">🌤</span>
+        <span class="w-temp">26°C</span>
+        <span class="w-desc">Sunny days</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Seville</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">29°C</span>
+        <span class="w-desc">Hot afternoons</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Granada</span>
+        <span class="w-icon">⛅</span>
+        <span class="w-temp">22°C</span>
+        <span class="w-desc">Mountain breeze</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Essential info</h3>
+      <div class="ess-item"><span class="ess-icon">🪙</span><span class="ess-label">Currency</span><span class="ess-val">Euro (€)</span></div>
+      <div class="ess-item"><span class="ess-icon">🚄</span><span class="ess-label">Transport</span><span class="ess-val">Renfe AVE high-speed rail</span></div>
+      <div class="ess-item"><span class="ess-icon">📶</span><span class="ess-label">SIM card</span><span class="ess-val">Movistar / Orange at airport</span></div>
+      <div class="ess-item"><span class="ess-icon">🛂</span><span class="ess-label">Visa</span><span class="ess-val">Schengen (90 days visa-free)</span></div>
+      <div class="ess-item"><span class="ess-icon">🔌</span><span class="ess-label">Plug type</span><span class="ess-val">Type C/F · 230V</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Local tips</h3>
+      <div class="tip-item">
+        <span class="tip-icon">🍷</span>
+        Lunch is the main meal in Spain — eaten between 2pm and 4pm. Menú del día (€12–15) is three courses with wine. It's the best value meal in Europe.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎟</span>
+        Book the Alhambra at least 3 weeks ahead. Tickets sell out completely. The Parador de Granada is the only hotel inside the complex — worth splurging.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🌙</span>
+        Spaniards eat dinner at 10pm. Don't show up to a restaurant before 9pm if you want to blend in and get the best table.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🚆</span>
+        Renfe's Tarjeta Dorada or advance fares can cut rail costs by 50%. Always book AVE tickets online — station prices are higher.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🕺</span>
+        In Granada, every drink comes with a free tapa — no asking required. Order wine, not beer, for the better tapas.
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- CTA BAR -->
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>Make it yours</h3>
+    <p>Customize this experience exactly the way you want.</p>
+  </div>
+  <div class="cta-btns">
+    <a href="trip.html">
+      <button class="btn-primary">Customize Trip →</button>
+    </a>
+    <a href="Homepage.html">
+      <button class="btn-outline">Explore More</button>
+    </a>
+  </div>
+</div>
+</body>
+</html>

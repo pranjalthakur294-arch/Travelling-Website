@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journeys — Travel To Japan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --crimson: #7c3aed;
+      --ink: #141418;
+      --rice: #f8f6f2;
+      --stone: #e8e4de;
+      --ash: #7a7872;
+      --warm-white: #fdfcf9;
+      --blush: #f5e8e6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--warm-white);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(253,252,249,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(192,57,43,0.12);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--crimson); }
+
+    .nav-logo {
+      font-family: 'didot', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 9px 22px;
+      border: 1.5px solid var(--ink);
+      border-radius: 100px;
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--ink); color: white; }
+
+    .btn-primary {
+      padding: 9px 22px;
+      border: none;
+      border-radius: 100px;
+      background: #7c3aed;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1800&q=85') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.13); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,6,6,0.18) 0%,
+        rgba(10,6,6,0.5) 50%,
+        rgba(10,6,6,0.82) 100%
+      );
+    }
+
+    /* Ink brush stroke decoration */
+    .hero-brush {
+      position: absolute;
+      top: 12%;
+      right: 7%;
+      width: 3px;
+      height: 180px;
+      background: rgba(192,57,43,0.45);
+      border-radius: 2px;
+    }
+
+    .hero-brush::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -6px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(192,57,43,0.45);
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(58px, 10vw, 118px);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .hero-title .kanji {
+      display: block;
+      font-size: clamp(24px, 3.5vw, 44px);
+      letter-spacing: 0.4em;
+      color: rgba(255,255,255,0.38);
+      margin-top: 8px;
+      font-weight: 300;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: var(--crimson);
+      color: white;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      transition: transform 0.2s, opacity 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+
+    .hero-cta:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.14);
+      background: rgba(10,6,6,0.58);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-item {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── INTRO ─── */
+    .intro-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 85vh;
+      background: var(--rice);
+    }
+
+    .intro-left {
+      padding: 100px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 24px;
+    }
+
+    .intro-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 54px);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .intro-body {
+      font-size: 16px;
+      color: var(--ash);
+      line-height: 1.82;
+      margin-bottom: 20px;
+    }
+
+    .intro-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .intro-badge {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: rgba(253,252,249,0.96);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px 28px;
+      max-width: 280px;
+      border-left: 3px solid var(--crimson);
+    }
+
+    .intro-badge-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 6px;
+    }
+
+    .intro-badge-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .intro-badge-sub {
+      font-size: 13px;
+      color: var(--ash);
+      margin-top: 4px;
+    }
+
+    .itinerary-callout {
+      background: var(--blush);
+      padding: 20px 32px;
+      border-radius: 16px;
+      border-left: 4px solid var(--crimson);
+      margin-top: 32px;
+    }
+
+    .itinerary-callout p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .itinerary-callout span {
+      font-size: 13px;
+      color: var(--ash);
+    }
+
+    /* ─── THINGS TO SEE ─── */
+    .things-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .section-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--crimson);
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .things-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+    }
+
+    .thing-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thing-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .thing-card:hover img { transform: scale(1.05); }
+
+    .thing-card-main { grid-row: 1 / 3; height: 580px; }
+    .thing-card-sm   { height: 270px; }
+    .thing-card-sm:first-child { margin-bottom: 16px; }
+
+    .thing-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 24px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.72));
+      color: white;
+    }
+
+    .thing-caption p { font-size: 14px; line-height: 1.5; }
+
+    /* ─── REGIONS ─── */
+    .regions-section {
+      padding: 100px 80px;
+      background: var(--ink);
+      color: white;
+    }
+
+    .regions-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 16px;
+    }
+
+    .regions-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 600;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 640px;
+    }
+
+    .regions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .region-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 2/3;
+      cursor: pointer;
+    }
+
+    .region-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.65);
+      transition: transform 0.6s ease, filter 0.4s;
+    }
+
+    .region-card:hover img {
+      transform: scale(1.07);
+      filter: brightness(0.45);
+    }
+
+    .region-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 22px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.88));
+    }
+
+    .region-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .region-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+
+    .region-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 8px;
+    }
+
+    /* ─── SEASONS ─── */
+    .seasons-section {
+      padding: 100px 80px;
+      background: var(--rice);
+    }
+
+    .seasons-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .seasons-sub {
+      font-size: 16px;
+      color: var(--ash);
+      margin-bottom: 60px;
+    }
+
+    .seasons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .season-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 28px;
+      border: 1px solid var(--stone);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .season-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.07);
+    }
+
+    .season-icon { font-size: 32px; margin-bottom: 16px; }
+
+    .season-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--crimson);
+      margin-bottom: 12px;
+    }
+
+    .season-desc { font-size: 15px; color: var(--ash); line-height: 1.7; }
+
+    /* ─── FESTIVALS ─── */
+    .festivals-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .festivals-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 16px;
+    }
+
+    .festivals-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 600;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 620px;
+    }
+
+    .festivals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .festival-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .festival-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.65);
+    }
+
+    .festival-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.45);
+    }
+
+    .festival-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 28px 28px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.88));
+    }
+
+    .festival-month {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 6px;
+    }
+
+    .festival-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .festival-region { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    /* ─── WHY JAPAN ─── */
+    .why-section {
+      padding: 100px 80px;
+      background: var(--rice);
+      text-align: center;
+    }
+
+    .why-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 54px);
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .why-sub {
+      font-size: 16px;
+      color: var(--ash);
+      margin-bottom: 64px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .fact-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 24px;
+      border: 1px solid var(--stone);
+      transition: transform 0.3s;
+    }
+
+    .fact-card:hover { transform: translateY(-5px); }
+
+    .fact-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 46px;
+      font-weight: 700;
+      color: var(--crimson);
+      margin-bottom: 8px;
+    }
+
+    .fact-label { font-size: 15px; color: var(--ash); line-height: 1.5; }
+
+    /* ─── TRAVEL STYLES ─── */
+    .styles-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .styles-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .styles-sub {
+      font-size: 16px;
+      color: var(--ash);
+      margin-bottom: 60px;
+    }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .style-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--rice);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .style-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.1);
+    }
+
+    .style-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+    .style-body { padding: 20px 24px 24px; }
+
+    .style-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .style-desc { font-size: 14px; color: var(--ash); }
+
+    /* ─── TREE BANNER ─── */
+    .tree-banner {
+      background: #1e2d1e;
+      padding: 24px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: white;
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--crimson); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 16px 24px; }
+      .intro-section { grid-template-columns: 1fr; }
+      .intro-right { height: 450px; }
+      .intro-left { padding: 60px 40px; }
+      .things-section, .seasons-section, .festivals-section,
+      .regions-section, .why-section, .styles-section { padding: 70px 40px; }
+      .seasons-grid { grid-template-columns: 1fr 1fr; }
+      .styles-grid { grid-template-columns: 1fr 1fr; }
+      .festivals-grid { grid-template-columns: 1fr 1fr; }
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      .regions-grid { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr 1fr; padding: 40px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .things-grid { grid-template-columns: 1fr; }
+      .thing-card-main { height: 360px; grid-row: auto; }
+      .seasons-grid, .festivals-grid, .styles-grid,
+      .facts-grid, .regions-grid { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="Homepage.html">Destination</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="about.html">About us</a></li>
+    </ul>
+    <div class="nav-logo">WANDR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+    <div class="nav-actions">
+      <a href="trip.html">
+      <button class="btn-primary">Start Planning</button>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-brush"></div>
+    <div class="hero-content">
+      
+      <h1 class="hero-title">
+        Travel To <em>Japan.</em>
+        <span class="kanji">日 本 へ 旅 を</span>
+      </h1>
+      <p class="hero-sub">Ancient and ultramodern — a world unlike any other.</p>
+      <a href="trip.html"><button class="hero-cta">Craft Your Trip</button></a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-label">Best Time to Visit</div>
+        <div class="stat-value">March to May,<br>Oct to Nov</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Capital</div>
+        <div class="stat-value">TOKYO</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Population</div>
+        <div class="stat-value">125 M</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Area</div>
+        <div class="stat-value">377,975 SQ KM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Official Language</div>
+        <div class="stat-value">Japanese</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro-section">
+    <div class="intro-left">
+      <p class="intro-tag">Where the ancient and the futuristic coexist in perfect harmony</p>
+      <h2 class="intro-heading">Temples, Technology &amp; the World's Deepest Cuisine</h2>
+      <p class="intro-body">
+        No country holds so many contradictions so gracefully. Japan is a place where bullet trains streak past 1,000-year-old temples, where hyper-efficient convenience stores stock food that shames most restaurants, and where a cup of tea becomes a meditation on presence and beauty.
+      </p>
+      <p class="intro-body">
+        Its forty-seven prefectures each hold their own character — Kyoto's shimmering golden pavilions, Tokyo's neon-lit canyons of possibility, Hokkaido's wild alpine snowfields, Okinawa's coral-clear waters. The seasons transform the landscape utterly: cherry blossoms in spring, festivals of fire in summer, maple flame in autumn, silent snowfall in winter.
+      </p>
+      <p class="intro-body">
+        Japan does not overwhelm — it refines. You arrive astonished and leave humbled by a culture that has elevated every ordinary act — eating, bathing, serving tea, arranging flowers — into an art form.
+      </p>
+      <div class="itinerary-callout">
+        <p>Explore on your own terms</p>
+        <span>This is just a sample itinerary. Your trip will be tailor-made and personalized to you.</span>
+      </div>
+    </div>
+
+    <div class="intro-right">
+      <img src="images/pho.jpg" alt="Fushimi Inari Shrine torii gates" />
+       <a href="japan_itinerary.html" style="color:inherit;text-decoration:none;">
+      <div class="intro-badge">
+        <div class="intro-badge-label">Featured Experience</div>
+        <div class="intro-badge-text">JAPAN AT ITS FINEST</div>
+        <div class="intro-badge-sub">View Itinerary →</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP THINGS TO SEE -->
+  <section class="things-section">
+    <div class="section-header">
+      <div class="section-dot"></div>
+      <span class="section-label">Top Things to See</span>
+    </div>
+
+    <div class="things-grid">
+      <div class="thing-card thing-card-main">
+        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85" alt="Mount Fuji" />
+        <div class="thing-caption">
+          <p>Mount Fuji — Japan's sacred and iconic peak rising to 3,776 metres, a symbol of perfection visible from Tokyo on a clear winter's day</p>
+        </div>
+      </div>
+      <div>
+        <div class="thing-card thing-card-sm" style="margin-bottom:16px">
+          <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=700&q=80" alt="Tokyo at night" />
+          <div class="thing-caption">
+            <p>Tokyo — a city of layered realities, where Shibuya's famous crossing pulses with millions, and hidden alleyways harbour the world's finest ramen</p>
+          </div>
+        </div>
+        <div class="thing-card thing-card-sm">
+          <img src="images/Yasaka-dori_early_morning_with_street_lanterns_and_the_Tower_of_Yasaka_(Hokan-ji_Temple),_Kyoto,_Japan.jpg" alt="Kyoto temples" />
+          <div class="thing-caption">
+            <p>Kyoto's temple gardens — moss carpets and stone lanterns, where time slows and the aesthetic ideals of wabi-sabi find their purest expression</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGIONS -->
+  <section class="regions-section">
+    <p class="regions-eyebrow">Forty-Seven Prefectures, One Nation</p>
+    <h2 class="regions-title">Every Island of Japan Holds a Different Soul</h2>
+
+    <div class="regions-grid">
+      <div class="region-card">
+        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Tokyo" />
+        <div class="region-info">
+          <div class="region-tag">Kanto</div>
+          <div class="region-name">Tokyo</div>
+          <div class="region-desc">Megacity of contrasts — neon, nature, street food & high culture</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80" alt="Kyoto" />
+        <div class="region-info">
+          <div class="region-tag">Kansai</div>
+          <div class="region-name">Kyoto</div>
+          <div class="region-desc">Ancient capital of temples, geishas & tea ceremony</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="images/Sapporo.jpg" alt="Hokkaido" />
+        <div class="region-info">
+          <div class="region-tag">Hokkaido</div>
+          <div class="region-name">Sapporo</div>
+          <div class="region-desc">Wild snowfields, bear country & lavender in summer</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="images/hiroshima.jpg" alt="Hiroshima" />
+        <div class="region-info">
+          <div class="region-tag">Chugoku</div>
+          <div class="region-name">Hiroshima</div>
+          <div class="region-desc">A city reborn, floating torii gates & Miyajima Island</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONS -->
+  <section class="seasons-section">
+    <h2 class="seasons-title">Best Time to Visit Japan</h2>
+    <p class="seasons-sub">Each season transforms the country into something entirely new</p>
+
+    <div class="seasons-grid">
+      <div class="season-card">
+        <div class="season-icon">🌸</div>
+        <div class="season-name">Spring (Mar – May)</div>
+        <p class="season-desc">Cherry blossom season — sakura erupts across the country in a two-week spectacle that draws millions to parks, riverbanks and castle grounds.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🎆</div>
+        <div class="season-name">Summer (Jun – Aug)</div>
+        <p class="season-desc">Festival season — fireworks light the night sky, Obon dances fill the streets, and the mountains offer cool refuge from coastal humidity.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🍁</div>
+        <div class="season-name">Autumn (Sep – Nov)</div>
+        <p class="season-desc">Momiji — the maple season. Temple gardens ignite in red and gold; the hiking trails of Nikko and Nara are at their most breathtaking.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">❄️</div>
+        <div class="season-name">Winter (Dec – Feb)</div>
+        <p class="season-desc">Powder snow in Hokkaido, snow-capped Fuji at its most photogenic, and the serene beauty of Kyoto under a rare winter frost.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FESTIVALS -->
+  <section class="festivals-section">
+    <p class="festivals-eyebrow">Culture &amp; Celebration</p>
+    <h2 class="festivals-title">Japan's Most Unforgettable Festivals</h2>
+
+    <div class="festivals-grid">
+      <div class="festival-item">
+        <img src="images/cherry.jpg" alt="Hanami Cherry Blossoms" />
+        <div class="festival-info">
+          <div class="festival-month">March – April</div>
+          <div class="festival-name">Hanami</div>
+          <div class="festival-region">Nationwide</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/gio.png" alt="Gion Matsuri" />
+        <div class="festival-info">
+          <div class="festival-month">July</div>
+          <div class="festival-name">Gion Matsuri</div>
+          <div class="festival-region">Kyoto, Kansai</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80" alt="Awa Odori" />
+        <div class="festival-info">
+          <div class="festival-month">August</div>
+          <div class="festival-name">Awa Odori</div>
+          <div class="festival-region">Tokushima, Shikoku</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="images/snowj.jpg" alt="Sapporo Snow Festival" />
+        <div class="festival-info">
+          <div class="festival-month">February</div>
+          <div class="festival-name">Sapporo Snow Festival</div>
+          <div class="festival-region">Sapporo, Hokkaido</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Obon Festival" />
+        <div class="festival-info">
+          <div class="festival-month">August</div>
+          <div class="festival-name">Obon</div>
+          <div class="festival-region">Nationwide</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Takayama Matsuri" />
+        <div class="festival-info">
+          <div class="festival-month">April &amp; October</div>
+          <div class="festival-name">Takayama Matsuri</div>
+          <div class="festival-region">Takayama, Gifu</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY JAPAN -->
+  <section class="why-section">
+    <h2 class="why-title">Why Travel Japan</h2>
+    <p class="why-sub">A civilisation that has perfected beauty, precision and the art of living</p>
+
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="25">0</span></div>
+        <p class="fact-label">UNESCO World Heritage Sites — from Hiroshima to Yakushima</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="200">0</span>+</div>
+        <p class="fact-label">Michelin Starred Restaurants — Tokyo alone holds the most of any city on earth</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="1500">0</span>+</div>
+        <p class="fact-label">Years of Imperial History &amp; Continuous Culture</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="47">0</span></div>
+        <p class="fact-label">Distinct Prefectures, Each with Unique Flavour</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="6800">0</span>+</div>
+        <p class="fact-label">Islands Spanning from Subtropical to Subarctic</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="80">0</span>k+</div>
+        <p class="fact-label">Shinto Shrines and Buddhist Temples Across the Country</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL STYLES -->
+  <section class="styles-section">
+    <h2 class="styles-title">Explore By Travel Style</h2>
+    <p class="styles-sub">Find your Japan based on your passions</p>
+
+    <div class="styles-grid">
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Nature" />
+        <div class="style-body">
+          <div class="style-name">Nature</div>
+          <p class="style-desc">Fuji ascents, Hokkaido wilderness, Yakushima cedar forests</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="City Life" />
+        <div class="style-body">
+          <div class="style-name">City Life</div>
+          <p class="style-desc">Tokyo's Shinjuku, Osaka's Dotonbori, Fukuoka's yatai stalls</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80" alt="Temples & Shrines" />
+        <div class="style-body">
+          <div class="style-name">Temples &amp; Shrines</div>
+          <p class="style-desc">Fushimi Inari, Kinkaku-ji, Senso-ji, Itsukushima</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80" alt="Onsen" />
+        <div class="style-body">
+          <div class="style-name">Onsen</div>
+          <p class="style-desc">Hakone, Beppu, Noboribetsu — volcanic hot springs and ryokan stillness</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" alt="Food" />
+        <div class="style-body">
+          <div class="style-name">Food</div>
+          <p class="style-desc">Ramen in Fukuoka, sushi at Tsukiji, wagyu in Kobe, mochi everywhere</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="images/snowj.jpg" alt="Ski & Snow" />
+        <div class="style-body">
+          <div class="style-name">Ski &amp; Snow</div>
+          <p class="style-desc">Niseko, Hakuba, Zao powder — the world's finest cold-climate skiing</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREE BANNER -->
+  <div class="tree-banner">
+    🌿 &nbsp; We plant a tree for every trip booked through Journeys
+  </div>
+
+  
+
+  <script>
+    const counters = document.querySelectorAll('.counter');
+    let started = false;
+
+    function startCounters() {
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const increment = Math.max(1, Math.ceil(target / 80));
+        const update = () => {
+          count += increment;
+          if (count >= target) { counter.textContent = target.toLocaleString(); return; }
+          counter.textContent = count.toLocaleString();
+          requestAnimationFrame(update);
+        };
+        update();
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      if (started) return;
+      const section = document.querySelector('.why-section');
+      if (!section) return;
+      if (section.getBoundingClientRect().top < window.innerHeight - 100) {
+        started = true;
+        startCounters();
+      }
+    });
+  </script>
+</body>
+</html>

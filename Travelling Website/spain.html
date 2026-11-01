@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journeys — Travel To Spain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #c9a84c;
+      --dark: #1a1a1a;
+      --off-white: #f7f5f2;
+      --mid-gray: #6b6b6b;
+      --light-gray: #e8e4de;
+      --red: #c0392b;
+      --warm-white: #fdfbf8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(253,251,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-logo {
+      font-family: 'didot', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 9px 22px;
+      border: 1.5px solid var(--dark);
+      border-radius: 100px;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: var(--dark);
+      color: white;
+    }
+
+    .btn-primary {
+      padding: 9px 22px;
+      border: none;
+      border-radius: 100px;
+      background: #7c3aed;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1800&q=85') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to { transform: scale(1.12); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(20,10,5,0.25) 0%,
+        rgba(20,10,5,0.45) 50%,
+        rgba(20,10,5,0.75) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 9vw, 110px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: #7c3aed;
+      color: white;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 0.2s, opacity 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+
+    .hero-cta:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.15);
+      background: rgba(20,10,5,0.55);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-item {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── INTRO SECTION ─── */
+    .intro-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 85vh;
+      background: var(--off-white);
+    }
+
+    .intro-left {
+      padding: 100px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .intro-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .intro-body {
+      font-size: 16px;
+      color: var(--mid-gray);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .intro-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .intro-badge {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: rgba(253,251,248,0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px 28px;
+      max-width: 280px;
+    }
+
+    .intro-badge-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .intro-badge-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .intro-badge-sub {
+      font-size: 13px;
+      color: var(--mid-gray);
+      margin-top: 4px;
+    }
+
+    /* ─── ITINERARY CALLOUT ─── */
+    .itinerary-callout {
+      background: #f0ece4;
+      padding: 20px 32px;
+      border-radius: 16px;
+      border-left: 4px solid var(--gold);
+      margin-top: 32px;
+    }
+
+    .itinerary-callout p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+
+    .itinerary-callout span {
+      font-size: 13px;
+      color: var(--mid-gray);
+    }
+
+    .view-itinerary-wrap {
+      margin-top: 20px;
+    }
+
+    /* ─── THINGS TO SEE ─── */
+    .things-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .section-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .things-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+
+    .thing-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thing-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .thing-card:hover img { transform: scale(1.05); }
+
+    .thing-card-main {
+      grid-row: 1 / 3;
+      height: 580px;
+    }
+
+    .thing-card-sm { height: 270px; }
+
+    .thing-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 24px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.72));
+      color: white;
+    }
+
+    .thing-caption p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    /* ─── SEASONS ─── */
+    .seasons-section {
+      padding: 100px 80px;
+      background: var(--off-white);
+    }
+
+    .seasons-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .seasons-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .seasons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .season-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 32px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .season-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+    }
+
+    .season-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .season-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .season-desc {
+      font-size: 15px;
+      color: var(--mid-gray);
+      line-height: 1.7;
+    }
+
+    /* ─── FESTIVALS ─── */
+    .festivals-section {
+      padding: 100px 80px;
+      background: var(--dark);
+      color: white;
+    }
+
+    .festivals-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .festivals-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 600px;
+    }
+
+    .festivals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .festival-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .festival-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.7);
+    }
+
+    .festival-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.5);
+    }
+
+    .festival-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 28px 28px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    }
+
+    .festival-month {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .festival-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .festival-region {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ─── WHY SPAIN ─── */
+    .why-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+      text-align: center;
+    }
+
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .why-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 64px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .fact-card {
+      background: var(--off-white);
+      border-radius: 20px;
+      padding: 40px 24px;
+      transition: transform 0.3s;
+    }
+
+    .fact-card:hover { transform: translateY(-5px); }
+
+    .fact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .fact-label {
+      font-size: 15px;
+      color: var(--mid-gray);
+      line-height: 1.5;
+    }
+
+    /* ─── TRAVEL STYLES ─── */
+    .styles-section {
+      padding: 100px 80px;
+      background: var(--off-white);
+    }
+
+    .styles-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .styles-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .style-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .style-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.12);
+    }
+
+    .style-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .style-body {
+      padding: 20px 24px 24px;
+    }
+
+    .style-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .style-desc {
+      font-size: 14px;
+      color: var(--mid-gray);
+    }
+
+    /* ─── PLANT TREE BANNER ─── */
+    .tree-banner {
+      background: #1e2d1e;
+      padding: 24px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 16px 24px; }
+      .intro-section { grid-template-columns: 1fr; }
+      .intro-right { height: 450px; }
+      .intro-left { padding: 60px 40px; }
+      .things-section, .seasons-section, .festivals-section,
+      .why-section, .styles-section { padding: 70px 40px; }
+      .seasons-grid, .styles-grid { grid-template-columns: 1fr 1fr; }
+      .festivals-grid { grid-template-columns: 1fr 1fr; }
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr 1fr; padding: 40px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .things-grid { grid-template-columns: 1fr; }
+      .thing-card-main { height: 360px; grid-row: auto; }
+      .seasons-grid, .festivals-grid, .styles-grid, .facts-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="Homepage.html">Destination</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+        <div class="nav-logo">WANDR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+    <div class="nav-actions">
+      <a href="trip.html">
+      <button class="btn-primary">Start Planning</button>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Southern Europe</p>
+      <h1 class="hero-title">Travel To <em>Spain.</em></h1>
+      <p class="hero-sub">Whatever you want, we can make it happen.</p>
+      <a href="trip.html"><button class="hero-cta">Craft Your Trip</button></a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-label">Best Time to Visit</div>
+        <div class="stat-value">March to June,<br>Sept to November</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Capital</div>
+        <div class="stat-value">MADRID</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Population</div>
+        <div class="stat-value">47 M</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Area</div>
+        <div class="stat-value">505,990 SQ KM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Official Language</div>
+        <div class="stat-value">Spanish, Catalan, Basque, Galician</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO / CULTURE -->
+  <section class="intro-section">
+    <div class="intro-left">
+      <p class="intro-tag">Vast and passionate, a mosaic of regions</p>
+      <h2 class="intro-heading">Fire, Flamenco &amp; Endless Feasts</h2>
+      <p class="intro-body">
+        Straddling the sun-scorched meseta and a coastline touched by two seas, Spain is a country that refuses to be simplified. Each of its regions — from Andalusia's Moorish legacy to the Basque Country's fierce identity — holds a distinct culture, language, and rhythm all its own.
+      </p>
+      <p class="intro-body">
+        Cities thrum with late-night energy; ancient cathedrals rise from medieval alleys; coastal villages slumber in midday heat. The table is always set. The wine is always poured. Strangers become friends before the second course.
+      </p>
+      <p class="intro-body">
+        Spain doesn't reveal itself easily — but once it does, no other place feels quite the same. It is loud and tender, ancient and wildly alive, forever pulling you back.
+      </p>
+
+      <div class="itinerary-callout">
+        <p>Explore on your own terms</p>
+        <span>This is just a sample itinerary. Your trip will be tailor-made and personalized to you.</span>
+      </div>
+    </div>
+
+    <div class="intro-right">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85"  />
+      <a href="spain-itinerary.html" style="color:inherit;text-decoration:none;">
+      <div class="intro-badge">
+        <div class="intro-badge-label">Featured Experience</div>
+        <div class="intro-badge-text">SPAIN AT FINEST</div>
+        <div class="intro-badge-sub">View Itinerary →</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP THINGS TO SEE -->
+  <section class="things-section">
+    <div class="section-header">
+      <div class="section-dot"></div>
+      <span class="section-label">Top Things to See</span>
+    </div>
+
+    <div class="things-grid">
+      <!-- Main large card -->
+      <div class="thing-card thing-card-main">
+        <img src="https://images.unsplash.com/photo-1583422409516-2895a77efded?w=900&q=85" alt="Sagrada Familia Barcelona" />
+        <div class="thing-caption">
+          <p>Gaudí's unfinished masterpiece — the Sagrada Família in Barcelona — soaring over a century of devotion</p>
+        </div>
+      </div>
+
+      <!-- Two smaller cards -->
+      <div>
+        <div class="thing-card thing-card-sm" style="margin-bottom:16px">
+          <img src="https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=700&q=80" alt="Alhambra Granada" />
+          <div class="thing-caption">
+            <p>The Alhambra palace complex in Granada — a jewel of Islamic architecture nestled in the Sierra Nevada foothills</p>
+          </div>
+        </div>
+        <div class="thing-card thing-card-sm">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=700&q=80" alt="Flamenco in Seville" />
+          <div class="thing-caption">
+            <p>The raw emotion of flamenco in Seville — where foot-stomps and claps echo through candlelit tablaos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONS -->
+  <section class="seasons-section">
+    <h2 class="seasons-title">Best Time to Visit Spain</h2>
+    <p class="seasons-sub">Every season unveils a different Spain</p>
+
+    <div class="seasons-grid">
+      <div class="season-card">
+        <div class="season-icon">🌸</div>
+        <div class="season-name">Spring (Mar – May)</div>
+        <p class="season-desc">Wildflowers carpet Andalusia, mild temperatures blanket Madrid, and the Holy Week processions in Seville are breathtaking.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">☀️</div>
+        <div class="season-name">Summer (Jun – Aug)</div>
+        <p class="season-desc">Perfect for Galicia's lush coast and northern festivals. Inland is fiercely hot — ideal for early mornings and evening paseos.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🍂</div>
+        <div class="season-name">Autumn (Sep – Nov)</div>
+        <p class="season-desc">Harvest season in La Rioja, grape festivals, and golden light across Castile. Fewer crowds and near-perfect weather.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FESTIVALS -->
+  <section class="festivals-section">
+    <p class="festivals-eyebrow">Culture &amp; Celebration</p>
+    <h2 class="festivals-title">Spain's Most Unforgettable Festivals</h2>
+
+    <div class="festivals-grid">
+      <div class="festival-item">
+        <img src="images/tomatina.jpg" alt="La Tomatina" />
+        <div class="festival-info">
+          <div class="festival-month">August</div>
+          <div class="festival-name">La Tomatina</div>
+          <div class="festival-region">Buñol, Valencia</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80" alt="Running of the Bulls" />
+        <div class="festival-info">
+          <div class="festival-month">July</div>
+          <div class="festival-name">San Fermín</div>
+          <div class="festival-region">Pamplona, Navarre</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&q=80" alt="Feria de Abril" />
+        <div class="festival-info">
+          <div class="festival-month">April</div>
+          <div class="festival-name">Feria de Abril</div>
+          <div class="festival-region">Seville, Andalusia</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Las Fallas" />
+        <div class="festival-info">
+          <div class="festival-month">March</div>
+          <div class="festival-name">Las Fallas</div>
+          <div class="festival-region">Valencia</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80" alt="Carnival Tenerife" />
+        <div class="festival-info">
+          <div class="festival-month">February</div>
+          <div class="festival-name">Carnival</div>
+          <div class="festival-region">Tenerife, Canary Islands</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=600&q=80" alt="Semana Santa" />
+        <div class="festival-info">
+          <div class="festival-month">March / April</div>
+          <div class="festival-name">Semana Santa</div>
+          <div class="festival-region">Nationwide</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY SPAIN -->
+  <section class="why-section">
+    <h2 class="why-title">Why Travel Spain</h2>
+    <p class="why-sub">A land of sun, soul, and staggering diversity</p>
+
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="50">0</span>+</div>
+        <p class="fact-label">UNESCO World Heritage Sites</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="3000">0</span>+</div>
+        <p class="fact-label">Hours of Sunshine Per Year</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="300">0</span>+</div>
+        <p class="fact-label">Michelin Starred Restaurants</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="17">0</span></div>
+        <p class="fact-label">Autonomous Regions, Each Unique</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="8000">0</span>+</div>
+        <p class="fact-label">Kilometres of Coastline</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="4">0</span></div>
+        <p class="fact-label">Co-official Languages</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL STYLES -->
+  <section class="styles-section">
+    <h2 class="styles-title">Explore By Travel Style</h2>
+    <p class="styles-sub">Find your Spain based on your passions</p>
+
+    <div class="styles-grid">
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80" alt="Adventure" />
+        <div class="style-body">
+          <div class="style-name">Adventure</div>
+          <p class="style-desc">Pyrenees trekking, Picos de Europa, Camino de Santiago</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Beaches" />
+        <div class="style-body">
+          <div class="style-name">Beaches</div>
+          <p class="style-desc">Costa Brava, Ibiza, San Sebastián's La Concha</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&q=80" alt="Heritage" />
+        <div class="style-body">
+          <div class="style-name">Heritage</div>
+          <p class="style-desc">Alhambra, Toledo, Roman ruins of Mérida</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80" alt="Nature" />
+        <div class="style-body">
+          <div class="style-name">Nature</div>
+          <p class="style-desc">Doñana wetlands, Teide volcano, Galician Rías Baixas</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Food" />
+        <div class="style-body">
+          <div class="style-name">Food</div>
+          <p class="style-desc">Pintxos in Bilbao, paella in Valencia, jamón in Extremadura</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80" alt="Festivals" />
+        <div class="style-body">
+          <div class="style-name">Festivals</div>
+          <p class="style-desc">Feria de Abril, Las Fallas, San Fermín, La Tomatina</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREE BANNER -->
+  <div class="tree-banner">
+    🌿 &nbsp; We plant a tree for every trip booked through Journeys
+  </div>
+
+  
+
+  <script>
+    // Counter animation
+    const counters = document.querySelectorAll('.counter');
+    let started = false;
+
+    function startCounters() {
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const increment = Math.max(1, Math.ceil(target / 80));
+        const update = () => {
+          count += increment;
+          if (count >= target) { counter.textContent = target.toLocaleString(); return; }
+          counter.textContent = count.toLocaleString();
+          requestAnimationFrame(update);
+        };
+        update();
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      if (started) return;
+      const section = document.querySelector('.why-section');
+      if (!section) return;
+      if (section.getBoundingClientRect().top < window.innerHeight - 100) {
+        started = true;
+        startCounters();
+      }
+    });
+  </script>
+</body>
+</html>

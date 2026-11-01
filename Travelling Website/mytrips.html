@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Trips — Lonely Planet Journeys</title>
+  <link rel="stylesheet" href="mytrips.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<header class="header">
+  <div class="header-inner">
+
+    <!-- Logo -->
+    <a href="main.html" class="logo">
+      <span class="logo-sup">lonely planet</span>
+      <span class="logo-main">W<span>A</span>NDR</span>
+    </a>
+
+    <!-- Nav -->
+    <nav class="header-nav">
+      <a href="main.html" class="nav-link">Home</a>
+      <a href="mytrips.html" class="nav-link active">My Trips</a>
+      <a href="Homepage.html" class="nav-link">Discover</a>
+      <a href="trip.html" class="nav-link">Plan Trip</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
+
+    <!-- Right -->
+    <div class="header-right">
+      <div class="avatar" id="userAvatar">TR</div>
+      <button class="btn-logout" onclick="handleLogout()">Log out</button>
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════
+     MAIN PAGE
+══════════════════════════════════ -->
+<main class="page">
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="page-hero-left">
+      <div class="page-eyebrow">Your journeys await</div>
+      <h1 class="page-title">My <em>Trips</em></h1>
+      <p class="page-sub">All your adventures, beautifully organised in one place.</p>
+    </div>
+    <a href="trip.html" class="btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+      <span>＋</span> Plan New Trip
+    </a>
+  </div>
+
+  <!-- Stats Strip -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-icon purple">✈️</div>
+      <div class="stat-val" id="stat-total">0</div>
+      <div class="stat-label">Total Trips</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange">🗓</div>
+      <div class="stat-val" id="stat-upcoming">0</div>
+      <div class="stat-label">Upcoming</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">✅</div>
+      <div class="stat-val" id="stat-completed">0</div>
+      <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon gold">🌙</div>
+      <div class="stat-val" id="stat-days">0</div>
+      <div class="stat-label">Days Travelled</div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Show:</span>
+    <button class="filter-btn active" data-filter="all"       onclick="setFilter('all')">All Trips</button>
+    <button class="filter-btn"        data-filter="upcoming"  onclick="setFilter('upcoming')">Upcoming</button>
+    <button class="filter-btn"        data-filter="planning"  onclick="setFilter('planning')">Planning</button>
+    <button class="filter-btn"        data-filter="completed" onclick="setFilter('completed')">Completed</button>
+    <button class="filter-btn"        data-filter="cancelled" onclick="setFilter('cancelled')">Cancelled</button>
+    <div class="filter-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search destinations…" oninput="handleSearch(event)"/>
+    </div>
+  </div>
+
+  <!-- Trip Cards Grid -->
+  <div class="trips-grid" id="trips-grid">
+    <!-- Rendered by JS -->
+  </div>
+
+</main>
+
+
+<!-- ══════════════════════════════════
+     MODAL — VIEW TRIP DETAILS
+══════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <div class="modal-img-wrap">
+      <img id="modal-img" src="" alt="Trip cover"/>
+      <div class="modal-img-overlay"></div>
+      <div class="modal-dest-info">
+        <h2 id="modal-title"></h2>
+        <div class="modal-dest-country" id="modal-country"></div>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="modal-detail">
+          <span class="modal-detail-key">Travel Dates</span>
+          <span class="modal-detail-val" id="modal-date"></span>
+        </div>
+        <div class="modal-detail">
+          <span class="modal-detail-key">Duration</span>
+          <span class="modal-detail-val" id="modal-duration"></span>
+        </div>
+        <div class="modal-detail">
+          <span class="modal-detail-key">Budget Level</span>
+          <span class="modal-detail-val" id="modal-budget"></span>
+        </div>
+        <div class="modal-detail">
+          <span class="modal-detail-key">Travelers</span>
+          <span class="modal-detail-val" id="modal-travelers"></span>
+        </div>
+        <div class="modal-detail">
+          <span class="modal-detail-key">Status</span>
+          <span id="modal-status"></span>
+        </div>
+      </div>
+
+      <div class="modal-notes-section">
+        <div class="modal-notes-label">Trip Overview &amp; Notes</div>
+        <div class="modal-notes-text" id="modal-notes">—</div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; gap:12px;">
+        <button id="modal-itin-btn" class="btn-primary" style="flex:1;">View Custom Itinerary →</button>
+        <button class="btn-secondary" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     TOAST
+══════════════════════════════════ -->
+<div class="toast" id="toast">
+  <span id="toast-icon"></span>
+  <span id="toast-message"></span>
+</div>
+
+<script src="mytrips.js"></script>
+</body>
+</html>

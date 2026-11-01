@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journeys — Travel To Italy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #c9a84c;
+      --dark: #1a1a1a;
+      --off-white: #f7f5f2;
+      --mid-gray: #6b6b6b;
+      --light-gray: #e8e4de;
+      --warm-white: #fdfbf8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(253,251,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-logo {
+      font-family: 'didot', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 9px 22px;
+      border: 1.5px solid var(--dark);
+      border-radius: 100px;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--dark); color: white; }
+
+    .btn-primary {
+      padding: 9px 22px;
+      border: none;
+      border-radius: 100px;
+      background: #7c3aed;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1800&q=85') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.13); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15,8,3,0.2) 0%,
+        rgba(15,8,3,0.48) 50%,
+        rgba(15,8,3,0.78) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: white;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 9vw, 110px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: #7c3aed;
+      color: white;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 0.2s, opacity 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+
+    .hero-cta:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.15);
+      background: rgba(15,8,3,0.58);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-item {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── INTRO ─── */
+    .intro-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 85vh;
+      background: var(--off-white);
+    }
+
+    .intro-left {
+      padding: 100px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .intro-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .intro-body {
+      font-size: 16px;
+      color: var(--mid-gray);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .intro-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .intro-badge {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: rgba(253,251,248,0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px 28px;
+      max-width: 280px;
+    }
+
+    .intro-badge-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .intro-badge-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .intro-badge-sub {
+      font-size: 13px;
+      color: var(--mid-gray);
+      margin-top: 4px;
+    }
+
+    .itinerary-callout {
+      background: #f0ece4;
+      padding: 20px 32px;
+      border-radius: 16px;
+      border-left: 4px solid var(--gold);
+      margin-top: 32px;
+    }
+
+    .itinerary-callout p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+
+    .itinerary-callout span {
+      font-size: 13px;
+      color: var(--mid-gray);
+    }
+
+    /* ─── THINGS TO SEE ─── */
+    .things-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .section-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .things-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+    }
+
+    .thing-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thing-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .thing-card:hover img { transform: scale(1.05); }
+
+    .thing-card-main { grid-row: 1 / 3; height: 580px; }
+    .thing-card-sm   { height: 270px; }
+    .thing-card-sm:first-child { margin-bottom: 16px; }
+
+    .thing-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 24px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.72));
+      color: white;
+    }
+
+    .thing-caption p { font-size: 14px; line-height: 1.5; }
+
+    /* ─── REGIONS ─── */
+    .regions-section {
+      padding: 100px 80px;
+      background: var(--dark);
+      color: white;
+    }
+
+    .regions-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .regions-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 620px;
+    }
+
+    .regions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .region-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 2/3;
+      cursor: pointer;
+    }
+
+    .region-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.65);
+      transition: transform 0.6s ease, filter 0.4s;
+    }
+
+    .region-card:hover img {
+      transform: scale(1.07);
+      filter: brightness(0.45);
+    }
+
+    .region-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 22px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.88));
+    }
+
+    .region-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .region-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+
+    .region-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    /* ─── SEASONS ─── */
+    .seasons-section {
+      padding: 100px 80px;
+      background: var(--off-white);
+    }
+
+    .seasons-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .seasons-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .seasons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .season-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 32px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .season-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+    }
+
+    .season-icon { font-size: 32px; margin-bottom: 16px; }
+
+    .season-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .season-desc { font-size: 15px; color: var(--mid-gray); line-height: 1.7; }
+
+    /* ─── FESTIVALS ─── */
+    .festivals-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .festivals-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .festivals-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 700;
+      margin-bottom: 60px;
+      letter-spacing: -0.02em;
+      max-width: 600px;
+    }
+
+    .festivals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .festival-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .festival-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.65);
+    }
+
+    .festival-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.45);
+    }
+
+    .festival-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 28px 28px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    }
+
+    .festival-month {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .festival-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .festival-region { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    /* ─── WHY ITALY ─── */
+    .why-section {
+      padding: 100px 80px;
+      background: var(--off-white);
+      text-align: center;
+    }
+
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .why-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 64px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .fact-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 24px;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.3s;
+    }
+
+    .fact-card:hover { transform: translateY(-5px); }
+
+    .fact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .fact-label { font-size: 15px; color: var(--mid-gray); line-height: 1.5; }
+
+    /* ─── TRAVEL STYLES ─── */
+    .styles-section {
+      padding: 100px 80px;
+      background: var(--warm-white);
+    }
+
+    .styles-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .styles-sub {
+      font-size: 16px;
+      color: var(--mid-gray);
+      margin-bottom: 60px;
+    }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .style-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--off-white);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .style-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.12);
+    }
+
+    .style-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+    .style-body { padding: 20px 24px 24px; }
+
+    .style-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .style-desc { font-size: 14px; color: var(--mid-gray); }
+
+    /* ─── TREE BANNER ─── */
+    .tree-banner {
+      background: #1e2d1e;
+      padding: 24px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.72);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 16px 24px; }
+      .intro-section { grid-template-columns: 1fr; }
+      .intro-right { height: 450px; }
+      .intro-left { padding: 60px 40px; }
+      .things-section, .seasons-section, .festivals-section,
+      .regions-section, .why-section, .styles-section { padding: 70px 40px; }
+      .seasons-grid, .styles-grid { grid-template-columns: 1fr 1fr; }
+      .festivals-grid { grid-template-columns: 1fr 1fr; }
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      .regions-grid { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr 1fr; padding: 40px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .things-grid { grid-template-columns: 1fr; }
+      .thing-card-main { height: 360px; grid-row: auto; }
+      .seasons-grid, .festivals-grid, .styles-grid,
+      .facts-grid, .regions-grid { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="Homepage.html">Destination</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+        <div class="nav-logo">WANDR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+    <div class="nav-actions">
+    <a href="trip.html">
+      <button class="btn-primary">Start Planning</button>
+      </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Southern Europe</p>
+      <h1 class="hero-title">Travel To <em>Italy.</em></h1>
+      <p class="hero-sub">Whatever you want, we can make it happen.</p>
+      <a href="trip.html"><button class="hero-cta">Craft Your Trip</button></a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-label">Best Time to Visit</div>
+        <div class="stat-value">April to June,<br>Sept to October</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Capital</div>
+        <div class="stat-value">ROME</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Population</div>
+        <div class="stat-value">59 M</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Area</div>
+        <div class="stat-value">301,340 SQ KM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Official Language</div>
+        <div class="stat-value">Italian</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro-section">
+    <div class="intro-left">
+      <p class="intro-tag">Timeless and passionate, a cradle of civilisation</p>
+      <h2 class="intro-heading">Art, Ruins &amp; the World's Greatest Table</h2>
+      <p class="intro-body">
+        No country on earth concentrates so much beauty into so small a space. From the snow-draped peaks of the Dolomites to the volcanic shores of Sicily, Italy is a layered landscape of ancient ruins, Renaissance masterpieces, and sunlit piazzas where time moves at its own unhurried pace.
+      </p>
+      <p class="intro-body">
+        Its twenty regions each hold a world of their own — Tuscany's rolling vineyards, Venice's impossible canals, the Amalfi Coast's vertiginous cliffs. The food changes every hundred kilometres, the dialect shifts, the architecture transforms. There is always more to discover.
+      </p>
+      <p class="intro-body">
+        Italy does not simply impress — it seduces. You arrive as a visitor and leave as someone who has been irreversibly changed by a place that understands, better than anywhere else, what it means to live beautifully.
+      </p>
+      <div class="itinerary-callout">
+        <p>Explore on your own terms</p>
+        <span>This is just a sample itinerary. Your trip will be tailor-made and personalized to you.</span>
+      </div>
+    </div>
+
+    <div class="intro-right">
+      <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=900&q=85" alt="Rome Colosseum at dusk" />
+       <a href="italy-itinerary.html" style="color:inherit;text-decoration:none;">
+      <div class="intro-badge">
+        <div class="intro-badge-label">Featured Experience</div>
+        <div class="intro-badge-text">ITALY AT FINEST</div>
+        <div class="intro-badge-sub">View Itinerary →</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP THINGS TO SEE -->
+  <section class="things-section">
+    <div class="section-header">
+      <div class="section-dot"></div>
+      <span class="section-label">Top Things to See</span>
+    </div>
+
+    <div class="things-grid">
+      <div class="thing-card thing-card-main">
+        <img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=900&q=85" alt="Colosseum Rome" />
+        <div class="thing-caption">
+          <p>The Colosseum — Rome's great amphitheatre standing for two thousand years, an enduring symbol of empire, spectacle and human ambition</p>
+        </div>
+      </div>
+      <div>
+        <div class="thing-card thing-card-sm" style="margin-bottom:16px">
+          <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=700&q=80" alt="Venice Grand Canal" />
+          <div class="thing-caption">
+            <p>Venice's Grand Canal — a city built on water, where gondolas glide past crumbling palazzos and golden reflections shimmer at dusk</p>
+          </div>
+        </div>
+        <div class="thing-card thing-card-sm">
+          <img src="https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=700&q=80" alt="Tuscany vineyards" />
+          <div class="thing-caption">
+            <p>Tuscany's rolling hills — cypress-lined roads, mediaeval hilltop towns, and vineyards that have produced wine since the Etruscans</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGIONS -->
+  <section class="regions-section">
+    <p class="regions-eyebrow">Twenty Regions, One Country</p>
+    <h2 class="regions-title">Each Corner of Italy is a World Apart</h2>
+
+    <div class="regions-grid">
+      <div class="region-card">
+        <img src="https://images.unsplash.com/photo-1445543949571-ffc3e0e2f55e?w=600&q=80" alt="Rome" />
+        <div class="region-info">
+          <div class="region-tag">Lazio</div>
+          <div class="region-name">Rome</div>
+          <div class="region-desc">Eternal City of ruins, Vatican art & la dolce vita</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80" alt="Tuscany" />
+        <div class="region-info">
+          <div class="region-tag">Tuscany</div>
+          <div class="region-name">Florence</div>
+          <div class="region-desc">Cradle of the Renaissance, Uffizi & Brunelleschi's dome</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="https://images.unsplash.com/photo-1499678329028-101435549a4e?w=600&q=80" alt="Amalfi Coast" />
+        <div class="region-info">
+          <div class="region-tag">Campania</div>
+          <div class="region-name">Amalfi Coast</div>
+          <div class="region-desc">Cliff-edge villages, lemon groves & cerulean sea</div>
+        </div>
+      </div>
+      <div class="region-card">
+        <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80" alt="Venice" />
+        <div class="region-info">
+          <div class="region-tag">Veneto</div>
+          <div class="region-name">Venice</div>
+          <div class="region-desc">A floating city of canals, masks & Byzantine gold</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEASONS -->
+  <section class="seasons-section">
+    <h2 class="seasons-title">Best Time to Visit Italy</h2>
+    <p class="seasons-sub">Every season paints Italy in a different light</p>
+
+    <div class="seasons-grid">
+      <div class="season-card">
+        <div class="season-icon">🌸</div>
+        <div class="season-name">Spring (Apr – Jun)</div>
+        <p class="season-desc">The finest season — wildflowers bloom in Umbria, fewer crowds fill the museums, and the days are warm without summer's searing heat.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">☀️</div>
+        <div class="season-name">Summer (Jul – Aug)</div>
+        <p class="season-desc">Peak beach season along the Amalfi Coast and Sardinia. Cities are hot and busy — ideal for evening passeggiatas and late dinners.</p>
+      </div>
+      <div class="season-card">
+        <div class="season-icon">🍂</div>
+        <div class="season-name">Autumn (Sep – Nov)</div>
+        <p class="season-desc">Truffle season in Piedmont, grape harvests in Chianti, and golden light bathing Rome's piazzas. Perhaps Italy's most romantic time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FESTIVALS -->
+  <section class="festivals-section">
+    <p class="festivals-eyebrow">Culture &amp; Celebration</p>
+    <h2 class="festivals-title">Italy's Most Unforgettable Festivals</h2>
+
+    <div class="festivals-grid">
+      <div class="festival-item">
+        <img src="images/carnevale di venezia.jpg" alt="Venice Carnival" />
+        <div class="festival-info">
+          <div class="festival-month">February</div>
+          <div class="festival-name">Carnevale di Venezia</div>
+          <div class="festival-region">Venice, Veneto</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="White Truffle Fair" />
+        <div class="festival-info">
+          <div class="festival-month">October – November</div>
+          <div class="festival-name">White Truffle Fair</div>
+          <div class="festival-region">Alba, Piedmont</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Palio di Siena" />
+        <div class="festival-info">
+          <div class="festival-month">July &amp; August</div>
+          <div class="festival-name">Palio di Siena</div>
+          <div class="festival-region">Siena, Tuscany</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Infiorata" />
+        <div class="festival-info">
+          <div class="festival-month">June</div>
+          <div class="festival-name">Infiorata</div>
+          <div class="festival-region">Genzano, Lazio</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=600&q=80" alt="Feast of San Gennaro" />
+        <div class="festival-info">
+          <div class="festival-month">September</div>
+          <div class="festival-name">Feast of San Gennaro</div>
+          <div class="festival-region">Naples, Campania</div>
+        </div>
+      </div>
+      <div class="festival-item">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Sagre Food Festivals" />
+        <div class="festival-info">
+          <div class="festival-month">Year-Round</div>
+          <div class="festival-name">Sagre Food Festivals</div>
+          <div class="festival-region">Nationwide</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY ITALY -->
+  <section class="why-section">
+    <h2 class="why-title">Why Travel Italy</h2>
+    <p class="why-sub">A country that holds more art, history and flavour than anywhere else on earth</p>
+
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="58">0</span></div>
+        <p class="fact-label">UNESCO World Heritage Sites — the most of any country</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="350">0</span>+</div>
+        <p class="fact-label">Michelin Starred Restaurants</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="2000">0</span>+</div>
+        <p class="fact-label">Years of Continuous History &amp; Civilisation</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="20">0</span></div>
+        <p class="fact-label">Distinct Regions, Each with Unique Culture</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="7600">0</span>+</div>
+        <p class="fact-label">Kilometres of Gorgeous Coastline</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-number"><span class="counter" data-target="400">0</span>+</div>
+        <p class="fact-label">Indigenous Grape Varieties for Wine</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL STYLES -->
+  <section class="styles-section">
+    <h2 class="styles-title">Explore By Travel Style</h2>
+    <p class="styles-sub">Find your Italy based on your passions</p>
+
+    <div class="styles-grid">
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1467377791767-c929b5dc9a23?w=600&q=80" alt="Adventure" />
+        <div class="style-body">
+          <div class="style-name">Adventure</div>
+          <p class="style-desc">Dolomites hiking, Etna trekking, Via Ferrata climbing</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80" alt="Beaches" />
+        <div class="style-body">
+          <div class="style-name">Beaches</div>
+          <p class="style-desc">Sardinia's Costa Smeralda, Puglia, Sicily's Scala dei Turchi</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="images/vatican.avif" alt="Heritage" />
+        <div class="style-body">
+          <div class="style-name">Heritage</div>
+          <p class="style-desc">Colosseum, Pompeii, Pantheon, Uffizi, Vatican Museums</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="Nature" />
+        <div class="style-body">
+          <div class="style-name">Nature</div>
+          <p class="style-desc">Cinque Terre cliffs, Lake Como, Dolomites, Matera gorges</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=600&q=80" alt="Food" />
+        <div class="style-body">
+          <div class="style-name">Food</div>
+          <p class="style-desc">Pizza in Naples, pasta in Bologna, gelato everywhere, always</p>
+        </div>
+      </div>
+      <div class="style-card">
+        <img class="style-img" src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=600&q=80" alt="Art & Culture" />
+        <div class="style-body">
+          <div class="style-name">Art &amp; Culture</div>
+          <p class="style-desc">Michelangelo, Botticelli, Caravaggio — in situ, where they belong</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREE BANNER -->
+  <div class="tree-banner">
+    🌿 &nbsp; We plant a tree for every trip booked through Journeys
+  </div>
+
+ 
+  <script>
+    const counters = document.querySelectorAll('.counter');
+    let started = false;
+
+    function startCounters() {
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const increment = Math.max(1, Math.ceil(target / 80));
+        const update = () => {
+          count += increment;
+          if (count >= target) { counter.textContent = target.toLocaleString(); return; }
+          counter.textContent = count.toLocaleString();
+          requestAnimationFrame(update);
+        };
+        update();
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      if (started) return;
+      const section = document.querySelector('.why-section');
+      if (!section) return;
+      if (section.getBoundingClientRect().top < window.innerHeight - 100) {
+        started = true;
+        startCounters();
+      }
+    });
+  </script>
+</body>
+</html>

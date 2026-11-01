@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About & FAQ — lonely planet Journeys</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #6B3FA0;
+      --purple-light: #EEE8F8;
+      --purple-mid: #D4C5F0;
+      --dark: #1A1A1A;
+      --mid: #4A4A4A;
+      --muted: #7A7A7A;
+      --border: #E5E5E5;
+      --white: #FFFFFF;
+      --bg: #FAFAFA;
+      --gradient-hero: linear-gradient(135deg, #EEE8F8 0%, #F5F0FC 50%, #fff 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 68px;
+    }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--purple); }
+    .logo {
+      text-align: center;
+      cursor: pointer;
+    }
+    .logo-small {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+      text-transform: lowercase;
+    }
+    .logo-big {
+      display: block;
+      font-family: 'Didot', serif;
+      font-size: 38px;
+      font-weight: 500;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .nav-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-primary {
+      background: var(--purple);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #7c3aed; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--dark);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--purple); color: var(--purple); }
+
+    /* HERO */
+    .hero {
+      background: var(--gradient-hero);
+      padding: 100px 48px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('https://wallpapercave.com/wp/Ex9MlTC.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.6;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(243, 242, 245, 0.07) 0%, transparent 60%);
+      top: -200px; right: -100px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-label {
+      background: var(--purple-light);
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 62px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--white);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* SECTION COMMON */
+    section { padding: 80px 48px; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.15;
+    }
+    .section-sub {
+      font-size: 17px;
+      color: var(--mid);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    /* STORY SECTION */
+    .story {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .story-visual {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #e0e0e0;
+    }
+    .story-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .story-visual-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2d1b5e 0%, #6B3FA0 50%, #9B6FD0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+    }
+    .story-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .badge-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--purple);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .badge-text { font-size: 13px; }
+    .badge-text strong { display: block; font-weight: 700; color: var(--dark); font-size: 15px; }
+    .badge-text span { color: var(--muted); }
+    .story-content { display: flex; flex-direction: column; gap: 20px; }
+    .story-content p { font-size: 16px; color: var(--mid); line-height: 1.75; }
+
+    /* STATS */
+    .stats-section {
+      background: var(--dark);
+      color: var(--white);
+      padding: 70px 48px;
+    }
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      text-align: center;
+    }
+    .stat-item { display: flex; flex-direction: column; gap: 8px; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-num span { color: #9B6FD0; }
+    .stat-label { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 500; }
+
+    /* HOW IT WORKS */
+    .how-it-works { background: var(--bg); }
+    .how-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .how-header { text-align: center; margin-bottom: 60px; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 44px;
+      left: calc(16.67% + 20px);
+      right: calc(16.67% + 20px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple-mid), var(--purple), var(--purple-mid));
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 32px;
+      position: relative;
+    }
+    .step-num {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: var(--purple-light);
+      border: 3px solid var(--purple-mid);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--purple);
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+      background: white;
+    }
+    .step.active .step-num {
+      background: var(--purple);
+      color: white;
+      border-color: var(--purple);
+    }
+    .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .step p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* VALUES */
+    .values { max-width: 1200px; margin: 0 auto; }
+    .values-header { text-align: center; margin-bottom: 60px; }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .value-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 30px;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .value-card:hover {
+      border-color: var(--purple-mid);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(107,63,160,0.08);
+    }
+    .value-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: var(--purple-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .value-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .value-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* TEAM */
+    .team-section { background: var(--bg); }
+    .team-inner { max-width: 1200px; margin: 0 auto; }
+    .team-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .team-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .team-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.1); }
+    .team-photo {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #2d1b5e, #6B3FA0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px;
+    }
+    .team-info { padding: 20px; }
+    .team-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .team-role { font-size: 13px; color: var(--purple); font-weight: 600; margin-bottom: 6px; }
+    .team-location { font-size: 12px; color: var(--muted); }
+
+    /* FAQ */
+    .faq-section { max-width: 1200px; margin: 0 auto; }
+    .faq-header { text-align: center; margin-bottom: 60px; }
+    .faq-categories {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    .faq-cat {
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      color: var(--mid);
+    }
+    .faq-cat.active, .faq-cat:hover {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: white;
+    }
+    .faq-list { display: flex; flex-direction: column; gap: 0; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--dark);
+      gap: 24px;
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--purple); }
+    .faq-q.open { color: var(--purple); }
+    .faq-icon {
+      width: 28px; height: 28px; flex-shrink: 0;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      transition: transform 0.25s;
+    }
+    .faq-q.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.75;
+      padding: 0 8px;
+    }
+    .faq-a.open {
+      max-height: 400px;
+      padding-bottom: 24px;
+    }
+
+    /* CTA BAND */
+    .cta-band {
+      background: var(--purple);
+      padding: 80px 48px;
+      text-align: center;
+      color: white;
+    }
+    .cta-band h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .cta-band p {
+      font-size: 17px;
+      opacity: 0.85;
+      margin-bottom: 36px;
+      max-width: 480px;
+      margin-left: auto; margin-right: auto;
+    }
+    .btn-white {
+      background: white;
+      color: var(--purple);
+      border: none;
+      border-radius: 50px;
+      padding: 14px 32px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 48px 36px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand .logo-big { color: white; font-size: 24px; margin-bottom: 12px; }
+    .footer-brand .logo-small { color: rgba(255,255,255,0.5); }
+    .footer-brand p { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 12px; line-height: 1.65; }
+    .footer-col h4 { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 18px; }
+    .footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.75); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 32px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      section { padding: 60px 24px; }
+      .story { grid-template-columns: 1fr; gap: 40px; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .values-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .hero { padding: 60px 24px 50px; }
+      .cta-band { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-links">
+      <a href="Homepage.html">Destinations</a>
+      <a href="#" style="color:var(--purple);">About & FAQ</a>
+    </div>
+    <div class="logo">
+      <span></span>
+      <span class="logo-big">WANDR</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-primary">Home</button>
+        </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label fade-up">About & FAQ</div>
+    <h1 class="fade-up delay-1">Travel that gives back to the places you love</h1>
+    <p class="fade-up delay-2">We connect curious travellers with local experts who craft trips rooted in authentic experience — and leave destinations better than they found them.</p>
+  </div>
+
+  <!-- OUR STORY -->
+  <section style="padding: 100px 48px;">
+    <div class="story">
+      <div class="story-visual fade-up">
+        <img src="https://wallpapercave.com/wp/wp1921785.jpg" alt="Our Story">
+        <div class="story-badge">
+          <div class="badge-icon">✈️</div>
+          <div class="badge-text">
+            <strong>Est. 2026</strong>
+            <span>Born from a big idea</span>
+          </div>
+        </div>
+      </div>
+      <div class="story-content fade-up delay-1">
+        <div class="section-label">Our Story</div>
+        <h2 class="section-title">When a destination thrives, so does your experience there.</h2>
+        <p>Lonely Planet Journeys was born from the idea that travellers and the destinations they visit deserve better. The travel industry is broken — most trips send money out of the places you explore, rather than into them.</p>
+        <p>We believe travel should be built on local insight, created and sold directly from the destination itself. That's why we connect you with local experts who live, breathe, and love their corner of the world.</p>
+        <p>Every trip planned through us keeps money in local communities, supports local guides, and creates experiences you simply can't find anywhere else.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="how-inner">
+      <div class="how-header">
+        <div class="section-label" style="text-align:center;">How it works</div>
+        <h2 class="section-title" style="text-align:center; margin: 0 auto;">Three steps to your perfect trip</h2>
+      </div>
+      <div class="steps">
+        <div class="step active">
+          <div class="step-num">1</div>
+          <h3>Make a request</h3>
+          <p>Click 'Craft your trip' and fill out a short questionnaire to be matched with a local expert who suits your travel style and destination.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Craft your trip</h3>
+          <p>Schedule a free discovery call with your expert. Discuss ideas, dreams, and any hopes you have — no obligation to continue.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Booking & take-off</h3>
+          <p>Once you're happy with the itinerary, book everything directly through your expert. Then all that's left is to go.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR VALUES -->
+  <section>
+    <div class="values">
+      <div class="values-header">
+        <div class="section-label">Our Commitments</div>
+        <h2 class="section-title">Trips you can feel good about</h2>
+        <p class="section-sub" style="margin: 16px auto 0; text-align: center;">We believe travel should be built on local insight, created and sold directly from the destination itself.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h3>Local expertise, always</h3>
+          <p>Every trip is crafted by someone who actually lives there. No middlemen, no generic itineraries — just people who know their home inside out.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">💚</div>
+          <h3>Responsible travel</h3>
+          <p>We partner only with experts who share our commitment to environmental sustainability and respect for local culture and communities.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🌱</div>
+          <h3>Money stays local</h3>
+          <p>When you book through Journeys, the bulk of your spend goes directly to local economies — not to giant corporations based elsewhere.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">✨</div>
+          <h3>Truly bespoke</h3>
+          <p>No two trips are the same. Your itinerary is built around your pace, interests, and budget — not a template plucked off the shelf.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🔒</div>
+          <h3>Safe & supported</h3>
+          <p>All bookings are financially protected and all experts are vetted. You've got full support from our team before, during, and after your trip.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🌍</div>
+          <h3>Community first</h3>
+          <p>We work only in destinations where travel genuinely uplifts communities — and we say no to places where it causes harm.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="faq-section">
+      <div class="faq-header">
+        <div class="section-label">Got questions?</div>
+        <h2 class="section-title">Frequently asked questions</h2>
+        <p class="section-sub" style="margin: 16px auto 0; text-align: center;">Everything you need to know about planning a trip with Lonely Planet Journeys.</p>
+      </div>
+
+      <div class="faq-categories">
+        <button class="faq-cat active">All</button>
+        <button class="faq-cat">Planning your trip</button>
+        <button class="faq-cat">About our experts</button>
+        <button class="faq-cat">Booking & payments</button>
+        <button class="faq-cat">Once you're there</button>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q open">
+            What does a Lonely Planet Journeys trip include?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a open">
+            Every trip is completely bespoke. Your local expert will design a full itinerary including accommodation recommendations, transport, activities, restaurant picks, and day-by-day guidance — all based on your personal preferences. They can also handle all the booking logistics if you'd like, or simply advise and let you book independently.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            How are local experts vetted?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            All of our local experts go through a thorough application and interview process. We check credentials, review past work, and require proof of local knowledge and experience. Many are professional guides, hospitality specialists, or long-term residents who are deeply embedded in their communities.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            Is the initial discovery call really free?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Absolutely. Your first discovery call with a local expert is completely free and comes with no obligation to book anything. It's a chance for you both to see if you're a good fit and to start discussing what your ideal trip might look like.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            How much does it cost to use Lonely Planet Journeys?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Planning fees vary by expert and destination. Most charge a modest trip planning fee (typically between $100–$350 USD), which covers the design of your complete bespoke itinerary. Actual travel costs — accommodation, transport, activities — are additional and booked separately. You'll always see clear pricing before committing.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            What if I'm not happy with my itinerary?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Your expert will refine the itinerary through rounds of feedback until you're genuinely happy before any booking takes place. If you're unsatisfied with the planning service itself, our team will work with you to find a resolution — including a full refund of the planning fee if appropriate.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            Can I travel solo, with family, or in a group?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Yes — Journeys works for solo travellers, couples, families with children, and groups of friends. When you fill in your trip request, simply let us know who's coming and any special considerations (like travelling with young kids, elderly parents, or accessibility needs), and we'll match you with the right expert.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            Is my booking financially protected?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Yes. All bookings made through Lonely Planet Journeys are financially protected. We recommend travellers also take out comprehensive travel insurance, and your expert can advise on appropriate options for your destination.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            How is Lonely Planet Journeys different from a regular travel agency?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Traditional travel agencies are usually based far from the destinations they sell, rely on commissions from large hotel chains, and package pre-made itineraries. Our experts actually live in the places they curate — meaning their knowledge is current, deeply local, and uncorrupted by corporate incentives. Money flows directly back to communities, not to middlemen.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    
+    <h2>Ready to craft your trip?</h2>
+    <p>Tell us where you want to go. We'll match you with the perfect local expert — for free.</p>
+    <a href="trip.html">
+    <button class="btn-white">Craft your trip →</button>
+    </a>
+  </div>
+
+  <footer style="background: var(--dark); color: rgba(255,255,255,0.4); text-align: center; padding: 24px 48px; font-size: 13px;">
+    © 2026 Lonely Planet Journeys. All rights reserved.
+  </footer>
+
+  <script>
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isOpen = btn.classList.contains('open');
+        document.querySelectorAll('.faq-q').forEach(b => {
+          b.classList.remove('open');
+          b.nextElementSibling.classList.remove('open');
+        });
+        if (!isOpen) {
+          btn.classList.add('open');
+          btn.nextElementSibling.classList.add('open');
+        }
+      });
+    });
+
+    // FAQ category filter (visual only)
+    document.querySelectorAll('.faq-cat').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.faq-cat').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Scroll fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.value-card, .step, .team-card, .stat-item').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lonely Planet Journeys</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ── NEW SECTIONS ONLY — nothing here touches your existing style.css ── */
+
+  .stats-bar {
+    background: #f5f0e8;
+    padding: 4rem 0;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  .stats-inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: 0.5rem;
+  }
+
+  .featured-trips {
+    padding: 6rem 0;
+    background: #fff;
+  }
+  .featured-trips .ft-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  .trips-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+  }
+  .trips-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+  .trips-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    opacity: 0.6;
+  }
+  .trips-grid {
+   display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.5rem;
+  align-items: stretch;   /* IMPORTANT */
+}
+  .trip-card {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .trip-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: unset;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .trip-card:hover .trip-card-img { transform: scale(1.05); }
+  .trip-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    color: #fff;
+  }
+.trip-tag {
+  position: absolute;
+  left: 2rem;
+  right: 2rem;
+  top: 2rem;   /* 👈 FIX: always stays at top */
+
+  padding: 0.4rem 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  color: #fff;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(6px);
+}
+  .trip-card-overlay h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .trip-card-overlay p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    opacity: 0.75;
+    margin-bottom: 1rem;
+  }
+  .trip-meta {
+    display: flex;
+    gap: 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    opacity: 0.65;
+  }
+  .trips-right {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .trip-card-sm .trip-card-img { min-height: 0; height: 100%; }
+
+  .why-us {
+    padding: 6rem 0;
+    background: #1a1a18;
+    color: #fff;
+  }
+  .why-us .wu-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  .why-us h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+  .why-us .sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    opacity: 0.5;
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 4rem;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .why-item {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 2rem;
+  }
+  .why-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    opacity: 0.2;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .why-item h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .why-item p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    opacity: 0.45;
+    line-height: 1.7;
+  }
+
+  .how-it-works {
+    padding: 6rem 0;
+    background: #faf8f4;
+  }
+  .how-it-works .hiw-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    text-align: center;
+  }
+  .how-it-works h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 4rem;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    position: relative;
+  }
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 1.4rem;
+    left: 12%;
+    right: 12%;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, #ccc 0, #ccc 6px, transparent 6px, transparent 14px);
+  }
+  .trip-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+  .step { position: relative; }
+  .step-num {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    background: #1a1a18;
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .step h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .step p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    opacity: 0.55;
+    line-height: 1.7;
+  }
+
+  .testimonials {
+    padding: 6rem 0;
+    background: #fff;
+  }
+  .testimonials .t-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  .testimonials h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .testimonial-card {
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+    padding: 2rem;
+  }
+  .stars { font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 1rem; }
+  .testimonial-card blockquote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+  .testimonial-author { display: flex; align-items: center; gap: 0.8rem; }
+  .author-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e8dfc8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .author-name { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; }
+  .author-trip { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; opacity: 0.5; }
+
+  .newsletter {
+    padding: 7rem 0;
+    background: #1a1a18;
+    color: #fff;
+    text-align: center;
+  }
+  .newsletter .nl-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+  .newsletter h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+  .newsletter .nl-sub {
+    font-family: 'DM Sans', sans-serif;
+    opacity: 0.5;
+    margin-bottom: 2rem;
+  }
+  .nl-form {
+    display: flex;
+    max-width: 420px;
+    margin: 0 auto;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .nl-form input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: none;
+    color: #fff;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+  .nl-form input::placeholder { color: rgba(255,255,255,0.3); }
+  .nl-form button {
+    background: #fff;
+    color: #1a1a18;
+    border: none;
+    padding: 0.9rem 1.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .nl-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    opacity: 0.25;
+    margin-top: 1rem;
+  }
+
+  .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: none; }
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <ul>
+      
+      <li><a href="about.html">About US</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+
+    <div class="nav-logo">
+      <span class="top"></span>
+      <span class="bottom">WANDR</span>
+    </div>
+
+<div class="nav-actions">
+
+<a href="trip.html" class="btn-craft">Craft your trip</a>
+
+<a href="loginverfication.html" id="loginBtn">
+<button class="btn-login">Login</button>
+</a>
+
+<a href="mytrips.html" id="myTripsBtn" style="display:none;">
+<button class="btn-login">My Trips</button>
+</a>
+
+</div>
+</nav>
+</header>
+
+<section class="hero">
+
+  <div class="hero-video">
+    <video autoplay muted loop playsinline>
+      <source src="videos/hero.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+</section>  
+  <div class="hero-content">
+    <h1>Travel like you mean it.</h1>
+    <p>Trips you couldn't plan, even if you wanted to</p>
+
+    <div class="search-box">
+      <input type="text" placeholder="Where do you want to go?">
+      <button>🔍</button>
+    </div>
+  </div>
+
+
+</section>
+
+<section class="explore container">
+  <h2>Explore</h2>
+
+  <div class="cards">
+    <a href="indiacheck.html" class="card">
+      <img src="Images/tajmahal.jpg" alt="India">
+      <h3>India</h3>
+    </a>
+
+    <a href="spain.html" class="card">
+      <img src="Images/Spain.avif" alt="Spain">
+      <h3>Spain</h3>
+    </a>
+
+    <a href="italy.html" class="card">
+      <img src="Images/italy.avif" alt="Italy">
+      <h3>Italy</h3>
+    </a>
+<a href="japan.html" >
+    <div class="card">
+      <img src="Images/Japan.avif" alt="Japan">
+      <h3>Japan</h3>
+    </div>
+</a>
+<a href="mexico.html" >
+    <div class="card">
+      <img src="Images/Mexico.jpg" alt="Mexico">
+      <h3>Mexico</h3>
+    </div>
+    </a>
+<a href="switzerland.html" >
+    <div class="card">
+      <img src="Images/Switzerland.jpg" alt="Switzerland">
+      <h3>Switzerland</h3>
+    </div>
+    </a>
+  </div>
+</section>
+
+<!-- ── NEW: STATS BAR ── -->
+<section class="stats-bar fade-up">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-val">5+</div>
+      <div class="stat-label">Destinations</div>
+    </div>
+    <div>
+      <div class="stat-val">1K+</div>
+      <div class="stat-label">Trips Crafted</div>
+    </div>
+    <div>
+      <div class="stat-val">98%</div>
+      <div class="stat-label">Traveller Satisfaction</div>
+    </div>
+    <div>
+      <div class="stat-val">5+</div>
+      <div class="stat-label">Years of Expertise</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEW: FEATURED TRIPS ── -->
+<section class="featured-trips">
+  <div class="ft-container">
+    <div class="trips-header fade-up">
+  <h2>Experiences worth taking</h2>
+</div>
+
+<div class="trips-grid fade-up">
+
+  <!-- LEFT BIG CARD -->
+  <a href="indiacheck.html" class="trip-card-link">
+    <div class="trip-card">
+      <img class="trip-card-img" src="Images/tajmahal.jpg" alt="India Golden Triangle">
+      <div class="trip-card-overlay">
+        <span class="trip-tag">Editor's Pick</span>
+        <h3>The Golden Triangle, India</h3>
+        <p>Delhi → Agra → Jaipur. Monuments, markets, and monsoons.</p>
+        <div class="trip-meta">
+          <span>⏱ 10 days</span>
+          <span>👥 Small group</span>
+          <span>★ 4.9</span>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- RIGHT SIDE -->
+  <div class="trips-right">
+
+    <a href="cherry.html" class="trip-card-link">
+      <div class="trip-card trip-card-sm">
+        <img class="trip-card-img" src="Images/Japan.avif" alt="Japan">
+        <div class="trip-card-overlay">
+          <span class="trip-tag">Trending</span>
+          <h3>Cherry Blossom Japan</h3>
+          <p>Tokyo to Kyoto in peak bloom season.</p>
+          <div class="trip-meta">
+            <span>⏱ 14 days</span>
+            <span>★ 5.0</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <a href="footy.html" class="trip-card-link">
+      <div class="trip-card trip-card-sm">
+        <img class="trip-card-img" src="Images/Spain.avif" alt="Spain">
+        <div class="trip-card-overlay">
+          <span class="trip-tag">Best Seller</span>
+          <h3>Spain: The Football Experience</h3>
+          <p>El Clásico, La Liga nights & stadium culture.</p>
+          <div class="trip-meta">
+            <span>⏱ 10 days</span>
+            <span>★ 4.8</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+</section>
+
+<!-- ── NEW: WHY US ── -->
+<section class="why-us">
+  <div class="wu-container">
+    <div class="fade-up">
+      <h2>Travel that actually changes you</h2>
+      <p class="sub">Built on 50 years of Lonely Planet expertise — we go deeper than any algorithm can.</p>
+    </div>
+    <div class="why-grid fade-up">
+      <div class="why-item">
+        <div class="why-number">01</div>
+        <h4>Insider Knowledge</h4>
+        <p>Every itinerary is built by travellers who have lived it, not just booked it.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-number">02</div>
+        <h4>Truly Custom</h4>
+        <p>No copy-paste trips. Your dates, pace, interests — shaped into something singular.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-number">03</div>
+        <h4>Responsible Travel</h4>
+        <p>Carbon-aware routing, local guides, community stays. Good for the world you're visiting.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-number">04</div>
+        <h4>Always With You</h4>
+        <p>24/7 support from real humans who know your destination — not a call centre script.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEW: HOW IT WORKS ── -->
+<section class="how-it-works">
+  <div class="hiw-container">
+    <h2 class="fade-up">From dream to departure in four steps</h2>
+    <div class="steps fade-up">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Tell us your vision</h4>
+        <p>Share where you're dreaming of, when, and how you like to travel.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>We craft your trip</h4>
+        <p>Our experts build a bespoke itinerary — usually within 48 hours.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Refine together</h4>
+        <p>Tweak anything. Swap a hotel, add a detour, pace it differently.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Travel with confidence</h4>
+        <p>Land with every detail sorted and support whenever you need it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEW: TESTIMONIALS ── -->
+<section class="testimonials">
+  <div class="t-container">
+    <h2 class="fade-up">Journeys that stayed with them</h2>
+    <div class="testimonials-grid fade-up">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"They found a riad in Marrakech I never would have discovered on my own. That week changed how I see travel entirely."</blockquote>
+        <div class="testimonial-author">
+          <div class="author-avatar">SR</div>
+          <div>
+            <div class="author-name">Shreya R.</div>
+            <div class="author-trip">Morocco, 12 days</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Our Japan trip was flawless — the balance between iconic sites and local gems was exactly right. Already planning our next one."</blockquote>
+        <div class="testimonial-author">
+          <div class="author-avatar">MK</div>
+          <div>
+            <div class="author-name">Marco K.</div>
+            <div class="author-trip">Japan, 15 days</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"I gave them a vague dream — 'something in South America, off the beaten path' — and they delivered beyond imagination."</blockquote>
+        <div class="testimonial-author">
+          <div class="author-avatar">AT</div>
+          <div>
+            <div class="author-name">Amara T.</div>
+            <div class="author-trip">Peru & Bolivia, 18 days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEW: NEWSLETTER ── -->
+<section class="newsletter">
+  <div class="nl-container fade-up">
+    <h2>The world is waiting. Don't miss a thing.</h2>
+    <p class="nl-sub">Destination guides, hidden gems, and trip ideas — delivered monthly. No spam, ever.</p>
+    <div class="nl-form">
+      <input type="email" placeholder="Your email address">
+      <button type="button">Subscribe</button>
+    </div>
+    <p class="nl-note">By subscribing you agree to our Privacy Policy. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<footer>
+
+<div class="footer-bottom">
+<p>© 2026 Journeys Travel. All rights reserved.</p>
+</div>
+
+</footer>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const updateAuthNav = (isAuth) => {
+  const loginBtn = document.getElementById("loginBtn");
+  const myTripsBtn = document.getElementById("myTripsBtn");
+  if (loginBtn) loginBtn.style.display = isAuth ? "none" : "block";
+  if (myTripsBtn) myTripsBtn.style.display = isAuth ? "flex" : "none";
+};
+
+// Check local cache first for instant render
+const cachedEmail = sessionStorage.getItem("userEmail") || localStorage.getItem("userEmail");
+if (cachedEmail) updateAuthNav(true);
+
+// Verify with server-verified session cookie
+const apiBase = (window.location.protocol.startsWith("http") && !window.location.origin.includes(":3000")) ? "" : "http://localhost:3000";
+fetch(apiBase + "/api/me", { credentials: "include" })
+  .then(res => res.json())
+  .then(data => {
+    if (data && data.authenticated) {
+      updateAuthNav(true);
+      sessionStorage.setItem("userEmail", data.user.email);
+      localStorage.setItem("userEmail", data.user.email);
+    } else {
+      updateAuthNav(false);
+      sessionStorage.removeItem("userEmail");
+      localStorage.removeItem("userEmail");
+    }
+  })
+  .catch(() => null);
+
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) entry.target.classList.add('visible');
+});
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+});
+
+</script>
+
+
+</body>
+</html>

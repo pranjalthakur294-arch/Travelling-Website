@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cherry Blossom Japan – Lonely Planet Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink:       #0d0a1a;
+      --sakura:    #d4627a;
+      --sakura-lt: #e8a0b0;
+      --sakura-dk: #a03050;
+      --gold:      #c9952e;
+      --cream:     #f7f3ee;
+      --warm:      #ede5d8;
+      --muted:     #7a6e84;
+      --card:      #ffffff;
+      --midnight:  #0d1030;
+      --deep:      #07060f;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Outfit',sans-serif; background:var(--cream); color:var(--ink); min-height:100vh; }
+
+    /* ── TRENDING BADGE HERO ── */
+    .hero {
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+    }
+    .hero img {
+      width:100%; height:100%;
+      object-fit: cover;
+      object-position: center 38%;
+      filter: brightness(0.52) saturate(1.15);
+      transition: transform 8s ease;
+    }
+    .hero:hover img { transform: scale(1.04); }
+
+    /* layered cinematic gradient — matches the card's dark-bottom look */
+    .hero-overlay {
+      position: absolute; inset:0;
+      background:
+        linear-gradient(180deg,
+          rgba(7,6,15,0.18) 0%,
+          rgba(7,6,15,0.0) 35%,
+          rgba(7,6,15,0.55) 70%,
+          rgba(7,6,15,0.88) 100%);
+    }
+    /* subtle radial vignette */
+    .hero-vignette {
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(7,6,15,0.45) 100%);
+    }
+    /* fine grain texture */
+    .hero-grain {
+      position:absolute; inset:0;
+      opacity:0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: absolute;
+      top:0; left:0; right:0;
+      padding: 24px 40px;
+      display: flex;
+      align-items:center;
+      justify-content:space-between;
+      z-index:20;
+      background: linear-gradient(to bottom, rgba(7,6,15,.55) 0%, transparent 100%);
+    }
+    .nav-logo { display:flex; flex-direction:column; line-height:1; }
+    .nav-logo .small { font-size:10px; letter-spacing:3px; color:rgba(255,255,255,0.5); text-transform:uppercase; }
+    .nav-logo h1 { font-family:'Cormorant Garamond',serif; color:#fff; font-size:24px; font-weight:700; }
+    .nav-back {
+      display:flex; align-items:center; gap:8px;
+      color:rgba(255,255,255,.75); font-size:13px; font-weight:500;
+      text-decoration:none; letter-spacing:.5px;
+      padding:8px 18px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.2);
+      backdrop-filter:blur(8px);
+      transition:background .2s, color .2s;
+    }
+    .nav-back:hover { background:rgba(255,255,255,.1); color:#fff; }
+
+    /* ── TRENDING BADGE ── */
+    .trending-badge {
+      position: absolute;
+      top: 88px;
+      left: 40px;
+      z-index:20;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 16px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.13);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      animation: fadeDown .6s ease both;
+    }
+    .trending-dot {
+      width: 6px; height:6px;
+      border-radius:50%;
+      background: var(--sakura-lt);
+      box-shadow: 0 0 6px var(--sakura-lt);
+      animation: pulse 2s infinite;
+    }
+
+    /* ── HERO CONTENT ── */
+    .hero-content {
+      position:absolute;
+      bottom: 52px;
+      left:40px; right:40px;
+      z-index:20;
+      animation: fadeUp .7s .1s ease both;
+    }
+    .hero-label {
+      font-size:12px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--sakura-lt); margin-bottom:14px; font-weight:500;
+    }
+    .hero-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:64px; line-height:1.0;
+      color:#fff; font-weight:700;
+      margin-bottom:12px;
+    }
+    .hero-title em { font-style:italic; font-weight:400; color:var(--sakura-lt); }
+    .hero-sub {
+      font-size:18px; color:rgba(255,255,255,.72);
+      font-weight:300; margin-bottom:22px; line-height:1.4;
+    }
+    .hero-chips {
+      display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+    }
+    .hero-chip {
+      display:flex; align-items:center; gap:7px;
+      font-size:14px; color:rgba(255,255,255,.82); font-weight:400;
+    }
+    .hero-chip .chip-icon { color:var(--sakura-lt); font-size:15px; }
+    .hero-chip .chip-sep { color:rgba(255,255,255,.25); }
+    .hero-rating {
+      display:flex; align-items:center; gap:6px;
+      font-size:14px; color:rgba(255,255,255,.82);
+    }
+    .star-filled { color:#f5c518; font-size:15px; }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip {
+      background: var(--deep);
+      display:flex; justify-content:center; flex-wrap:wrap;
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .summary-item {
+      padding:18px 44px;
+      border-right:1px solid rgba(255,255,255,.07);
+      color:rgba(255,255,255,.55); font-size:13px; text-align:center;
+    }
+    .summary-item:last-child { border-right:none; }
+    .summary-item strong { display:block; color:#fff; font-size:17px; font-weight:600; margin-bottom:2px; }
+
+    /* ── MAIN ── */
+    .main {
+      max-width:1180px; margin:0 auto;
+      padding:60px 24px 80px;
+      display:grid; grid-template-columns:1fr 320px;
+      gap:48px; align-items:start;
+    }
+
+    .section-heading { display:flex; align-items:baseline; gap:18px; margin-bottom:28px; }
+    .section-heading h2 { font-family:'Cormorant Garamond',serif; font-size:30px; white-space:nowrap; font-weight:600; }
+    .section-heading .line { flex:1; height:1px; background:var(--warm); }
+
+    /* ── ROUTE BAR ── */
+    .route-bar {
+      background: linear-gradient(135deg, #0d1030 0%, #1a1050 100%);
+      border-radius:16px; padding:22px 28px; margin-bottom:22px;
+      display:flex; align-items:center; overflow-x:auto;
+      animation:fadeUp .5s .05s ease both;
+      position:relative; overflow:hidden;
+    }
+    .route-bar::before {
+      content:'';
+      position:absolute; inset:0;
+      background: repeating-linear-gradient(90deg, rgba(212,98,122,.04) 0, rgba(212,98,122,.04) 1px, transparent 0, transparent 60px);
+    }
+    .route-city { text-align:center; flex-shrink:0; position:relative; z-index:1; }
+    .route-city .city-name { color:#fff; font-weight:600; font-size:14px; }
+    .route-city .city-days { color:rgba(255,255,255,.42); font-size:11px; margin-top:3px; }
+    .route-arrow { flex:1; text-align:center; color:var(--sakura-lt); font-size:20px; padding:0 8px; min-width:40px; }
+
+    /* ── DAY CARD ── */
+    .day-card {
+      background:var(--card);
+      border-radius:20px; overflow:hidden;
+      margin-bottom:22px;
+      box-shadow:0 2px 16px rgba(13,10,26,.08);
+      transition:transform .22s, box-shadow .22s;
+      animation:fadeUp .5s ease both;
+    }
+    .day-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(13,10,26,.15); }
+    .day-card:nth-child(2){animation-delay:.08s}
+    .day-card:nth-child(3){animation-delay:.16s}
+    .day-card:nth-child(4){animation-delay:.24s}
+    .day-card:nth-child(5){animation-delay:.32s}
+    .day-card:nth-child(6){animation-delay:.40s}
+
+    .day-card-header { display:grid; grid-template-columns:220px 1fr; }
+    .day-img { height:178px; width:100%; object-fit:cover; display:block; }
+    .day-info { padding:24px 28px; display:flex; flex-direction:column; justify-content:center; }
+    .day-tag {
+      font-size:11px; letter-spacing:2px; text-transform:uppercase;
+      color:var(--sakura); font-weight:600; margin-bottom:8px;
+    }
+    .day-name { font-family:'Cormorant Garamond',serif; font-size:24px; margin-bottom:9px; font-weight:600; }
+    .day-desc { font-size:14px; color:var(--muted); line-height:1.65; }
+
+    .day-activities { border-top:1px solid #f0e8dc; padding:18px 28px 22px; display:flex; flex-direction:column; gap:13px; }
+    .activity { display:flex; gap:14px; align-items:flex-start; font-size:14px; }
+    .activity-time { font-size:11px; color:var(--muted); font-weight:600; min-width:46px; padding-top:2px; letter-spacing:.5px; }
+    .activity-dot { width:9px; height:9px; border-radius:50%; background:var(--sakura-lt); margin-top:4px; flex-shrink:0; }
+    .activity-text { color:#1a1028; line-height:1.56; }
+    .activity-text strong { font-weight:600; display:block; margin-bottom:2px; }
+
+    /* ── SAKURA DIVIDER ── */
+    .sakura-divider {
+      text-align:center; padding:8px 0 4px;
+      font-size:18px; letter-spacing:8px;
+      color:var(--sakura-lt); opacity:.6;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position:sticky; top:32px; }
+    .sidebar-card { background:var(--card); border-radius:18px; padding:22px 24px; margin-bottom:16px; box-shadow:0 2px 12px rgba(13,10,26,.07); animation:fadeUp .5s ease both; }
+    .sidebar-card:nth-child(1){animation-delay:.18s}
+    .sidebar-card:nth-child(2){animation-delay:.28s}
+    .sidebar-card:nth-child(3){animation-delay:.36s}
+    .sidebar-card:nth-child(4){animation-delay:.44s}
+    .sidebar-card h3 { font-family:'Cormorant Garamond',serif; font-size:20px; margin-bottom:16px; font-weight:600; }
+
+    /* blossom forecast card — special */
+    .blossom-card {
+      background: linear-gradient(135deg, #1a0a1f 0%, #2d1030 100%);
+      border-radius:18px; padding:22px 24px; margin-bottom:16px;
+      box-shadow:0 4px 24px rgba(160,48,80,.2);
+      animation:fadeUp .5s .14s ease both;
+    }
+    .blossom-card h3 { font-family:'Cormorant Garamond',serif; font-size:20px; margin-bottom:16px; font-weight:600; color:#fff; }
+    .blossom-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.07); }
+    .blossom-row:last-child { border-bottom:none; }
+    .b-city { color:rgba(255,255,255,.65); font-size:12px; min-width:72px; }
+    .b-bar-wrap { flex:1; margin:0 12px; height:6px; background:rgba(255,255,255,.1); border-radius:3px; overflow:hidden; }
+    .b-bar { height:100%; border-radius:3px; background:linear-gradient(90deg, var(--sakura-dk), var(--sakura-lt)); }
+    .b-status { font-size:11px; font-weight:600; color:var(--sakura-lt); text-align:right; min-width:58px; }
+
+    .hotel-item { display:flex; gap:14px; margin-bottom:16px; align-items:center; }
+    .hotel-item:last-child { margin-bottom:0; }
+    .hotel-thumb { width:64px; height:64px; border-radius:10px; object-fit:cover; flex-shrink:0; }
+    .hotel-name { font-weight:600; font-size:14px; margin-bottom:2px; }
+    .hotel-stars { color:var(--gold); font-size:12px; margin-bottom:2px; }
+    .hotel-price { font-size:12px; color:var(--muted); }
+
+    .weather-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid #f0e8dc; font-size:13px; }
+    .weather-row:last-child { border-bottom:none; }
+    .w-day { color:var(--muted); font-size:12px; min-width:80px; }
+    .w-icon { font-size:19px; }
+    .w-temp { font-weight:600; font-size:14px; }
+    .w-desc { font-size:11px; color:var(--muted); text-align:right; }
+
+    .tip-item { display:flex; gap:12px; margin-bottom:14px; font-size:13px; color:#221832; line-height:1.56; }
+    .tip-item:last-child { margin-bottom:0; }
+    .tip-icon { font-size:19px; flex-shrink:0; }
+
+    .ess-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid #f0e8dc; font-size:13px; }
+    .ess-item:last-child { border-bottom:none; }
+    .ess-icon { font-size:17px; }
+    .ess-label { color:var(--muted); min-width:76px; }
+    .ess-val { font-weight:500; }
+
+    /* ── CTA ── */
+    .cta-bar {
+      background:linear-gradient(135deg, #0d0a1a 0%, #1a0a1f 50%, #0d1030 100%);
+      padding:40px 64px;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+      position:relative; overflow:hidden;
+    }
+    .cta-bar::before {
+      content:'🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸';
+      position:absolute; top:-8px; left:0; right:0;
+      font-size:28px; letter-spacing:12px;
+      opacity:.06; white-space:nowrap;
+      animation: drift 18s linear infinite;
+    }
+    .cta-text h3 { font-family:'Cormorant Garamond',serif; color:#fff; font-size:28px; margin-bottom:6px; font-weight:600; }
+    .cta-text p { color:rgba(255,255,255,.48); font-size:14px; }
+    .cta-btns { display:flex; gap:14px; flex-shrink:0; position:relative; z-index:1; }
+    .btn-primary {
+      padding:14px 30px; border-radius:30px; border:none;
+      background:linear-gradient(135deg, var(--sakura-dk) 0%, var(--sakura) 100%);
+      color:#fff; font-size:15px; font-family:'Outfit',sans-serif; font-weight:600;
+      cursor:pointer; box-shadow:0 4px 20px rgba(160,48,80,.4);
+      transition:transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(160,48,80,.5); }
+    .btn-outline {
+      padding:13px 26px; border-radius:30px;
+      border:1.5px solid rgba(255,255,255,.2); background:transparent;
+      color:#fff; font-size:15px; font-family:'Outfit',sans-serif; cursor:pointer;
+      transition:background .2s;
+    }
+    .btn-outline:hover { background:rgba(255,255,255,.08); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse    { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+    @keyframes drift    { from{transform:translateX(-5%)} to{transform:translateX(5%)} }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:960px) {
+      .main { grid-template-columns:1fr; }
+      .sidebar { position:static; }
+      .hero-content { left:24px; right:24px; }
+      .hero-title { font-size:44px; }
+      .trending-badge { left:24px; }
+      .nav { padding:20px 24px; }
+      .day-card-header { grid-template-columns:1fr; }
+      .day-img { height:220px; }
+      .cta-bar { flex-direction:column; padding:32px 24px; align-items:flex-start; }
+      .summary-item { padding:14px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=1600&auto=format&fit=crop" alt="Cherry Blossom Japan"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-grain"></div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <span class="small">lonely planet</span>
+      <h1>journeys</h1>
+    </div>
+    <a href="#" class="nav-back">← All Trips</a>
+  </nav>
+
+  <!-- Trending badge — exactly matching the card UI -->
+  <div class="trending-badge">
+    <div class="trending-dot"></div>
+    TRENDING
+  </div>
+
+  <!-- Hero content -->
+  <div class="hero-content">
+    <div class="hero-label">Your personalised itinerary</div>
+    <div class="hero-title">Cherry Blossom <em>Japan</em></div>
+    <div class="hero-sub">Tokyo to Kyoto in peak bloom season.</div>
+    <div class="hero-chips">
+      <div class="hero-chip">
+        <span class="chip-icon">⏱</span> 14 days
+        <span class="chip-sep">·</span>
+      </div>
+      <div class="hero-chip">
+        <span class="chip-icon">👤</span> 2 Adults
+        <span class="chip-sep">·</span>
+      </div>
+      <div class="hero-chip">
+        <span class="chip-icon">🏨</span> Ryokans & Boutique Hotels
+        <span class="chip-sep">·</span>
+      </div>
+      <div class="hero-chip">
+        <span class="chip-icon">💰</span> ~¥25,000/day
+      </div>
+      <div class="hero-rating">
+        <span class="star-filled">★</span> 5.0
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SUMMARY STRIP ── -->
+<div class="summary-strip">
+  <div class="summary-item"><strong>14</strong>Days</div>
+  <div class="summary-item"><strong>34</strong>Experiences</div>
+  <div class="summary-item"><strong>5</strong>Cities</div>
+  <div class="summary-item"><strong>~¥12,500</strong>Per person/day</div>
+  <div class="summary-item"><strong>Tokyo · Nikko · Hakone · Kyoto · Osaka</strong>Route</div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <div class="itinerary">
+
+    <div class="section-heading">
+      <h2>Day by Day</h2>
+      <div class="line"></div>
+    </div>
+
+    <!-- Route bar -->
+    <div class="route-bar">
+      <div class="route-city"><div class="city-name">✈ Tokyo</div><div class="city-days">Days 1–4</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">⛩ Nikko</div><div class="city-days">Day 5</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🗻 Hakone</div><div class="city-days">Day 6</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🌸 Kyoto</div><div class="city-days">Days 7–11</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🍜 Osaka</div><div class="city-days">Days 12–13</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">✈ Depart</div><div class="city-days">Day 14</div></div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&auto=format&fit=crop" alt="Tokyo"/>
+        <div class="day-info">
+          <div class="day-tag">Day 1 · Tokyo · Arrival</div>
+          <div class="day-name">First Sakura, First Ramen</div>
+          <div class="day-desc">Land, drop your bags, and walk immediately to the nearest park. The sakura won't wait. Tokyo in full bloom is one of the great urban spectacles on earth.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Ueno Park — sakura under the canopy</strong>Japan's most famous hanami (blossom-viewing) spot. Spread a blue tarp, buy a canned beer from the nearest konbini, and sit under 1,000 cherry trees in full bloom.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">17:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Chidorigafuchi — evening blossom boats</strong>Row a rented pedal boat through a moat tunnel of overhanging sakura. The pink petals fall on the water around you. This is the image you came for.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Arrival ramen at Fuunji, Shinjuku</strong>Tsukemen (dipping ramen) from a 12-seat legend. Queue before 7:30pm. The intense pork broth is the most welcoming thing Japan will say to you on day one.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=500&auto=format&fit=crop" alt="Asakusa Tokyo"/>
+        <div class="day-info">
+          <div class="day-tag">Day 2 · Tokyo · Old City</div>
+          <div class="day-name">Senso-ji, Tsukiji & teamLab</div>
+          <div class="day-desc">Old Tokyo and new Tokyo, ancient ritual and digital hallucination — all within a 20-minute subway ride of each other.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Senso-ji Temple at dawn with sakura</strong>Tokyo's oldest temple draped in cherry blossom. The five-storey pagoda behind a veil of pink petals is among the most photographed sights in Japan — and it earns every frame.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Tsukiji Outer Market breakfast</strong>Tamagoyaki, uni rice, fresh oysters and maguro so fresh it barely touches the soy sauce. Japan's greatest breakfast and it costs less than ¥2,000.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>teamLab Borderless, Azabudai Hills</strong>The world's most visited digital art museum. Immersive light rooms where the walls dissolve. Book the first entry slot weeks ahead — it always sells out during cherry blossom season.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=500&auto=format&fit=crop" alt="Tokyo Shinjuku"/>
+        <div class="day-info">
+          <div class="day-tag">Day 3 · Tokyo · Modern City</div>
+          <div class="day-name">Shibuya, Harajuku & Golden Gai</div>
+          <div class="day-desc">The Tokyo of the imagination — crossing floods, fashion tribes, and the greatest concentration of tiny bars on earth. A full day spent losing yourself on purpose.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Shibuya Sky at opening</strong>360° views of Tokyo with Fuji on the horizon. In April, patches of pink sakura dot the city grid below — the view from 230m is extraordinary.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Harajuku & Meiji Jingu</strong>From Takeshita Street's fashion chaos to the silent cedar forest surrounding Meiji Shrine — Harajuku contains contradictions. Both halves reward the walk.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Meguro River sakura walk</strong>The river bank is lined with cherry trees whose branches arch over the water. At peak bloom, it's a pink tunnel stretching for 4km. Sakura-flavoured soft serve at every corner.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Shinjuku Golden Gai</strong>200 tiny bars, each seating six, spread across six alleyways. Order whisky, eat whatever the bar puts in front of you, and stay until the city makes you.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=500&auto=format&fit=crop" alt="Hakone Fuji"/>
+        <div class="day-info">
+          <div class="day-tag">Day 5–6 · Hakone</div>
+          <div class="day-name">Fuji, Onsen & the Ryokan</div>
+          <div class="day-desc">The mountain frames everything. Hakone is where you exhale — volcanic steam, tatami floors, a private bath carved from cypress wood, and Fuji appearing and disappearing through the mist.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Romancecar from Shinjuku</strong>Panoramic window limited express through mountains to Hakone in 85 minutes. The front seats look directly through the driver's windshield. Book them.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Owakudani Volcanic Valley</strong>Cable car over sulphur vents and volcanic craters. Eat a kuro-tamago (black egg hard-boiled in volcanic springs). The steam from the earth is primordial and dramatic.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lake Ashi — Fuji torii gate view</strong>The red torii of Hakone Shrine rising from the lake with Fuji behind it — one of the iconic Japan compositions. Clearer in morning light, atmospheric in afternoon mist.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Ryokan check-in & rotenburo onsen</strong>Your outdoor bath overlooks the valley. Soak at dusk, dress in yukata for the kaiseki dinner — twelve seasonal courses served in your room on low lacquer tables.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 7–11 KYOTO -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=500&auto=format&fit=crop" alt="Kyoto Fushimi"/>
+        <div class="day-info">
+          <div class="day-tag">Days 7–11 · Kyoto · Heart of Japan</div>
+          <div class="day-name">Shrines, Geisha & Peak Sakura</div>
+          <div class="day-desc">Kyoto during cherry blossom peak is the most beautiful place in the world — and everyone knows it. Go early, go late, and find the temple no tour bus reaches. Five days is barely enough.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">05:45</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Maruyama Park — sakura at dawn</strong>The great weeping cherry tree at the park's centre is 80 years old. At first light, before the crowds, its cascading branches glow pink in the silence. Japan's most famous single tree.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">07:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Fushimi Inari before 8am</strong>The thousand torii tunnels climb Mt Inari for 4km. In the low morning light, the vermillion gates glow and the city spreads below. Walk the full trail; you'll want the silence.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Philosopher's Path in full bloom</strong>A 2km canal walk lined with hundreds of cherry trees whose petals fall like slow pink snow into the water. The most romantic walk in Japan, especially mid-morning when the light is soft.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Gion & Hanamikoji street</strong>The geisha district in sakura season — wooden machiya, stone lanterns, a maiko in full kimono walking beneath the cherry trees. This is the image Kyoto keeps for itself.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Arashiyama — bamboo & blossom</strong>The Bamboo Grove at Tenryu-ji, then the Oi River lined with cherry trees at Togetsu-kyo Bridge. Rent a bicycle and pedal the outer temples — Jojakko-ji for elevated views over blossom-covered rooftops.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Tea ceremony, Higashiyama machiya</strong>A 45-minute matcha ceremony in a 200-year-old townhouse. Sweets made from sakura petals. The deliberate slowness of the ritual is the entire point.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OSAKA -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1590559899731-a382839e5549?w=500&auto=format&fit=crop" alt="Osaka"/>
+        <div class="day-info">
+          <div class="day-tag">Days 12–13 · Osaka · Final Act</div>
+          <div class="day-name">Japan's Kitchen, Last Night</div>
+          <div class="day-desc">Osaka is where Japan loosens its tie. The food is better, the people louder, and Osaka Castle in sakura season rivals anything Kyoto puts on. End here — loudly, deliciously.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Osaka Castle Park in full bloom</strong>600 cherry trees surround the moat. The white tenshu castle keep above a sea of pink is Osaka's greatest visual statement. Arrive at opening — it fills fast.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Kuromon Ichiba Market</strong>Osaka's "Kitchen" — wagyu skewers, live crab, fugu sashimi and oysters grilled to order. Walk slowly, eat everything offered, regret nothing.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Dotonbori — the city's fever dream</strong>Neon, noise, takoyaki, kushikatsu, okonomiyaki. The Glico Running Man sign reflected in the canal. This is Japan's id — unfiltered and magnificent.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Final dinner: Kappo ryori counter</strong>Twelve courses prepared in front of you — spring vegetables, sakura-smoked fish, wild mountain herbs. A quiet, deeply seasonal farewell to a country that rewards attention.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /itinerary -->
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+
+    <!-- Sakura Forecast — unique to this itinerary -->
+    <div class="blossom-card">
+      <h3>🌸 Sakura Forecast</h3>
+      <div class="blossom-row">
+        <span class="b-city">Tokyo</span>
+        <div class="b-bar-wrap"><div class="b-bar" style="width:95%"></div></div>
+        <span class="b-status">Peak bloom</span>
+      </div>
+      <div class="blossom-row">
+        <span class="b-city">Nikko</span>
+        <div class="b-bar-wrap"><div class="b-bar" style="width:70%"></div></div>
+        <span class="b-status">Near peak</span>
+      </div>
+      <div class="blossom-row">
+        <span class="b-city">Hakone</span>
+        <div class="b-bar-wrap"><div class="b-bar" style="width:80%"></div></div>
+        <span class="b-status">Full bloom</span>
+      </div>
+      <div class="blossom-row">
+        <span class="b-city">Kyoto</span>
+        <div class="b-bar-wrap"><div class="b-bar" style="width:100%"></div></div>
+        <span class="b-status">Perfect ✦</span>
+      </div>
+      <div class="blossom-row">
+        <span class="b-city">Osaka</span>
+        <div class="b-bar-wrap"><div class="b-bar" style="width:88%"></div></div>
+        <span class="b-status">Late peak</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Where you'll stay</h3>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1617625802912-cde586faf331?w=200&auto=format&fit=crop" alt="Tokyo"/>
+        <div>
+          <div class="hotel-name">Aman Tokyo</div>
+          <div class="hotel-stars">★★★★★ · Otemachi</div>
+          <div class="hotel-price">~¥80,000/night · Nights 1–4</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=200&auto=format&fit=crop" alt="Hakone"/>
+        <div>
+          <div class="hotel-name">Gora Kadan Ryokan</div>
+          <div class="hotel-stars">★★★★★ · Private Onsen</div>
+          <div class="hotel-price">~¥60,000/night · Nights 5–6</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1583416750470-965b2707b355?w=200&auto=format&fit=crop" alt="Kyoto"/>
+        <div>
+          <div class="hotel-name">Machiya Townhouse, Gion</div>
+          <div class="hotel-stars">★★★★ · Private Garden</div>
+          <div class="hotel-price">~¥35,000/night · Nights 7–11</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&auto=format&fit=crop" alt="Osaka"/>
+        <div>
+          <div class="hotel-name">The Boly Osaka</div>
+          <div class="hotel-stars">★★★★ · Namba</div>
+          <div class="hotel-price">~¥22,000/night · Nights 12–13</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Weather in April</h3>
+      <div class="weather-row">
+        <span class="w-day">Tokyo</span>
+        <span class="w-icon">🌸</span>
+        <span class="w-temp">17°C</span>
+        <span class="w-desc">Cherry blossom</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Hakone</span>
+        <span class="w-icon">⛅</span>
+        <span class="w-temp">12°C</span>
+        <span class="w-desc">Cool & misty</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Kyoto</span>
+        <span class="w-icon">🌸</span>
+        <span class="w-temp">18°C</span>
+        <span class="w-desc">Peak sakura</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Osaka</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">19°C</span>
+        <span class="w-desc">Warm & clear</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Essential info</h3>
+      <div class="ess-item"><span class="ess-icon">🪙</span><span class="ess-label">Currency</span><span class="ess-val">Japanese Yen (¥)</span></div>
+      <div class="ess-item"><span class="ess-icon">🚄</span><span class="ess-label">Rail Pass</span><span class="ess-val">JR Pass 14-day · ¥50,000</span></div>
+      <div class="ess-item"><span class="ess-icon">📶</span><span class="ess-label">SIM / WiFi</span><span class="ess-val">Pocket WiFi at airport</span></div>
+      <div class="ess-item"><span class="ess-icon">🛂</span><span class="ess-label">Visa</span><span class="ess-val">90 days visa-free</span></div>
+      <div class="ess-item"><span class="ess-icon">🔌</span><span class="ess-label">Plug type</span><span class="ess-val">Type A · 100V</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Local tips</h3>
+      <div class="tip-item"><span class="tip-icon">🌸</span>Sakura peak lasts only 7–10 days. Check the Japan Meteorological Corporation forecast the week before you fly — timing everything around it is worth the effort.</div>
+      <div class="tip-item"><span class="tip-icon">💴</span>Japan is still largely cash-based. 7-Eleven ATMs reliably accept foreign cards. Never leave a city without enough yen for a full day.</div>
+      <div class="tip-item"><span class="tip-icon">🎟</span>Book teamLab, Borghese-level restaurants and the Aman weeks ahead. Cherry blossom season is Japan's highest-demand period for everything.</div>
+      <div class="tip-item"><span class="tip-icon">🚇</span>Load a Suica IC card at any station machine. It works on every train, subway and bus from Tokyo to Osaka.</div>
+      <div class="tip-item"><span class="tip-icon">🙏</span>Remove shoes at ryokans. Don't tip — ever. Two hands when receiving anything. These aren't tourist tips; they're the way Japan works.</div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- ── CTA ── -->
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>Ready to chase the blossom?</h3>
+    <p>Our Japan specialists track the sakura forecast every year — and they know the ryokan that never shows up on booking sites.</p>
+  </div>
+  <div class="cta-btns">
+    <button class="btn-outline">📄 Save as PDF</button>
+    <button class="btn-primary">Book with an expert →</button>
+  </div>
+</div>
+
+</body>
+</html>

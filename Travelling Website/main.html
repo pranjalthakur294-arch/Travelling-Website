@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Travel Destinations</title>
+
+<link rel="stylesheet" href="styling.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+<div class="nav-left">
+<a href="Homepage.html">Explore</a>
+<a href="trip.html" class="nav-craft">Craft Your Trip</a>
+<a href="about.html">About Us</a>
+</div>
+
+<div class="nav-center">
+<a href="main.html" class="brand-link"><span>WANDR</span></a>
+</div>
+
+<div class="nav-right" id="navAuthArea">
+  <!-- Logged out state: Login and Register buttons -->
+  <div class="auth-logged-out" id="authLoggedOut">
+    <a href="loginverfication.html?mode=login" class="nav-btn nav-btn-login" id="loginBtn">Login</a>
+    <a href="loginverfication.html?mode=register" class="nav-btn nav-btn-register" id="registerBtn">Register</a>
+  </div>
+
+  <!-- Logged in state: My Trips, User info, Logout -->
+  <div class="auth-logged-in" id="authLoggedIn" style="display:none;">
+    <a href="mytrips.html" class="nav-btn nav-btn-trips" id="myTripsBtn">My Trips</a>
+    <div class="user-badge" id="userBadge" title="Account">
+      <span class="user-avatar" id="userAvatar">U</span>
+      <span class="user-name" id="userName">User</span>
+    </div>
+    <button class="nav-btn nav-btn-logout" id="logoutBtn" onclick="handleLogout()" type="button">Logout</button>
+  </div>
+</div>
+
+</header>
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+<video autoplay muted loop class="hero-video">
+<source src="videos/static.mp4" type="video/mp4">
+</video>
+
+<div class="hero-overlay">
+
+<h1>Discover the World</h1>
+
+<p>
+Explore breathtaking destinations across the globe. From tropical islands to vibrant cities,
+create unforgettable travel memories.
+</p>
+
+<a href="Homepage.html" class="explore-btn">
+Explore Destinations
+</a>
+
+</div>
+
+</section>
+
+
+<!-- DESTINATION SECTION -->
+
+<section class="stack-wrapper">
+
+<div class="card ind">
+    <div class="card-content">
+        <h2>India</h2>
+        <p>From royal forts to ancient traditions, heritage is a journey through time.</p>
+        <a href="indiacheck.html"><button>Explore →</button></a>
+    </div>
+</div>
+
+<div class="card spain">
+    <div class="card-content">
+        <h2>Spain</h2>
+        <p>The city of lights, art, fashion and romance.</p>
+        <a href="spain.html">
+        <button>Explore →</button>
+        </a>
+    </div>
+</div>
+
+<div class="card maldives">
+  <div class="card-content">
+    <h2>Maldives</h2>
+    <p>Luxury water villas and crystal clear oceans.</p>
+
+    <a href="maldives (1).html" class="explore-btn">Explore →</a>
+
+  </div>
+</div>
+
+<div class="card switzerland">
+    <div class="card-content">
+        <h2>Switzerland</h2>
+        <p>Snowy Alps, lakes and scenic alpine villages.</p>
+        <a href="switzerland.html">
+        <button>Explore →</button>
+        </a>
+    </div>
+</div>
+
+</section>
+
+<section class="newsletter">
+
+<h1 class="newsletter-title">Stay in the know</h1>
+
+<p class="newsletter-sub">
+Be the first to know about new destinations we've uncovered
+</p>
+
+<div class="newsletter-input">
+
+<input type="email" placeholder="EMAIL ADDRESS">
+
+<button class="send-btn">→</button>
+
+</div>
+
+<div class="terms">
+<input type="checkbox">
+<span>I accept the <a href="#">terms and conditions</a></span>
+</div>
+
+
+<div class="footer-links">
+
+<div class="links-left">
+<p>MAP</p>
+<p>SERIES</p>
+<p>ABOUT</p>
+</div>
+
+<div class="links-left">
+<p>SUBMIT</p>
+<p>PRESS</p>
+<p>CONTACT</p>
+</div>
+
+<div class="divider"></div>
+
+<div class="links-right">
+<p>CREDITS</p>
+<p>ACCESSIBILITY</p>
+<p>PRIVACY</p>
+</div>
+
+<div class="links-right">
+<p>FACEBOOK</p>
+<p>INSTAGRAM</p>
+<p>1AX CONSULTING</p>
+</div>
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+<script>
+// Prevent flicker by checking local session cache first
+(function initAuthFast() {
+  const cachedEmail = sessionStorage.getItem("userEmail") || localStorage.getItem("userEmail");
+  if (cachedEmail) {
+    const loggedIn = document.getElementById("authLoggedIn");
+    const loggedOut = document.getElementById("authLoggedOut");
+    const nameEl = document.getElementById("userName");
+    const avatarEl = document.getElementById("userAvatar");
+    if (loggedIn) loggedIn.style.display = "flex";
+    if (loggedOut) loggedOut.style.display = "none";
+    if (nameEl) nameEl.textContent = cachedEmail.split("@")[0];
+    if (avatarEl) avatarEl.textContent = cachedEmail.slice(0, 1).toUpperCase();
+  }
+})();
+
+function updateAuthUI(isAuth, user) {
+  const loggedIn = document.getElementById("authLoggedIn");
+  const loggedOut = document.getElementById("authLoggedOut");
+  const nameEl = document.getElementById("userName");
+  const avatarEl = document.getElementById("userAvatar");
+
+  if (isAuth && user) {
+    if (loggedIn) loggedIn.style.display = "flex";
+    if (loggedOut) loggedOut.style.display = "none";
+    const displayName = user.name || user.email.split("@")[0];
+    if (nameEl) nameEl.textContent = displayName;
+    if (avatarEl) avatarEl.textContent = (user.name ? user.name.slice(0, 1) : user.email.slice(0, 1)).toUpperCase();
+    sessionStorage.setItem("userEmail", user.email);
+    localStorage.setItem("userEmail", user.email);
+  } else {
+    if (loggedIn) loggedIn.style.display = "none";
+    if (loggedOut) loggedOut.style.display = "flex";
+    sessionStorage.removeItem("userEmail");
+    localStorage.removeItem("userEmail");
+  }
+}
+
+// Authoritative authentication check via GET /api/me with session cookie
+async function checkAuth() {
+  const apiBase = (window.location.protocol.startsWith("http") && !window.location.origin.includes(":3000")) ? "" : "http://localhost:3000";
+  try {
+    const res = await fetch(apiBase + "/api/me", { credentials: "include" });
+    const data = await res.json().catch(() => null);
+    if (data && data.authenticated && data.user) {
+      updateAuthUI(true, data.user);
+    } else {
+      updateAuthUI(false, null);
+    }
+  } catch (err) {
+    console.warn("Auth check failed:", err);
+    updateAuthUI(false, null);
+  }
+}
+
+async function handleLogout() {
+  const apiBase = (window.location.protocol.startsWith("http") && !window.location.origin.includes(":3000")) ? "" : "http://localhost:3000";
+  try {
+    await fetch(apiBase + "/api/logout", {
+      method: "POST",
+      credentials: "include"
+    });
+  } catch (err) {
+    console.warn("Logout error:", err);
+  }
+  sessionStorage.removeItem("userEmail");
+  localStorage.removeItem("userEmail");
+  sessionStorage.clear();
+  updateAuthUI(false, null);
+  window.location.href = "main.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  checkAuth();
+});
+</script>
+
+</body>
+
+<script src="script.js"></script>
+
+</html>

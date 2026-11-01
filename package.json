@@ -1,0 +1,26 @@
+{
+  "name": "travelling-website",
+  "version": "1.0.0",
+  "description": "Travelling Website backend and application",
+  "main": "Travelling Website/server.js",
+  "scripts": {
+    "start": "node \"Travelling Website/server.js\"",
+    "test": "node tests/run-tests.js && node tests/browser-qa.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^2.2.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.22.0"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.16.0"
+  }
+}

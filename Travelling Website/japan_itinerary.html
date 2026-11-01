@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Japan Itinerary – Lonely Planet Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0d0a1a;
+      --crimson: #c9263b;
+      --sakura: #d4627a;
+      --gold: #c9952e;
+      --cream: #f7f3ee;
+      --warm: #ede5d8;
+      --muted: #7a6e84;
+      --card: #ffffff;
+      --cobalt: #7c3aed;
+      --midnight: #0d1a3d;
+      --indigo: #1a1040;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+    .hero { position: relative; height: 480px; overflow: hidden; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 45%; filter: brightness(0.50); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(13,10,26,0.65) 0%, transparent 55%),
+                  linear-gradient(to bottom, transparent 30%, rgba(13,10,26,0.85) 100%);
+    }
+    .hero-pattern {
+      position: absolute; inset: 0; opacity: 0.035;
+      background-image:
+        repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 0, transparent 28px),
+        repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 0, transparent 28px);
+    }
+    .nav-logo { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10; }
+    .nav-logo .small { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.55); text-transform: uppercase; }
+    .nav-logo h1 { font-family: 'didot', serif;color: rgba(255,255,255,0.6); font-size: 38px; line-height: 1; }
+
+    .hero-content { position: absolute; bottom: 52px; left: 64px; right: 64px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .hero-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #e8a0b0; margin-bottom: 12px; font-weight: 500; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 60px; color: #fff; line-height: 1.0; font-weight: 600; }
+    .hero-title em { font-style: italic; font-weight: 400; color: #e8a0b0; }
+    .hero-meta { text-align: right; }
+    .hero-meta .meta-row { font-size: 14px; color: rgba(255,255,255,0.82); margin-bottom: 6px; display: flex; align-items: center; gap: 9px; justify-content: flex-end; }
+    .hero-meta .meta-row .icon { color: #e8a0b0; font-size: 15px; }
+
+    .summary-strip { background: var(--midnight); display: flex; justify-content: center; flex-wrap: wrap; }
+    .summary-item { padding: 18px 44px; border-right: 1px solid rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); font-size: 13px; text-align: center; }
+    .summary-item:last-child { border-right: none; }
+    .summary-item strong { display: block; color: #fff; font-size: 17px; font-weight: 600; margin-bottom: 2px; }
+
+    .main { max-width: 1180px; margin: 0 auto; padding: 60px 24px 80px; display: grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: start; }
+
+    .section-heading { display: flex; align-items: baseline; gap: 18px; margin-bottom: 28px; }
+    .section-heading h2 { font-family: 'Cormorant Garamond', serif; font-size: 30px; white-space: nowrap; font-weight: 600; }
+    .section-heading .line { flex:1; height:1px; background: var(--warm); }
+
+    .route-bar {
+      background: linear-gradient(135deg, #0d1a3d 0%, #1a2f6b 100%);
+      border-radius: 16px; padding: 22px 28px; margin-bottom: 22px;
+      display: flex; align-items: center; gap: 0; overflow-x: auto;
+      animation: fadeUp .5s .05s ease both;
+    }
+    .route-city { text-align: center; flex-shrink: 0; }
+    .route-city .city-name { color: #fff; font-weight: 600; font-size: 14px; }
+    .route-city .city-days { color: rgba(255,255,255,0.45); font-size: 11px; margin-top: 3px; }
+    .route-arrow { flex:1; text-align: center; color: #e8a0b0; font-size: 20px; padding: 0 8px; min-width: 40px; }
+
+    .day-card { background: var(--card); border-radius: 20px; overflow: hidden; margin-bottom: 22px; box-shadow: 0 2px 16px rgba(13,10,26,0.08); transition: transform .22s, box-shadow .22s; animation: fadeUp .5s ease both; }
+    .day-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(13,10,26,0.14); }
+    .day-card:nth-child(2) { animation-delay: .08s; }
+    .day-card:nth-child(3) { animation-delay: .16s; }
+    .day-card:nth-child(4) { animation-delay: .24s; }
+    .day-card:nth-child(5) { animation-delay: .32s; }
+    .day-card:nth-child(6) { animation-delay: .40s; }
+
+    .day-card-header { display: grid; grid-template-columns: 220px 1fr; }
+    .day-img { height: 178px; width: 100%; object-fit: cover; display: block; }
+    .day-info { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; }
+    .day-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sakura); font-weight: 600; margin-bottom: 8px; }
+    .day-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 9px; font-weight: 600; }
+    .day-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .day-activities { border-top: 1px solid #f0e8dc; padding: 18px 28px 22px; display: flex; flex-direction: column; gap: 13px; }
+    .activity { display: flex; gap: 14px; align-items: flex-start; font-size: 14px; }
+    .activity-time { font-size: 11px; color: var(--muted); font-weight: 600; min-width: 46px; padding-top: 2px; letter-spacing: .5px; }
+    .activity-dot { width: 9px; height: 9px; border-radius: 50%; background: #e8a0b0; margin-top: 4px; flex-shrink: 0; }
+    .activity-text { color: #1a1028; line-height: 1.56; }
+    .activity-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+    .sidebar { position: sticky; top: 32px; }
+    .sidebar-card { background: var(--card); border-radius: 18px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(13,10,26,0.07); animation: fadeUp .5s ease both; }
+    .sidebar-card:nth-child(1) { animation-delay: .18s; }
+    .sidebar-card:nth-child(2) { animation-delay: .28s; }
+    .sidebar-card:nth-child(3) { animation-delay: .36s; }
+    .sidebar-card:nth-child(4) { animation-delay: .44s; }
+    .sidebar-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 16px; font-weight: 600; }
+
+    .hotel-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: center; }
+    .hotel-item:last-child { margin-bottom: 0; }
+    .hotel-thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .hotel-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .hotel-stars { color: var(--gold); font-size: 12px; margin-bottom: 2px; }
+    .hotel-price { font-size: 12px; color: var(--muted); }
+
+    .weather-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f0e8dc; font-size: 13px; }
+    .weather-row:last-child { border-bottom: none; }
+    .w-day { color: var(--muted); font-size: 12px; min-width: 80px; }
+    .w-icon { font-size: 19px; }
+    .w-temp { font-weight: 600; font-size: 14px; }
+    .w-desc { font-size: 11px; color: var(--muted); text-align: right; }
+
+    .tip-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; color: #221832; line-height: 1.56; }
+    .tip-item:last-child { margin-bottom: 0; }
+    .tip-icon { font-size: 19px; flex-shrink: 0; }
+
+    .ess-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f0e8dc; font-size: 13px; }
+    .ess-item:last-child { border-bottom: none; }
+    .ess-icon { font-size: 17px; }
+    .ess-label { color: var(--muted); min-width: 76px; }
+    .ess-val { font-weight: 500; }
+
+    .cta-bar { background: linear-gradient(135deg, #1a0a1f 0%, #3d1a2f 100%); padding: 34px 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .cta-text h3 { font-family: 'Cormorant Garamond', serif; color: #fff; font-size: 26px; margin-bottom: 5px; font-weight: 600; }
+    .cta-text p { color: rgba(255,255,255,0.5); font-size: 14px; }
+    .cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+    .btn-primary { padding: 14px 30px; border-radius: 30px; border: none; background: var(--sakura); color: #fff; font-size: 15px; font-family: 'Outfit', sans-serif; font-weight: 600; cursor: pointer; }
+    .btn-outline { padding: 13px 26px; border-radius: 30px; border: 1.5px solid rgba(255,255,255,0.22); background: transparent; color: #fff; font-size: 15px; font-family: 'Outfit', sans-serif; cursor: pointer; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      .main { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .hero-content { left: 28px; right: 28px; flex-direction: column; align-items: flex-start; gap: 18px; }
+      .hero-title { font-size: 40px; }
+      .day-card-header { grid-template-columns: 1fr; }
+      .day-img { height: 220px; }
+      .cta-bar { flex-direction: column; padding: 28px 24px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=1600&auto=format&fit=crop" alt="Japan"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+<div class="nav-logo">
+    
+    <h1>WANDR</h1>
+  </div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-label">Your personalised itinerary</div>
+      <div class="hero-title">10 Days in<br><em>Timeless Japan</em></div>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-row"><span class="icon">✈</span> 1 Apr – 11 Apr 2026</div>
+      <div class="meta-row"><span class="icon">👤</span> 2 Adults</div>
+      <div class="meta-row"><span class="icon">🏨</span> Ryokans & Boutique Hotels</div>
+      <div class="meta-row"><span class="icon">💰</span> Mid-range · ~¥25,000/day</div>
+    </div>
+  </div>
+</div>
+
+<div class="summary-strip">
+  <div class="summary-item"><strong>10</strong>Days</div>
+  <div class="summary-item"><strong>28</strong>Experiences</div>
+  <div class="summary-item"><strong>4</strong>Cities</div>
+  <div class="summary-item"><strong>~¥12,500</strong>Per person/day</div>
+  <div class="summary-item"><strong>Tokyo · Hakone · Kyoto · Osaka</strong>Route</div>
+</div>
+
+<div class="main">
+  <div class="itinerary">
+
+    <div class="section-heading">
+      <h2>Day by Day</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="route-bar">
+      <div class="route-city"><div class="city-name">✈ Tokyo</div><div class="city-days">Days 1–3</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🗻 Hakone</div><div class="city-days">Day 4</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">⛩ Kyoto</div><div class="city-days">Days 5–7</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🍜 Osaka</div><div class="city-days">Days 8–9</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">✈ Depart</div><div class="city-days">Day 10</div></div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&auto=format&fit=crop" alt="Tokyo Shibuya"/>
+        <div class="day-info">
+          <div class="day-tag">Day 1 · Wednesday · Tokyo</div>
+          <div class="day-name">Shibuya, Ramen & Neon Nights</div>
+          <div class="day-desc">Tokyo doesn't ease you in — it swallows you whole from the moment you exit the shinkansen. Start where the city's heartbeat is loudest: Shibuya Crossing and beyond.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">11:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Shibuya Crossing & Sky</strong>Stand on the world's busiest pedestrian crossing, then take the elevator to Shibuya Sky for a 360° panorama of Tokyo stretching to Fuji on clear days.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lunch at Ichiran Ramen</strong>Japan's legendary solo-dining ramen chain. Fill in your flavour preferences card, take your private booth, and experience tonkotsu perfection.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Harajuku & Takeshita Street</strong>Japan's most gloriously unhinged fashion district. Crepes, cosplay, and culture colliding on a single chaotic alley.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Shinjuku Golden Gai</strong>A warren of 200 tiny bars, each seating six. Pick one with a handwritten menu, order yakitori and whisky, and talk to everyone.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=500&auto=format&fit=crop" alt="Tokyo Senso-ji"/>
+        <div class="day-info">
+          <div class="day-tag">Day 2 · Thursday · Tokyo</div>
+          <div class="day-name">Temples, Tsukiji & Teamlab</div>
+          <div class="day-desc">Old Tokyo and new Tokyo exist in the same breath. Ancient Asakusa at dawn, the finest sushi breakfast on earth, and digital art that dissolves the boundary between you and the universe.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Senso-ji Temple, Asakusa</strong>Tokyo's oldest temple in the golden hour before the crowds arrive. The approach down Nakamise-dori is lined with snack stalls worth exploring.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Breakfast at Tsukiji Outer Market</strong>The world's best fish breakfast — tamagoyaki omelette, sea urchin on rice, and maguro (tuna) so fresh it barely touches the soy sauce.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>teamLab Borderless (Azabudai Hills)</strong>The world's most visited digital art museum. Immersive light and sound environments that are genuinely unlike anything else on earth. Book ahead.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Izakaya dinner in Ebisu</strong>A neighbourhood izakaya — grilled skewers, cold Sapporo, edamame, and the quiet pleasure of a Tokyo local table.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=500&auto=format&fit=crop" alt="Tokyo Akihabara"/>
+        <div class="day-info">
+          <div class="day-tag">Day 3 · Friday · Tokyo</div>
+          <div class="day-name">Akihabara, Yanaka & Sumo</div>
+          <div class="day-desc">Tokyo contains multitudes. Electric Town's neon madness, the preserved Edo-era lanes of Yanaka, and — if timing permits — the explosive theatre of sumo.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Akihabara Electric Town</strong>Seven floors of manga, anime, retro games and electronics. A sensory overload in the best possible sense. The maid cafés are entirely optional.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Yanaka neighbourhood</strong>Old Shitamachi Tokyo — wooden shopfronts, family-run sembei shops and the quiet Yanaka Cemetery that blooms with sakura. Walk slowly here.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Ryogoku Sumo Museum</strong>Free entry, fascinating history. If you're visiting during a tournament (January, May, September), spring for arena tickets — it's one of Japan's great sporting spectacles.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Omakase counter dinner</strong>Book a 10-seat omakase counter in advance. The chef chooses — 12 courses of market-fresh nigiri served piece by piece. Budget ¥15,000–25,000 per person.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=500&auto=format&fit=crop" alt="Hakone Mt Fuji"/>
+        <div class="day-info">
+          <div class="day-tag">Day 4 · Saturday · Hakone</div>
+          <div class="day-name">Fuji Views, Hot Springs & Ryokan</div>
+          <div class="day-desc">An hour from Tokyo, Hakone delivers the Japan of your imagination — volcanic valleys wreathed in mist, steaming outdoor baths, and Fuji hovering above the treeline.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Romancecar from Shinjuku</strong>Odakyu's iconic limited express — a panoramic window train that winds through mountains into Hakone in 85 minutes. Book the front seats.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Owakudani Volcanic Valley</strong>Cable car over the sulphur vents. Eat a kuro-tamago (black egg hard-boiled in volcanic springs) — legend promises it adds seven years to your life.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lake Ashi & Fuji views</strong>Board the pirate ship cruise across the caldera lake. On clear days, Fuji's perfect cone dominates the horizon above the torii gate of Hakone Shrine.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Ryokan check-in & onsen</strong>Your traditional inn includes yukata robes, a multi-course kaiseki dinner and private onsen access. Arrive before dinner service — you'll want every minute.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 5-7 KYOTO -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=500&auto=format&fit=crop" alt="Kyoto Fushimi Inari"/>
+        <div class="day-info">
+          <div class="day-tag">Days 5–7 · Sun–Tue · Kyoto</div>
+          <div class="day-name">Shrines, Geisha & a Thousand Torii</div>
+          <div class="day-desc">Kyoto is Japan's soul — 1,600 Buddhist temples, Shinto shrines, preserved geisha districts and bamboo groves that filter light into something otherworldly. Three days is barely enough.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">06:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Fushimi Inari at sunrise</strong>Thousands of vermillion torii gates climbing Mt Inari. The full trail takes 2–3 hours; even the first 30 minutes at dawn is transcendent. You'll have it almost to yourself.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Arashiyama Bamboo Grove & Tenryu-ji</strong>The bamboo grove is a cliché because it deserves to be. Tenryu-ji's Zen garden reflected in its pond is one of the great garden compositions in Japan.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Gion district</strong>Kyoto's geisha district — cobblestone lanes of wooden machiya townhouses. Hanamikoji street at dusk may yield a sighting of a maiko (apprentice geisha) hurrying to an engagement.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Kinkaku-ji Golden Pavilion</strong>Startling gold against dark pines and still water. However many times you've seen it in photographs, the first real view stops you mid-stride.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Tea ceremony, Higashiyama</strong>A 45-minute matcha ceremony in a machiya townhouse. The ritual preparation is meditative — you'll never drink green tea the same way again.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 8-9 OSAKA -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1590559899731-a382839e5549?w=500&auto=format&fit=crop" alt="Osaka Dotonbori"/>
+        <div class="day-info">
+          <div class="day-tag">Days 8–9 · Wed–Thu · Osaka</div>
+          <div class="day-name">Japan's Kitchen & the Last Night</div>
+          <div class="day-desc">Osaka is where Japan loosens its tie. The food is better, the people louder, and the neon of Dotonbori reflects in the canal like a fever dream. Eat everything. Twice.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Osaka Castle & grounds</strong>The white-walled castle keep over a moat of sakura trees (in spring, staggeringly beautiful). The museum inside covers the Toyotomi clan with genuine drama.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Kuromon Ichiba Market</strong>Osaka's "Kitchen" — 180 stalls of wagyu skewers, live crabs, fugu sashimi and freshly grilled oysters. Eat as you walk.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Dotonbori canal & street food</strong>Takoyaki (octopus balls), kushikatsu (breaded skewers) and okonomiyaki (savoury pancake) under the glowing Glico Running Man sign. Eat until you cannot.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">20:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Farewell dinner: Kappo ryori</strong>Osaka-style kappo — counter dining where the chef prepares dishes in front of you, seasonal and spare. A quieter, more refined farewell to Japan than the Dotonbori crowds.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>Where you'll stay</h3>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1617625802912-cde586faf331?w=200&auto=format&fit=crop" alt="Tokyo hotel"/>
+        <div>
+          <div class="hotel-name">Aman Tokyo</div>
+          <div class="hotel-stars">★★★★★ · Otemachi</div>
+          <div class="hotel-price">~¥80,000/night · Nights 1–3</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=200&auto=format&fit=crop" alt="Hakone ryokan"/>
+        <div>
+          <div class="hotel-name">Gora Kadan Ryokan</div>
+          <div class="hotel-stars">★★★★★ · Private Onsen</div>
+          <div class="hotel-price">~¥60,000/night · Night 4</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1583416750470-965b2707b355?w=200&auto=format&fit=crop" alt="Kyoto machiya"/>
+        <div>
+          <div class="hotel-name">Machiya Townhouse, Gion</div>
+          <div class="hotel-stars">★★★★ · Private Garden</div>
+          <div class="hotel-price">~¥35,000/night · Nights 5–7</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&auto=format&fit=crop" alt="Osaka hotel"/>
+        <div>
+          <div class="hotel-name">The Boly Osaka</div>
+          <div class="hotel-stars">★★★★ · Namba</div>
+          <div class="hotel-price">~¥22,000/night · Nights 8–9</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Weather in April</h3>
+      <div class="weather-row">
+        <span class="w-day">Tokyo</span>
+        <span class="w-icon">🌸</span>
+        <span class="w-temp">17°C</span>
+        <span class="w-desc">Cherry blossom</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Hakone</span>
+        <span class="w-icon">⛅</span>
+        <span class="w-temp">12°C</span>
+        <span class="w-desc">Cool & misty</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Kyoto</span>
+        <span class="w-icon">🌸</span>
+        <span class="w-temp">18°C</span>
+        <span class="w-desc">Peak sakura</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Osaka</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">19°C</span>
+        <span class="w-desc">Warm & clear</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Essential info</h3>
+      <div class="ess-item"><span class="ess-icon">🪙</span><span class="ess-label">Currency</span><span class="ess-val">Japanese Yen (¥)</span></div>
+      <div class="ess-item"><span class="ess-icon">🚄</span><span class="ess-label">Transport</span><span class="ess-val">JR Pass (14-day, ¥50,000)</span></div>
+      <div class="ess-item"><span class="ess-icon">📶</span><span class="ess-label">SIM / WiFi</span><span class="ess-val">Pocket WiFi at the airport</span></div>
+      <div class="ess-item"><span class="ess-icon">🛂</span><span class="ess-label">Visa</span><span class="ess-val">90 days visa-free (most passports)</span></div>
+      <div class="ess-item"><span class="ess-icon">🔌</span><span class="ess-label">Plug type</span><span class="ess-val">Type A · 100V</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Local tips</h3>
+      <div class="tip-item">
+        <span class="tip-icon">💴</span>
+        Japan is still heavily cash-based. Withdraw yen from 7-Eleven ATMs — they reliably accept foreign cards. Never leave a city without enough cash for at least a day.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🎟</span>
+        Book teamLab Borderless and popular restaurants weeks ahead. The best omakase counters fill in minutes. Use TableAll or Tablecheck for reservations.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🚇</span>
+        Tap your IC card (Suica or Pasmo) on every train, subway and bus. Load it at any station machine — it works from Tokyo to Osaka on local trains.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🙏</span>
+        Remove shoes at ryokan entrances and traditional restaurants. Don't tip — it can cause offence. Both hands when exchanging business cards or receiving gifts.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🍜</span>
+        Convenience stores (Lawson, 7-Eleven, FamilyMart) serve genuinely excellent food — onigiri, katsu sandwiches, hot oden. Don't be embarrassed; locals eat there too.
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- CTA BAR -->
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>Make it yours</h3>
+    <p>Customize this experience exactly the way you want.</p>
+  </div>
+  <div class="cta-btns">
+    <a href="trip.html">
+      <button class="btn-primary">Customize Trip →</button>
+    </a>
+    <a href="Homepage.html">
+      <button class="btn-outline">Explore More</button>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

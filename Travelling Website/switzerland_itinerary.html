@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Switzerland Itinerary – Lonely Planet Journeys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0d0a1a;
+      --swiss-red: #c0392b;
+      --alpine: #2980b9;
+      --glacier: #5dade2;
+      --gold: #c9952e;
+      --cream: #f4f7f4;
+      --warm: #dde8dd;
+      --muted: #6b7c6b;
+      --card: #ffffff;
+      --midnight: #0a1a0d;
+      --forest: #0d2b1a;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+    .hero { position: relative; height: 480px; overflow: hidden; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; filter: brightness(0.48); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(10,26,13,0.7) 0%, transparent 55%),
+                  linear-gradient(to bottom, transparent 30%, rgba(10,26,13,0.88) 100%);
+    }
+    .hero-pattern {
+      position: absolute; inset: 0; opacity: 0.03;
+      background-image:
+        repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 0, transparent 30px),
+        repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 0, transparent 30px);
+    }
+    .nav-logo { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10; }
+    .nav-logo .small { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.55); text-transform: uppercase; }
+    .nav-logo h1 { font-family: 'didot', serif;color: rgba(255,255,255,0.6); font-size: 38px; line-height: 1; }
+
+    .hero-content { position: absolute; bottom: 52px; left: 64px; right: 64px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .hero-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a8d8a8; margin-bottom: 12px; font-weight: 500; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 60px; color: #fff; line-height: 1.0; font-weight: 600; }
+    .hero-title em { font-style: italic; font-weight: 400; color: #a8d8a8; }
+    .hero-meta { text-align: right; }
+    .hero-meta .meta-row { font-size: 14px; color: rgba(255,255,255,0.82); margin-bottom: 6px; display: flex; align-items: center; gap: 9px; justify-content: flex-end; }
+    .hero-meta .meta-row .icon { color: #a8d8a8; font-size: 15px; }
+
+    .summary-strip { background: var(--forest); display: flex; justify-content: center; flex-wrap: wrap; }
+    .summary-item { padding: 18px 44px; border-right: 1px solid rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); font-size: 13px; text-align: center; }
+    .summary-item:last-child { border-right: none; }
+    .summary-item strong { display: block; color: #fff; font-size: 17px; font-weight: 600; margin-bottom: 2px; }
+
+    .main { max-width: 1180px; margin: 0 auto; padding: 60px 24px 80px; display: grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: start; }
+
+    .section-heading { display: flex; align-items: baseline; gap: 18px; margin-bottom: 28px; }
+    .section-heading h2 { font-family: 'Cormorant Garamond', serif; font-size: 30px; white-space: nowrap; font-weight: 600; }
+    .section-heading .line { flex:1; height:1px; background: var(--warm); }
+
+    .route-bar {
+      background: linear-gradient(135deg, #0a1a0d 0%, #163d20 100%);
+      border-radius: 16px; padding: 22px 28px; margin-bottom: 22px;
+      display: flex; align-items: center; gap: 0; overflow-x: auto;
+      animation: fadeUp .5s .05s ease both;
+    }
+    .route-city { text-align: center; flex-shrink: 0; }
+    .route-city .city-name { color: #fff; font-weight: 600; font-size: 14px; }
+    .route-city .city-days { color: rgba(255,255,255,0.45); font-size: 11px; margin-top: 3px; }
+    .route-arrow { flex:1; text-align: center; color: #a8d8a8; font-size: 20px; padding: 0 8px; min-width: 40px; }
+
+    .day-card { background: var(--card); border-radius: 20px; overflow: hidden; margin-bottom: 22px; box-shadow: 0 2px 16px rgba(13,26,10,0.09); transition: transform .22s, box-shadow .22s; animation: fadeUp .5s ease both; }
+    .day-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(13,26,10,0.15); }
+    .day-card:nth-child(2) { animation-delay: .08s; }
+    .day-card:nth-child(3) { animation-delay: .16s; }
+    .day-card:nth-child(4) { animation-delay: .24s; }
+    .day-card:nth-child(5) { animation-delay: .32s; }
+    .day-card:nth-child(6) { animation-delay: .40s; }
+
+    .day-card-header { display: grid; grid-template-columns: 220px 1fr; }
+    .day-img { height: 178px; width: 100%; object-fit: cover; display: block; }
+    .day-info { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; }
+    .day-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--swiss-red); font-weight: 600; margin-bottom: 8px; }
+    .day-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 9px; font-weight: 600; }
+    .day-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .day-activities { border-top: 1px solid #e8f0e8; padding: 18px 28px 22px; display: flex; flex-direction: column; gap: 13px; }
+    .activity { display: flex; gap: 14px; align-items: flex-start; font-size: 14px; }
+    .activity-time { font-size: 11px; color: var(--muted); font-weight: 600; min-width: 46px; padding-top: 2px; letter-spacing: .5px; }
+    .activity-dot { width: 9px; height: 9px; border-radius: 50%; background: #4a9e6a; margin-top: 4px; flex-shrink: 0; }
+    .activity-text { color: #0a1f0d; line-height: 1.56; }
+    .activity-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+    .sidebar { position: sticky; top: 32px; }
+    .sidebar-card { background: var(--card); border-radius: 18px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(13,26,10,0.08); animation: fadeUp .5s ease both; }
+    .sidebar-card:nth-child(1) { animation-delay: .18s; }
+    .sidebar-card:nth-child(2) { animation-delay: .28s; }
+    .sidebar-card:nth-child(3) { animation-delay: .36s; }
+    .sidebar-card:nth-child(4) { animation-delay: .44s; }
+    .sidebar-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 16px; font-weight: 600; }
+
+    .hotel-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: center; }
+    .hotel-item:last-child { margin-bottom: 0; }
+    .hotel-thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .hotel-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .hotel-stars { color: var(--gold); font-size: 12px; margin-bottom: 2px; }
+    .hotel-price { font-size: 12px; color: var(--muted); }
+
+    .weather-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #e8f0e8; font-size: 13px; }
+    .weather-row:last-child { border-bottom: none; }
+    .w-day { color: var(--muted); font-size: 12px; min-width: 88px; }
+    .w-icon { font-size: 19px; }
+    .w-temp { font-weight: 600; font-size: 14px; }
+    .w-desc { font-size: 11px; color: var(--muted); text-align: right; }
+
+    .tip-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; color: #0a1f0d; line-height: 1.56; }
+    .tip-item:last-child { margin-bottom: 0; }
+    .tip-icon { font-size: 19px; flex-shrink: 0; }
+
+    .ess-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #e8f0e8; font-size: 13px; }
+    .ess-item:last-child { border-bottom: none; }
+    .ess-icon { font-size: 17px; }
+    .ess-label { color: var(--muted); min-width: 80px; }
+    .ess-val { font-weight: 500; }
+
+    .cta-bar { background: linear-gradient(135deg, #0a1a0d 0%, #163d20 100%); padding: 34px 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .cta-text h3 { font-family: 'Cormorant Garamond', serif; color: #fff; font-size: 26px; margin-bottom: 5px; font-weight: 600; }
+    .cta-text p { color: rgba(255,255,255,0.5); font-size: 14px; }
+    .cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+    .btn-primary { padding: 14px 30px; border-radius: 30px; border: none; background: var(--swiss-red); color: #fff; font-size: 15px; font-family: 'Outfit', sans-serif; font-weight: 600; cursor: pointer; }
+    .btn-outline { padding: 13px 26px; border-radius: 30px; border: 1.5px solid rgba(255,255,255,0.22); background: transparent; color: #fff; font-size: 15px; font-family: 'Outfit', sans-serif; cursor: pointer; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      .main { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .hero-content { left: 28px; right: 28px; flex-direction: column; align-items: flex-start; gap: 18px; }
+      .hero-title { font-size: 40px; }
+      .day-card-header { grid-template-columns: 1fr; }
+      .day-img { height: 220px; }
+      .cta-bar { flex-direction: column; padding: 28px 24px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&auto=format&fit=crop" alt="Switzerland Alps"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+  <div class="nav-logo">
+    
+    <h1>WANDR</h1>
+  </div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-label">Your personalised itinerary</div>
+      <div class="hero-title">9 Days in<br><em>Alpine Switzerland</em></div>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-row"><span class="icon">✈</span> 15 Jul – 24 Jul 2026</div>
+      <div class="meta-row"><span class="icon">👤</span> 2 Adults</div>
+      <div class="meta-row"><span class="icon">🏨</span> Alpine Lodges & Grand Hotels</div>
+      <div class="meta-row"><span class="icon">💰</span> Mid-range · ~CHF 300/day</div>
+    </div>
+  </div>
+</div>
+
+<div class="summary-strip">
+  <div class="summary-item"><strong>9</strong>Days</div>
+  <div class="summary-item"><strong>25</strong>Experiences</div>
+  <div class="summary-item"><strong>5</strong>Destinations</div>
+  <div class="summary-item"><strong>~CHF 150</strong>Per person/day</div>
+  <div class="summary-item"><strong>Zürich · Lucerne · Grindelwald · Zermatt · Geneva</strong>Route</div>
+</div>
+
+<div class="main">
+  <div class="itinerary">
+
+    <div class="section-heading">
+      <h2>Day by Day</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="route-bar">
+      <div class="route-city"><div class="city-name">✈ Zürich</div><div class="city-days">Days 1–2</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🦁 Lucerne</div><div class="city-days">Day 3</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🏔 Grindelwald</div><div class="city-days">Days 4–5</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">⛰ Zermatt</div><div class="city-days">Days 6–7</div></div>
+      <div class="route-arrow">→</div>
+      <div class="route-city"><div class="city-name">🕊 Geneva</div><div class="city-days">Days 8–9</div></div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=500&auto=format&fit=crop" alt="Zürich Old Town"/>
+        <div class="day-info">
+          <div class="day-tag">Day 1 · Wednesday · Zürich</div>
+          <div class="day-name">Cobblestones, Chocolate & the Limmat</div>
+          <div class="day-desc">Zürich surprises visitors who expect only banks and watches. The old town is genuinely beautiful — medieval guildhalls, twin-towered Grossmünster, and a lakefront that glitters in the summer sun.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Altstadt (Old Town) walk</strong>Cross the Limmat into Niederdorf — narrow lanes of guildhalls, fountain squares and bookshops. Climb Lindenhügel hill for a view over the red-roofed city to the lake.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Grossmünster & Fraumünster</strong>Zürich's two great Romanesque churches face each other across the river. Fraumünster's Chagall stained-glass windows are among Europe's finest — deeply moving in morning light.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lunch at Café Sprüngli</strong>On Paradeplatz since 1836. The Luxemburgerli macarons are the city's most famous bite — order with a Zürich coffee (espresso, cream, a small chocolate).</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">16:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lake Zürich swim</strong>In summer, the city's Badis (public lake baths) open along the lakeshore. Locals swim in Zürichsee daily — the water is glacier-fed and staggeringly clear.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Dinner in Langstrasse</strong>Zürich's most dynamic neighbourhood — Turkish meyhanes, wine bars and the excellent Brasserie Lipp for a proper Swiss rösti and entrecôte.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&auto=format&fit=crop" alt="Swiss Museum"/>
+        <div class="day-info">
+          <div class="day-tag">Day 2 · Thursday · Zürich</div>
+          <div class="day-name">Museums, Markets & Fondue</div>
+          <div class="day-desc">A slower Zürich day — world-class art museums, a market that sells Swiss cheese wheels the size of cartwheels, and your first proper cheese fondue in a centuries-old guild restaurant.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">09:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Kunsthaus Zürich</strong>One of Europe's great art museums — Giacometti's largest permanent collection, Monet, Picasso and a stunning modern wing by David Chipperfield opened in 2021.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Bürkliplatz Saturday market</strong>The weekly farmers' market on the lake — regional cheeses, air-dried Bündnerfleisch, Zürich sausages and fresh berries from the Thurgau orchards.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">15:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Uetliberg — Zürich's mountain</strong>A 35-minute train to the top of the city's local peak. The panorama stretches from Säntis in the east to the Bernese Alps in the south. Hike the ridge trail back down.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Fondue at Zunfthaus zur Zimmerleuten</strong>A 14th-century guildhall on the Limmat. Order the moitié-moitié (half Gruyère, half Vacherin) fondue and a carafe of Fendant white wine. Do not skip the bread crust at the bottom.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1527004013197-933b06c167bf?w=500&auto=format&fit=crop" alt="Lucerne Chapel Bridge"/>
+        <div class="day-info">
+          <div class="day-tag">Day 3 · Friday · Lucerne</div>
+          <div class="day-name">Chapel Bridge & Pilatus</div>
+          <div class="day-desc">Lucerne is the most picturesque city in Switzerland — a medieval covered bridge over a mountain lake, a Lion Monument that made Mark Twain weep, and a cogwheel railway to the top of the world.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">08:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Train from Zürich (45 min)</strong>One of Europe's prettiest rail journeys — the track hugs Lake Zürich then cuts through green Mittelland farmland. Arrive in Lucerne before the tour groups.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Kapellbrücke & Old Town</strong>The 14th-century wooden covered bridge with its painted interior panels is Europe's oldest. Walk the intact medieval ramparts for a view of the lake and the Alps beyond.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Mt Pilatus by Golden Round Trip</strong>Boat across the lake to Alpnachstad, then the world's steepest cogwheel railway (48° gradient) to the summit at 2,132m. Cable car down to Kriens and bus back to Lucerne.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">18:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Lakefront aperitif & onward to Grindelwald</strong>A last glass of Appenzeller beer on the lakefront, then the Panoramic Express train southeast into the Bernese Oberland.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4-5 -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1531210483974-4f8205d35c56?w=500&auto=format&fit=crop" alt="Jungfraujoch Eiger"/>
+        <div class="day-info">
+          <div class="day-tag">Days 4–5 · Sat–Sun · Grindelwald</div>
+          <div class="day-name">Eiger, Jungfraujoch & the High Alps</div>
+          <div class="day-desc">The Eiger's north face looms directly above the village. The Jungfraujoch — Europe's highest railway station at 3,454m — delivers you onto an actual glacier. This is why you came to Switzerland.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Jungfraujoch — Top of Europe</strong>Book the earliest train from Grindelwald. The journey through the Eiger tunnel is remarkable; the Sphinx Observatory at the summit, at 3,571m, looks down onto the Aletsch Glacier — the longest in the Alps.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">13:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Grindelwald First via gondola</strong>The First Flyer zip line, Trottibike descent and cliff walk above the valley. On a clear day, the Wetterhorn, Schreckhorn and Eiger form an unbroken wall of rock and ice above you.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">09:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Bachalpsee hike</strong>A 4km walk above the gondola station to a mirror-perfect alpine lake reflecting the Wetterhorn. The wildflower meadows in July are extraordinary. Carry a picnic from the village bakery.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Raclette dinner in the village</strong>At Restaurant Onkel Tom or similar — half-wheels of Valais raclette melted under the lamp and scraped over boiled potatoes, cornichons and pickled onions. Order twice.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 6-7 ZERMATT -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=500&auto=format&fit=crop" alt="Zermatt Matterhorn"/>
+        <div class="day-info">
+          <div class="day-tag">Days 6–7 · Mon–Tue · Zermatt</div>
+          <div class="day-name">The Matterhorn & Glacier Paradise</div>
+          <div class="day-desc">No mountain on earth has a silhouette like the Matterhorn. Zermatt — car-free, cobblestoned, ringed by 38 peaks above 4,000m — is where you understand why people risk their lives to climb mountains.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">07:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Sunrise on the Matterhorn</strong>Walk up Findeln or take the first lift to Sunnegga (3 min underground funicular). The pyramid catches the first alpine light while the valley is still in shadow — the most iconic view in Switzerland.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Klein Matterhorn — Glacier Paradise</strong>Cable car to 3,883m — Europe's highest cable car station. Walk onto the glacier in summer snow, peer through the tunnel into the glacier cave, and look across to Mont Blanc and the Bernese Alps.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Five Lakes Walk</strong>One of Switzerland's classic hikes — 4 hours, five mountain lakes each perfectly reflecting the Matterhorn. The Stellisee at golden hour is a photographer's obsession.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:30</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Dinner at Chez Vrony</strong>A mountain restaurant at 2,000m, accessible by ski gondola even in summer. Swiss farmhouse cooking — Valais lamb, alpine herbs, and a wine list that takes the altitude seriously.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS 8-9 GENEVA -->
+    <div class="day-card">
+      <div class="day-card-header">
+        <img class="day-img" src="https://images.unsplash.com/photo-1559564823-aefa08fb4b76?w=500&auto=format&fit=crop" alt="Geneva Jet d'Eau"/>
+        <div class="day-info">
+          <div class="day-tag">Days 8–9 · Wed–Thu · Geneva</div>
+          <div class="day-name">Jet d'Eau, CERN & Lake Leman</div>
+          <div class="day-desc">Geneva is Switzerland's international face — the UN, the Red Cross, 40,000 diplomats and a jet of water that shoots 140 metres above Europe's largest Alpine lake. It rewards those who look beneath the polish.</div>
+        </div>
+      </div>
+      <div class="day-activities">
+        <div class="activity">
+          <div class="activity-time">10:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Jet d'Eau & waterfront</strong>The 140m water cannon on Lake Leman is visible from 40km away. Walk the Quai du Mont-Blanc along the lake — the Alps south of the city form one of Europe's great urban backdrops.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">12:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Vieille Ville (Old Town)</strong>Geneva's hilly old town — the Cathédrale Saint-Pierre where Calvin preached, the Place du Bourg-de-Four (the city's oldest square), and the Promenade de la Treille with Europe's longest wooden bench.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">14:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>CERN Visitor Centre</strong>Free admission to the world's largest particle physics laboratory. The interactive exhibitions on the Large Hadron Collider and the discovery of the Higgs boson are genuinely thrilling — science made visible.</div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">19:00</div>
+          <div class="activity-dot"></div>
+          <div class="activity-text"><strong>Farewell dinner: Carouge bistro</strong>Cross into Carouge — Geneva's Sardinian-built bohemian quarter. Terrace bistros, Genevois sausage with white beans, and a final carafe of Chasselas to toast the mountains you've climbed.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>Where you'll stay</h3>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=200&auto=format&fit=crop" alt="Zürich hotel"/>
+        <div>
+          <div class="hotel-name">25hours Hotel Zürich West</div>
+          <div class="hotel-stars">★★★★ · Langstrasse</div>
+          <div class="hotel-price">~CHF 260/night · Nights 1–2</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=200&auto=format&fit=crop" alt="Lucerne hotel"/>
+        <div>
+          <div class="hotel-name">Hotel des Alpes, Lucerne</div>
+          <div class="hotel-stars">★★★★ · Lakefront</div>
+          <div class="hotel-price">~CHF 240/night · Night 3</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=200&auto=format&fit=crop" alt="Grindelwald lodge"/>
+        <div>
+          <div class="hotel-name">Romantik Hotel Schweizerhof</div>
+          <div class="hotel-stars">★★★★ · Eiger Views</div>
+          <div class="hotel-price">~CHF 290/night · Nights 4–5</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&auto=format&fit=crop" alt="Zermatt hotel"/>
+        <div>
+          <div class="hotel-name">Mont Cervin Palace, Zermatt</div>
+          <div class="hotel-stars">★★★★★ · Matterhorn Views</div>
+          <div class="hotel-price">~CHF 480/night · Nights 6–7</div>
+        </div>
+      </div>
+      <div class="hotel-item">
+        <img class="hotel-thumb" src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=200&auto=format&fit=crop" alt="Geneva hotel"/>
+        <div>
+          <div class="hotel-name">Hôtel N'vY, Geneva</div>
+          <div class="hotel-stars">★★★★ · Malagnou</div>
+          <div class="hotel-price">~CHF 220/night · Nights 8–9</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Weather in July</h3>
+      <div class="weather-row">
+        <span class="w-day">Zürich</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">25°C</span>
+        <span class="w-desc">Warm & sunny</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Lucerne</span>
+        <span class="w-icon">🌤</span>
+        <span class="w-temp">24°C</span>
+        <span class="w-desc">Afternoon clouds</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Grindelwald</span>
+        <span class="w-icon">⛅</span>
+        <span class="w-temp">19°C</span>
+        <span class="w-desc">Cool Alpine air</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Zermatt</span>
+        <span class="w-icon">🌤</span>
+        <span class="w-temp">17°C</span>
+        <span class="w-desc">Clear mornings</span>
+      </div>
+      <div class="weather-row">
+        <span class="w-day">Geneva</span>
+        <span class="w-icon">☀️</span>
+        <span class="w-temp">27°C</span>
+        <span class="w-desc">Hot & clear</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Essential info</h3>
+      <div class="ess-item"><span class="ess-icon">🪙</span><span class="ess-label">Currency</span><span class="ess-val">Swiss Franc (CHF)</span></div>
+      <div class="ess-item"><span class="ess-icon">🚆</span><span class="ess-label">Transport</span><span class="ess-val">Swiss Travel Pass (9-day)</span></div>
+      <div class="ess-item"><span class="ess-icon">📶</span><span class="ess-label">SIM card</span><span class="ess-val">Sunrise / Salt at airports</span></div>
+      <div class="ess-item"><span class="ess-icon">🛂</span><span class="ess-label">Visa</span><span class="ess-val">Schengen (90 days visa-free)</span></div>
+      <div class="ess-item"><span class="ess-icon">🔌</span><span class="ess-label">Plug type</span><span class="ess-val">Type J (unique to Switzerland)</span></div>
+      <div class="ess-item"><span class="ess-icon">🗣</span><span class="ess-label">Languages</span><span class="ess-val">German · French · Italian</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Local tips</h3>
+      <div class="tip-item">
+        <span class="tip-icon">🚆</span>
+        The Swiss Travel Pass covers trains, buses, lake boats and most mountain railways — and entry to 500 museums. Buy it before you arrive; it's the single best investment you can make for this trip.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🏔</span>
+        Book Jungfraujoch tickets well in advance and aim for an 8am departure. Cloud rolls in by noon almost every day. Clear mornings are not guaranteed — have a flexible day as backup.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🧀</span>
+        Switzerland has four distinct food cultures: German-Swiss (rösti, wurst, fondue), French-Swiss (raclette, croissants, wine), Italian-Swiss (risotto, polenta) and Romansh. Eat locally wherever you are.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">🚗</span>
+        Zermatt is car-free. Leave your vehicle in Täsch and take the shuttle train (12 min). Within Zermatt, everything is walkable — the village is the point.
+      </div>
+      <div class="tip-item">
+        <span class="tip-icon">💧</span>
+        Tap water in Switzerland is cleaner than most bottled water. Every public fountain is drinkable. Carry a reusable bottle — you'll fill it from 16th-century stone troughs fed by glacier springs.
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- CTA BAR -->
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>Make it yours</h3>
+    <p>Customize this experience exactly the way you want.</p>
+  </div>
+  <div class="cta-btns">
+    <a href="trip.html">
+      <button class="btn-primary">Customize Trip →</button>
+    </a>
+    <a href="Homepage.html">
+      <button class="btn-outline">Explore More</button>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

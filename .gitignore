@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Local backups
+backup/
+*.bak
+
+# Large media files exceeding GitHub 100MB limit
+Travelling Website/videos/heroo.mp4
+Travelling Website/videos/maain.mp4
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

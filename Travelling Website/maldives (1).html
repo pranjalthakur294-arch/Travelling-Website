@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maldives – Lonely Planet Journeys</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="maldives.css"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <a href="#">Destinations</a>
+      <a href="#">How it works</a>
+      <a href="#">Our Commitments</a>
+    </div>
+    <div class="nav-logo">
+      <span class="lp-small">lonely planet</span>
+      <span class="lp-big">journeys</span>
+    </div>
+    <div class="nav-right">
+      <button class="btn-primary">Craft your trip</button>
+      <button class="btn-outline">Login</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+<video autoplay muted loop class="hero-video">
+  <source src="videos/maldives.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<div class="hero-content">
+
+<h1>Travel to Maldives</h1>
+
+<p>Whatever you want, our experts can make it happen.</p>
+
+<div class="hero-buttons">
+<a href="#" class="btn-main">Craft your trip</a>
+<a href="#" class="btn-outline">How it works</a>
+</div>
+
+</div>
+
+</section>
+
+  <!-- ABOUT -->
+  <section class="about-section">
+    <div class="about-left">
+      <div class="about-label">About</div>
+      <h2 class="about-title">An Archipelago Like No Other</h2>
+    </div>
+    <div class="about-right">
+      <p>Venturing inland, one can explore local island communities, bustling fish markets, and observe local artisans, or partake in lively celebrations such as Eid or Maldivian Independence Day. The more adventurous can embark on a seaplane tour for a bird's eye view of the stunning atolls, or dive into the depths of the Indian Ocean to discover an underwater world teeming with life. The Maldives also boasts world-class resorts where one can unwind with luxurious spa treatments, indulge in gourmet cuisine, and experience the tranquility of overwater villas with panoramic ocean views. The Maldives, a captivating blend of luxury and culture, promises to be your unforgettable escape.</p>
+    </div>
+  </section>
+
+  <!-- PRICE -->
+  <section class="price-section">
+    <div class="price-left">
+      <div class="price-label">Let's talk price</div>
+      <div class="price-controls">
+        <div class="control-group">
+          <label>Travelers</label>
+          <div class="stepper">
+            <button onclick="adjust('travelers',-1)">−</button>
+            <span id="travelers">2</span>
+            <button onclick="adjust('travelers',1)">+</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <label>Days</label>
+          <div class="stepper">
+            <button onclick="adjust('days',-1)">−</button>
+            <span id="days">6</span>
+            <button onclick="adjust('days',1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="price-note">
+        <strong>This budget range is specific to Maldives.</strong>
+        <p>The higher in price, the more exclusive the experience. The lower in price, the more economic the experience.</p>
+      </div>
+      <button class="btn-craft">Craft your trip</button>
+    </div>
+
+    <div class="price-right">
+      <div class="price-widget">
+        <div class="price-card">
+          <div class="amount" id="total-price">$13,200</div>
+          <div class="per" id="per-traveler">$6,600 / traveler</div>
+          <div class="trip-meta" id="trip-summary">2 travelers, 6 days</div>
+        </div>
+        <div class="price-tiers">
+          <span>$$</span><span>$$$</span><span>$$$$</span>
+        </div>
+        <div class="price-slider-track" id="slider-track">
+          <div class="price-slider-fill" id="slider-fill"></div>
+          <div class="price-slider-thumb" id="slider-thumb"></div>
+        </div>
+        <div class="price-range-labels">
+          <span id="min-label">USD $4,800</span>
+          <span id="max-label">USD $21,600</span>
+        </div>
+      </div>
+      <p class="price-disclaimer">*International flights and trip insurance not included</p>
+    </div>
+  </section>
+
+  <!-- TOP THINGS TO SEE -->
+  <section class="top-things">
+    <div class="section-header">
+      <span class="section-icon">⊙</span> Top Things to See
+    </div>
+    <div class="things-grid-top">
+      <div class="thing-card">
+        <img src="https://images.unsplash.com/photo-1516815231560-8f41ec531527?w=800&q=80" alt="Coral sand beach"/>
+        <div class="thing-caption">Sunrise over the surf from a palm-draped coral-sand beach.</div>
+      </div>
+      <div class="thing-card">
+        <img src="https://images.unsplash.com/photo-1540202404-a2f29016b523?w=600&q=80" alt="Underwater world"/>
+        <div class="thing-caption">The mesmerising underwater world just meters from your beach towel.</div>
+      </div>
+    </div>
+    <div class="things-grid-bottom">
+      <div class="thing-card">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Fish market"/>
+        <div class="thing-caption">The mosques and bustling fish market in Malé, the pocket-sized Maldivian capital.</div>
+      </div>
+      <div class="thing-card">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Gan Island"/>
+        <div class="thing-caption">Laid-back villages and the ruins of the British WWII air base on Gan Island.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GET A TASTE -->
+  <section class="taste-section">
+    <div class="taste-header">
+      <span class="section-icon">🍷</span> Get a taste
+    </div>
+    <div class="taste-col">
+      <h3>Eat</h3>
+      <ul>
+        <li>garudia (smoked-fish soup)</li>
+        <li>hedika – delicious, spicy fish-based snacks</li>
+      </ul>
+    </div>
+    <div class="taste-col">
+      <h3>Drink</h3>
+      <ul>
+        <li>raa (a sweet and tasty toddy tapped from the coconut palm)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <div class="map-wrap">
+    <div class="map-top-bar">
+      <div class="section-header">
+        <span class="section-icon">⊙</span> Top things to do
+      </div>
+      <div class="map-nav">
+        <button id="map-prev">&#8249;</button>
+        <button id="map-next">&#8250;</button>
+      </div>
+    </div>
+
+    <svg class="map-svg-bg" viewBox="0 0 1400 620" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1400" height="620" fill="#c5cae9"/>
+      <ellipse cx="900" cy="75"  rx="200" ry="75"  fill="#e8eaf6" opacity="0.65"/>
+      <text x="930" y="52" font-size="12" fill="#7986cb" text-anchor="middle" font-family="DM Sans,sans-serif">TAMIL NADU</text>
+      <ellipse cx="1075" cy="205" rx="58"  ry="80"  fill="#e8eaf6" opacity="0.7"/>
+      <text x="1075" y="220" font-size="12" fill="#5c6bc0" text-anchor="middle" font-family="DM Sans,sans-serif">Sri Lanka</text>
+      <ellipse cx="770"  cy="130" rx="20"  ry="30"  fill="#e8eaf6" opacity="0.5"/>
+      <text x="770" y="178" font-size="10" fill="#7986cb" text-anchor="middle" font-family="DM Sans,sans-serif">Kavaratti</text>
+      <ellipse cx="830"  cy="315" rx="9"   ry="13"  fill="#e8eaf6" opacity="0.75"/>
+      <ellipse cx="835"  cy="380" rx="7"   ry="9"   fill="#e8eaf6" opacity="0.65"/>
+      <ellipse cx="825"  cy="445" rx="6"   ry="8"   fill="#e8eaf6" opacity="0.55"/>
+      <text x="855" y="318" font-size="11" fill="#5c6bc0" font-family="DM Sans,sans-serif">Malé</text>
+      <text x="855" y="382" font-size="10" fill="#7986cb" font-family="DM Sans,sans-serif">Veymandoo</text>
+      <text x="855" y="448" font-size="10" fill="#7986cb" font-family="DM Sans,sans-serif">Hithadhoo</text>
+      <ellipse cx="195"  cy="505" rx="11"  ry="9"   fill="#e8eaf6" opacity="0.4"/>
+      <text x="195" y="530" font-size="10" fill="#7986cb" text-anchor="middle" font-family="DM Sans,sans-serif">Victoria</text>
+    </svg>
+
+    <div class="map-marker"></div>
+
+    <div class="map-popup" id="map-popup">
+      <img id="popup-img" src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Activity"/>
+      <div class="map-popup-text" id="popup-text">
+        Dive or snorkel on spectacular thilas and giris (isolated reefs) and kandus (deepwater channels).
+      </div>
+    </div>
+
+    <div class="zoom-controls">
+      <button>+</button>
+      <button>−</button>
+    </div>
+    <div class="map-credit">© Mapbox © OpenStreetMap</div>
+    <div class="map-spacer"></div>
+  </div>
+
+  <!-- CELEBRATE + FACT -->
+  <section class="facts-section">
+    <div class="fact-block">
+      <div class="fact-title"><span>🎉</span> Celebrate this</div>
+      <p>Building on the Maldives' increasing awareness of climate change and rising sea levels, the country's newest resorts are focused on boosting biodiversity and reinforcing eco-aware and sustainable design and business practices.</p>
+    </div>
+    <div class="fact-block">
+      <div class="fact-title"><span class="icon-check">✓</span> Random Fact</div>
+      <p>The highest point in the Maldives is just 2.4m above sea level.</p>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=1600&q=80" alt="Overwater bungalows"/>
+    <div class="cta-banner-overlay"></div>
+    <div class="cta-banner-content">
+      <div class="cta-eyebrow">In a Word</div>
+      <div class="cta-title">Mabuti naman (I'm fine)</div>
+      <button class="btn-craft">Craft your trip</button>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <h2>Join our travel revolution?</h2>
+    <p>Sign up to stay in the know – hot new travel spots,<br/>how we strive to make the world a better place, and all sorts of surprises.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Your email"/>
+      <button>Sign Up</button>
+    </div>
+    <p class="newsletter-disclaimer">By entering my email, I agree to receive marketing notifications from Lonely Planet Journeys and Lonely Planet.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="lp-small">lonely planet</span>
+        <div class="lp-big">journeys</div>
+        <div class="footer-socials">
+          <a href="#" title="Instagram">📷</a>
+          <a href="#" title="TikTok">🎵</a>
+          <a href="#" title="Facebook">f</a>
+          <a href="#" title="LinkedIn">in</a>
+          <a href="#" title="YouTube">▶</a>
+        </div>
+        <p class="footer-insurance">Our exclusive travel insurance provider.</p>
+        <button class="btn-wanderwell">Wanderwell</button>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">How it works</a></li>
+          <li><a href="#">Commitments</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Settings</a></li>
+          <li><a href="#">Do Not Sell or Share My Personal Information</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-destinations">
+      <h3>Destinations</h3>
+      <div class="dest-grid">
+        <div class="dest-region">
+          <h4>South America</h4>
+          <ul>
+            <li><a href="#">Argentina</a></li><li><a href="#">Bolivia</a></li>
+            <li><a href="#">Chile</a></li><li><a href="#">Colombia</a></li>
+            <li><a href="#">Easter Island</a></li><li><a href="#">Ecuador</a></li>
+            <li><a href="#">French Guiana</a></li><li><a href="#">Guyana</a></li>
+            <li><a href="#">Patagonia</a></li><li><a href="#">Peru</a></li>
+            <li><a href="#">Suriname</a></li><li><a href="#">The Galápagos</a></li>
+            <li><a href="#">Uruguay</a></li>
+          </ul>
+          <h4 class="mt">Europe</h4>
+          <ul>
+            <li><a href="#">Austria</a></li><li><a href="#">Belgium</a></li><li><a href="#">Corsica</a></li>
+          </ul>
+        </div>
+        <div class="dest-region">
+          <h4>&nbsp;</h4>
+          <ul>
+            <li><a href="#">Croatia</a></li><li><a href="#">England</a></li>
+            <li><a href="#">Estonia</a></li><li><a href="#">Finland</a></li>
+            <li><a href="#">France</a></li><li><a href="#">Germany</a></li>
+            <li><a href="#">Greece</a></li><li><a href="#">Iceland</a></li>
+            <li><a href="#">Ireland</a></li><li><a href="#">Italy</a></li>
+            <li><a href="#">Lapland</a></li><li><a href="#">Latvia</a></li>
+            <li><a href="#">Lithuania</a></li><li><a href="#">Madeira</a></li>
+            <li><a href="#">Mallorca</a></li><li><a href="#">Norway</a></li>
+            <li><a href="#">Portugal</a></li><li><a href="#">Sardinia</a></li>
+            <li><a href="#">Scotland</a></li><li><a href="#">Sicily</a></li>
+          </ul>
+        </div>
+        <div class="dest-region">
+          <h4>&nbsp;</h4>
+          <ul>
+            <li><a href="#">Spain</a></li><li><a href="#">Sweden</a></li>
+            <li><a href="#">Switzerland</a></li><li><a href="#">The Azores</a></li>
+            <li><a href="#">The Baltic States</a></li><li><a href="#">The Netherlands</a></li>
+            <li><a href="#">Wales</a></li>
+          </ul>
+          <h4 class="mt">Africa &amp; Middle East</h4>
+          <ul>
+            <li><a href="#">Benin</a></li><li><a href="#">Botswana</a></li>
+            <li><a href="#">Egypt</a></li><li><a href="#">Ghana</a></li>
+            <li><a href="#">Jordan</a></li><li><a href="#">Morocco</a></li>
+            <li><a href="#">Mozambique</a></li><li><a href="#">Rwanda</a></li>
+            <li><a href="#">São Tomé and Príncipe</a></li><li><a href="#">Senegal</a></li>
+            <li><a href="#">Sierra Leone</a></li>
+          </ul>
+        </div>
+        <div class="dest-region">
+          <h4>&nbsp;</h4>
+          <ul>
+            <li><a href="#">South Africa</a></li><li><a href="#">Tanzania</a></li>
+            <li><a href="#">Togo</a></li><li><a href="#">Uganda</a></li>
+            <li><a href="#">Zambia</a></li><li><a href="#">Zimbabwe</a></li>
+          </ul>
+          <h4 class="mt">Oceania</h4>
+          <ul>
+            <li><a href="#">Australia</a></li><li><a href="#">New Zealand</a></li><li><a href="#">Tasmania</a></li>
+          </ul>
+          <h4 class="mt">Asia</h4>
+          <ul>
+            <li><a href="#">India</a></li><li><a href="#">Indonesia</a></li>
+            <li><a href="#">Japan</a></li><li><a href="#">Maldives</a></li><li><a href="#">Mongolia</a></li>
+          </ul>
+        </div>
+        <div class="dest-region">
+          <h4>&nbsp;</h4>
+          <ul>
+            <li><a href="#">Nepal</a></li><li><a href="#">South Korea</a></li>
+            <li><a href="#">Sri Lanka</a></li><li><a href="#">Thailand</a></li>
+            <li><a href="#">The Philippines</a></li><li><a href="#">Türkiye</a></li>
+            <li><a href="#">Vietnam</a></li>
+          </ul>
+          <h4 class="mt">North &amp; Central America</h4>
+          <ul>
+            <li><a href="#">Alaska</a></li><li><a href="#">Canada</a></li>
+            <li><a href="#">Costa Rica</a></li><li><a href="#">Dominican Republic</a></li>
+            <li><a href="#">El Salvador</a></li><li><a href="#">Guatemala</a></li>
+            <li><a href="#">Hawaii</a></li><li><a href="#">Mexico</a></li>
+            <li><a href="#">Panama</a></li><li><a href="#">United States of America</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="maldives.js"></script>
+</body>
+</html>
